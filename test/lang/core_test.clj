@@ -4,4 +4,5 @@
 
 (deftest inputstream-test
   (testing "test inputstream_next"
-    (is (= nil (inputstream_next {:pos 0 :input "" :line 0 :col 0})))))
+    (is (= [nil {:pos 0 :input "" :line 0 :col 0}] (inputstream_next {:pos 0 :input "" :line 0 :col 0})))
+    (is (= [\a {:pos 1 :input "a" :line 0 :col 1}] (inputstream_next {:pos 0 :input "a" :line 0 :col 0})))))
