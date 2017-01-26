@@ -24,5 +24,6 @@
     (is (= true (is_keyword "if")))
     (is (= true (is_keyword "then")))
     (is (= true (is_keyword "else")))
-    (is (= true (is_keyword "lambda")))))
+    (is (= true (is_keyword "lambda")))
+    (is (= true (is_keyword "λ")))))
  
