@@ -27,5 +27,7 @@
     (is (= true (is_keyword "lambda")))
     (is (= true (is_keyword "λ")))
     (is (= true (is_keyword "true")))
-    (is (= true (is_keyword "false")))))
- 
+    (is (= true (is_keyword "false"))))
+   (testing "test is_digit"
+    (is (= false (is_digit nil)))))
+
