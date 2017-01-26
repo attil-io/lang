@@ -23,4 +23,6 @@
 		ch))
 
 (defn inputstream_eof [inputstream_state]
-	true)
+	(let [{:keys [pos input]} inputstream_state]
+		(= pos (count input))))
+
