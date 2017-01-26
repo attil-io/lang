@@ -16,3 +16,4 @@
 		nextline (if isnewline (inc line) line)]
 		[ch (assoc inputstream_state :pos nextpos :col nextcol :line nextline)]))
 
+(defn inputstream_peek [inputstream_state])
