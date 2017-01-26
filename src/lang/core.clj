@@ -6,10 +6,11 @@
   [& args]
   (println "Hello, World!"))
 
+(declare inputstream_peek)
 
 (defn inputstream_next [inputstream_state]
 	(let [{:keys [pos input line col]} inputstream_state 
-		ch (if (> (count input) pos) (.charAt input pos) nil)
+		ch (inputstream_peek inputstream_state)
 		isnewline (= \newline ch)
 		nextpos (if (nil? ch) pos (inc pos))
 		nextcol (if (nil? ch) col (if isnewline 0 (inc col)))
