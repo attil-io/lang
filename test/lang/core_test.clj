@@ -23,5 +23,6 @@
     (is (= false (is_keyword nil)))
     (is (= true (is_keyword "if")))
     (is (= true (is_keyword "then")))
-    (is (= true (is_keyword "else")))))
+    (is (= true (is_keyword "else")))
+    (is (= true (is_keyword "lambda")))))
  
