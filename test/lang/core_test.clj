@@ -59,7 +59,8 @@
     (is (= true (is_id ">")))
     (is (= true (is_id "="))))
   (testing "test is_op_char"
-    (is (= false (is_op_char nil)))))
+    (is (= false (is_op_char nil)))
+    (is (= true (is_op_char "+")))))
  
   
 
