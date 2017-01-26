@@ -2,6 +2,6 @@
   (:require [clojure.test :refer :all]
             [lang.core :refer :all]))
 
-(deftest a-test
-  (testing "dummy test"
-    (is (= 1 1))))
+(deftest inputstream-test
+  (testing "test inputstream_next"
+    (is (= nil (inputstream_next {:pos 0 :input "" :line 0 :col 0})))))
