@@ -10,7 +10,9 @@
 (defn inputstream_next [inputstream_state]
 	(let [{:keys [pos input line col]} inputstream_state 
 		ch (if (> (count input) pos) (.charAt input pos) nil)
+		isnewline (= \newline ch)
 		nextpos (if (nil? ch) pos (inc pos))
-		nextcol (if (nil? ch) col (inc col))]
-		[ch (assoc inputstream_state :pos nextpos :col nextcol)]))
+		nextcol (if (nil? ch) col (if isnewline 0 (inc col)))
+		nextline (if isnewline (inc line) line)]
+		[ch (assoc inputstream_state :pos nextpos :col nextcol :line nextline)]))
 
