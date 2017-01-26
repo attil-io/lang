@@ -42,7 +42,16 @@
    (testing "test is_id"
     (is (= false (is_id nil)))
     (is (= true (is_id "_")))
-    (is (= true (is_id "1")))))
+    (is (= true (is_id "0")))
+    (is (= true (is_id "1")))
+    (is (= true (is_id "2")))
+    (is (= true (is_id "3")))
+    (is (= true (is_id "4")))
+    (is (= true (is_id "5")))
+    (is (= true (is_id "6")))
+    (is (= true (is_id "7")))
+    (is (= true (is_id "8")))
+    (is (= true (is_id "9")))))
 
   
 

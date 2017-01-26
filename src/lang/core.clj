@@ -37,5 +37,5 @@
 
 (defn is_id_start [ch] (and (not (nil? ch)) (not (nil? (re-matches #"(?i)[a-zλ_]" (str ch))))))
 
-(defn is_id [ch] (or (is_id_start ch) (and (not (nil? ch)) (>= (.indexOf "1" ch) 0))))
+(defn is_id [ch] (or (is_id_start ch) (and (not (nil? ch)) (>= (.indexOf "0123456789" ch) 0))))
 
