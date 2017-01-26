@@ -37,6 +37,7 @@
     (is (= false (is_id_start nil)))
     (is (= true (is_id_start "a")))
     (is (= false (is_id_start "1")))
-    (is (= true (is_id_start "A")))))
+    (is (= true (is_id_start "A")))
+    (is (= true (is_id_start \a)))))
  
 
