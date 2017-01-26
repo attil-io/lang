@@ -41,4 +41,6 @@
 
 (defn is_op_char [ch] (and (not (nil? ch)) (>= (.indexOf "+-*/%=&|<>!" (str ch)) 0)))
 
+(defn is_punc [ch] false)
+
 
