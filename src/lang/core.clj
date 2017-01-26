@@ -7,6 +7,7 @@
   (println "Hello, World!"))
 
 (declare inputstream_peek)
+(declare inputstream_eof)
 
 (defn inputstream_next [inputstream_state]
 	(let [{:keys [pos input line col]} inputstream_state 
@@ -19,7 +20,7 @@
 
 (defn inputstream_peek [inputstream_state]
 	(let [{:keys [pos input]} inputstream_state 
-		ch (if (> (count input) pos) (.charAt input pos) nil)]
+		ch (if (inputstream_eof inputstream_state) nil (.charAt input pos))]
 		ch))
 
 (defn inputstream_eof [inputstream_state]
