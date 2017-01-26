@@ -70,7 +70,8 @@
     (is (= true (is_op_char "|")))
     (is (= true (is_op_char "<")))
     (is (= true (is_op_char ">")))
-    (is (= true (is_op_char "!")))))
+    (is (= true (is_op_char "!")))
+    (is (= true (is_op_char \!)))))
  
   
 
