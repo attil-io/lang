@@ -31,4 +31,4 @@
 	(let [{:keys [pos line col]} inputstream_state]
 		(throw (Exception. (str msg " at position " pos " (" line ":" col ")")))))
 
-
+(defn is_keyword [x] false)

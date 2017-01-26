@@ -18,6 +18,7 @@
     (is (thrown-with-msg? Exception #"Unexpected character at position 5 \(3:4\)" (inputstream_croak "Unexpected character" {:pos 5 :input "dontcare" :line 3 :col 4} )))))
 
 
-
-
+(deftest tokenstream-test
+  (testing "test is_keyword"
+    (is (= false (is_keyword nil)))))
  
