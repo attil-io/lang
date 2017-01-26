@@ -81,7 +81,8 @@
     (is (= true (is_punc "{")))
     (is (= true (is_punc "}")))
     (is (= true (is_punc "[")))
-    (is (= true (is_punc "]")))))
+    (is (= true (is_punc "]")))
+    (is (= true (is_punc \])))))
  
   
 
