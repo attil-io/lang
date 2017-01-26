@@ -51,7 +51,13 @@
     (is (= true (is_id "6")))
     (is (= true (is_id "7")))
     (is (= true (is_id "8")))
-    (is (= true (is_id "9")))))
+    (is (= true (is_id "9")))
+    (is (= true (is_id "?")))
+    (is (= true (is_id "!")))
+    (is (= true (is_id "-")))
+    (is (= true (is_id "<")))
+    (is (= true (is_id ">")))
+    (is (= true (is_id "=")))))
 
   
 
