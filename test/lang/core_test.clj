@@ -73,7 +73,8 @@
     (is (= true (is_op_char "!")))
     (is (= true (is_op_char \!))))
    (testing "test is_punc"
-    (is (= false (is_punc nil)))))
+    (is (= false (is_punc nil)))
+    (is (= true (is_punc ",")))))
  
   
 
