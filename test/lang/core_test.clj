@@ -30,5 +30,7 @@
     (is (= true (is_keyword "false"))))
    (testing "test is_digit"
     (is (= false (is_digit nil)))
-    (is (= true (is_digit "1")))))
+    (is (= true (is_digit "1")))
+    (is (= false (is_digit "w")))))
+
 

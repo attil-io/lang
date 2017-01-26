@@ -33,5 +33,5 @@
 
 (defn is_keyword [x] (contains? #{"if" "then" "else" "lambda" "λ" "true" "false"} x))
 
-(defn is_digit [ch] (not (nil? ch)))
+(defn is_digit [ch] (and (not (nil? ch)) (not (nil? (re-matches #"[0-9]" ch)))))
 
