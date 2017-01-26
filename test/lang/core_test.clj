@@ -35,6 +35,7 @@
     (is (= true (is_digit \1))))
    (testing "test is_id_start"
     (is (= false (is_id_start nil)))
-    (is (= true (is_id_start "a")))))
+    (is (= true (is_id_start "a")))
+    (is (= false (is_id_start "1")))))
  
 
