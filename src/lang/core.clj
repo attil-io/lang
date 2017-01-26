@@ -27,3 +27,8 @@
 	(let [{:keys [pos input]} inputstream_state]
 		(>= pos (count input))))
 
+(defn inputstream_croak [msg inputstream_state]
+	(let [{:keys [pos line col]} inputstream_state]
+		(throw (Exception. (str msg " at position " pos " (" line ":" col ")")))))
+
+

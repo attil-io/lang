@@ -13,6 +13,11 @@
   (testing "test inputstream_eof"
     (is (= true (inputstream_eof {:pos 0 :input "" :line 0 :col 0})))
     (is (= false (inputstream_eof {:pos 0 :input "a" :line 0 :col 0})))
-    (is (= true (inputstream_eof {:pos 2 :input "a" :line 0 :col 2})))))
+    (is (= true (inputstream_eof {:pos 2 :input "a" :line 0 :col 2}))))
+  (testing "test inputstream_croak"
+    (is (thrown-with-msg? Exception #"Unexpected character at position 5 \(3:4\)" (inputstream_croak "Unexpected character" {:pos 5 :input "dontcare" :line 3 :col 4} )))))
+
+
+
 
  
