@@ -21,5 +21,6 @@
 (deftest tokenstream-test
   (testing "test is_keyword"
     (is (= false (is_keyword nil)))
-    (is (= true (is_keyword "if")))))
+    (is (= true (is_keyword "if")))
+    (is (= true (is_keyword "then")))))
  
