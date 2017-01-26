@@ -22,3 +22,5 @@
 		ch (if (> (count input) pos) (.charAt input pos) nil)]
 		ch))
 
+(defn inputstream_eof [inputstream_state]
+	true)
