@@ -12,6 +12,7 @@
     (is (= \a (inputstream_peek {:pos 0 :input "a" :line 0 :col 0}))))
   (testing "test inputstream_eof"
     (is (= true (inputstream_eof {:pos 0 :input "" :line 0 :col 0})))
-    (is (= false (inputstream_eof {:pos 0 :input "a" :line 0 :col 0})))))
+    (is (= false (inputstream_eof {:pos 0 :input "a" :line 0 :col 0})))
+    (is (= true (inputstream_eof {:pos 2 :input "a" :line 0 :col 2})))))
 
  
