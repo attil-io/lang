@@ -39,3 +39,5 @@
 
 (defn is_id [ch] (or (is_id_start ch) (and (not (nil? ch)) (>= (.indexOf "?!-<>=0123456789" ch) 0))))
 
+(defn is_op_char [ch] false)
+
