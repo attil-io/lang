@@ -32,6 +32,8 @@
     (is (= false (is_digit nil)))
     (is (= true (is_digit "1")))
     (is (= false (is_digit "w")))
-    (is (= true (is_digit \1)))))
-
+    (is (= true (is_digit \1))))
+   (testing "test is_id_start"
+    (is (= false (is_id_start nil)))))
+ 
 

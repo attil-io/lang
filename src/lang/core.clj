@@ -35,3 +35,5 @@
 
 (defn is_digit [ch] (and (not (nil? ch)) (not (nil? (re-matches #"[0-9]" (str ch))))))
 
+(defn is_id_start [ch] false)
+
