@@ -12,6 +12,7 @@
     (is (= \a (inputstream_peek {:pos 0 :input "a" :line 0 :col 0}))))
   (testing "test inputstream_eof"
     (is (= true (inputstream_eof {:pos 0 :input "" :line 0 :col 0})))
+    (is (= true (inputstream_eof nil)))
     (is (= false (inputstream_eof {:pos 0 :input "a" :line 0 :col 0})))
     (is (= true (inputstream_eof {:pos 2 :input "a" :line 0 :col 2}))))
   (testing "test inputstream_croak"
@@ -121,7 +122,8 @@
     (is (= [\newline {:pos 6 :input "line1\nline2" :line 1 :col 0}] (skip_comment {:pos 0 :input "line1\nline2" :line 0 :col 0})))
     (is (= [nil {:pos 5 :input "line1" :line 0 :col 5}] (skip_comment {:pos 0 :input "line1" :line 0 :col 0}))))
   (testing "test read_next"
-    (is (= [nil {:pos 0 :input "" :line 0 :col 0}] (read_next {:pos 0 :input "" :line 0 :col 0})))))
+    (is (= nil (read_next {:pos 0 :input "" :line 0 :col 0})))
+    (is (= nil (read_next {:pos 0 :input "# abc\n" :line 0 :col 0})))))
 
  
 

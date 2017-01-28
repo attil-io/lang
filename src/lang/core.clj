@@ -28,7 +28,7 @@
 
 (defn inputstream_eof [inputstream_state]
 	(let [{:keys [pos input]} inputstream_state]
-		(>= pos (count input))))
+		(or (nil? pos) (>= pos (count input)))))
 
 (defn inputstream_croak [msg inputstream_state]
 	(let [{:keys [pos line col]} inputstream_state]
@@ -95,5 +95,9 @@
 	(inputstream_next (statepart (read_while #(not= % \newline) inputstream_state))))
 
 (defn read_next [inputstream_state]
-[nil {:pos 0 :input "" :line 0 :col 0}])
+	(let [skip_whitespace_state (statepart (read_while is_whitespace inputstream_state))
+		nextchar (if (inputstream_eof skip_whitespace_state) nil (inputstream_peek skip_whitespace_state))
+		]
+		(cond (nil? nextchar) nil
+			(= \# nextchar) (read_next (skip_comment skip_whitespace_state)))))
 
