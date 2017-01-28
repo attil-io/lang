@@ -87,5 +87,6 @@
     (is (= false (is_whitespace nil)))
     (is (= true (is_whitespace " ")))
     (is (= true (is_whitespace "\t")))
-    (is (= true (is_whitespace "\n")))))
+    (is (= true (is_whitespace "\n")))
+    (is (= true (is_whitespace \newline)))))
  
