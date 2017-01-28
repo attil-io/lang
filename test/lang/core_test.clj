@@ -112,6 +112,9 @@
     (is (= ["before" {:pos 7 :input "before'after" :line 0 :col 7}] (read_escaped {:pos 0 :input "before'after" :line 0 :col 0} \')))
     (is (= ["" {:pos 1 :input "'after" :line 0 :col 1}] (read_escaped {:pos 0 :input "'after" :line 0 :col 0} \')))
     (is (= ["something" {:pos 9 :input "something" :line 0 :col 9}] (read_escaped {:pos 0 :input "something" :line 0 :col 0} \')))
-    (is (= ["somet'hing" {:pos 11 :input "somet\\'hing" :line 0 :col 11}] (read_escaped {:pos 0 :input "somet\\'hing" :line 0 :col 0} \')))))
+    (is (= ["somet'hing" {:pos 11 :input "somet\\'hing" :line 0 :col 11}] (read_escaped {:pos 0 :input "somet\\'hing" :line 0 :col 0} \'))))
+   (testing "test read_string"
+    (is (= ["before" {:pos 7 :input "before\"after" :line 0 :col 7}] (read_string {:pos 0 :input "before\"after" :line 0 :col 0})))))
+
  
 

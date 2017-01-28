@@ -87,4 +87,6 @@
 				(recur (str resultstr (if finished "" newresult_val)) newresult_state finished)))))
 
 
+(defn read_string [inputstream_state]
+["before" {:pos 7 :input "before\"after" :line 0 :col 7}])
 
