@@ -77,7 +77,7 @@
 
 (defn read_escaped [inputstream_state end]
 	(loop [resultstr "" state inputstream_state ch nil]
-		(if (= end ch)
+		(if (or (inputstream_eof state) (= end ch))
 			[resultstr state]
 			(let [[newresult_val newresult_state]
 				(let [[ch_val ch_state :as ch_result] (inputstream_next state)]
