@@ -22,6 +22,8 @@
   (testing "test is_keyword"
     (is (= false (is_keyword nil)))
     (is (= false (is_keyword "while")))
+    (is (= false (is_keyword "")))
+    (is (= false (is_keyword " ")))
     (is (= true (is_keyword "if")))
     (is (= true (is_keyword "then")))
     (is (= true (is_keyword "else")))
@@ -59,7 +61,8 @@
     (is (= true (is_id "-")))
     (is (= true (is_id "<")))
     (is (= true (is_id ">")))
-    (is (= true (is_id "="))))
+    (is (= true (is_id "=")))
+    (is (= true (is_id \=))))
   (testing "test is_op_char"
     (is (= false (is_op_char nil)))
     (is (= false (is_op_char "_")))
@@ -102,5 +105,7 @@
     (is (= [{:value 3 :type "num"} {:pos 1 :input "3" :line 0 :col 1}] (read_number {:pos 0 :input "3" :line 0 :col 0})))
     (is (= [{:value 3.1 :type "num"} {:pos 3 :input "3.1" :line 0 :col 3}] (read_number {:pos 0 :input "3.1" :line 0 :col 0}))))
    (testing "test read_number"
-    (is (= [{:value "myvar" :type "var"} {:pos 5 :input "myvar" :line 0 :col 5}] (read_ident {:pos 0 :input "myvar" :line 0 :col 0})))))
+    (is (= [{:value "myvar" :type "var"} {:pos 5 :input "myvar" :line 0 :col 5}] (read_ident {:pos 0 :input "myvar" :line 0 :col 0})))
+    (is (= [{} {:pos 0 :input " " :line 0 :col 0}] (read_ident {:pos 0 :input " " :line 0 :col 0})))))
+
 

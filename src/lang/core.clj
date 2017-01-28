@@ -40,7 +40,7 @@
 
 (defn is_id_start [ch] (and (not (nil? ch)) (not (nil? (re-matches #"(?i)[a-zλ_]" (str ch))))))
 
-(defn is_id [ch] (or (is_id_start ch) (and (not (nil? ch)) (>= (.indexOf "?!-<>=0123456789" ch) 0))))
+(defn is_id [ch] (or (is_id_start ch) (and (not (nil? ch)) (>= (.indexOf "?!-<>=0123456789" (str ch)) 0))))
 
 (defn is_op_char [ch] (and (not (nil? ch)) (>= (.indexOf "+-*/%=&|<>!" (str ch)) 0)))
 
@@ -67,5 +67,12 @@
 	     [{:value number_numeric :type "num"}
 	       final_state])) 
 
-(defn read_ident [inputstream_state] [{:value "myvar" :type "var"} {:pos 5 :input "myvar" :line 0 :col 5}])
+(defn read_ident [inputstream_state] 
+	(let [[id_val id_state] (read_while is_id inputstream_state)
+		found_id (< 0 (count id_val))
+		id_type (and found_id (if (is_keyword id_val) "kw" "var"))
+		ret_val (if found_id {:value id_val :type id_type} {})	
+		]
+	[ret_val id_state]))
+
 
