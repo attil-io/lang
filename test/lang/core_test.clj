@@ -96,5 +96,7 @@
     (is (= true (is_whitespace \newline))))
    (testing "test read_while"
     (is (= ["abcd" {:pos 4 :input "abcd" :line 0 :col 4}] (read_while (fn [_] true) {:pos 0 :input "abcd" :line 0 :col 0})))
-    (is (= ["" {:pos 0 :input "abcd" :line 0 :col 0}] (read_while (fn [_] false) {:pos 0 :input "abcd" :line 0 :col 0})))))
+    (is (= ["" {:pos 0 :input "abcd" :line 0 :col 0}] (read_while (fn [_] false) {:pos 0 :input "abcd" :line 0 :col 0}))))
+   (testing "test read_number"
+    (is (= ["2" {:pos 1 :input "2" :line 0 :col 1}] (read_number {:pos 0 :input "2" :line 0 :col 0})))))
  

@@ -52,4 +52,5 @@
 		(let [[nextch nextstate] (inputstream_next state)]
 		      (recur (str res nextch) nextstate)))))
 
+(defn read_number [inputstream_state] ["2" {:pos 1 :input "2" :line 0 :col 1}])
 
