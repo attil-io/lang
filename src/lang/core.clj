@@ -45,6 +45,11 @@
 
 (defn is_whitespace [ch] (and (not (nil? ch)) (>= (.indexOf " \t\n" (str ch)) 0)))
 
-(defn read_while [predicate inputstream_state] ["abcd" {:pos 4 :input "abcd" :line 0 :col 4}])
+(defn read_while [predicate inputstream_state]
+      (loop [res "" state inputstream_state]
+	    (if (not (and (not (inputstream_eof state)) (predicate (inputstream_peek state))))
+		[res state]
+		(let [[nextch nextstate] (inputstream_next state)]
+		      (recur (str res nextch) nextstate)))))
 
 
