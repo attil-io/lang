@@ -52,5 +52,10 @@
 		(let [[nextch nextstate] (inputstream_next state)]
 		      (recur (str res nextch) nextstate)))))
 
-(defn read_number [inputstream_state] ["2" {:pos 1 :input "2" :line 0 :col 1}])
+(defn read_number [inputstream_state] 
+	(let [[number number_state] (read_while #(and (not= \. %) (is_digit %)) inputstream_state)
+	      number_numeric (. Integer parseInt number)
+	     ]
+	     [{:value number_numeric :type "num"}
+	       number_state])) 
 
