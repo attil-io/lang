@@ -123,7 +123,8 @@
     (is (= [nil {:pos 5 :input "line1" :line 0 :col 5}] (skip_comment {:pos 0 :input "line1" :line 0 :col 0}))))
   (testing "test read_next"
     (is (= nil (read_next {:pos 0 :input "" :line 0 :col 0})))
-    (is (= nil (read_next {:pos 0 :input "# abc\n" :line 0 :col 0})))))
+    (is (= nil (read_next {:pos 0 :input "# abc\n" :line 0 :col 0})))
+    (is (= [{:type "str" :value "something"} {:pos 11 :input "\"something\"" :line 0 :col 11}] (read_next {:pos 0 :input "\"something\"" :line 0 :col 0})))))
 
  
 

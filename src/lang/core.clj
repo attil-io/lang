@@ -99,5 +99,9 @@
 		nextchar (if (inputstream_eof skip_whitespace_state) nil (inputstream_peek skip_whitespace_state))
 		]
 		(cond (nil? nextchar) nil
-			(= \# nextchar) (read_next (skip_comment skip_whitespace_state)))))
+			(= \# nextchar) (read_next (skip_comment skip_whitespace_state))
+			(= \" nextchar) (read_string (statepart (inputstream_next skip_whitespace_state)))
+
+)))
+
 
