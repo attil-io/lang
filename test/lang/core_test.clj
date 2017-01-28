@@ -85,6 +85,7 @@
     (is (= true (is_punc \]))))
    (testing "test is_whitespace"
     (is (= false (is_whitespace nil)))
+    (is (= false (is_whitespace "x")))
     (is (= true (is_whitespace " ")))
     (is (= true (is_whitespace "\t")))
     (is (= true (is_whitespace "\n")))
