@@ -42,6 +42,7 @@
     (is (= true (is_id_start \a))))
    (testing "test is_id"
     (is (= false (is_id nil)))
+    (is (= false (is_id " ")))
     (is (= true (is_id "_")))
     (is (= true (is_id "0")))
     (is (= true (is_id "1")))
