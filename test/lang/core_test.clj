@@ -84,5 +84,6 @@
     (is (= true (is_punc "]")))
     (is (= true (is_punc \]))))
    (testing "test is_whitespace"
-    (is (= false (is_whitespace nil)))))
+    (is (= false (is_whitespace nil)))
+    (is (= true (is_whitespace " ")))))
  
