@@ -107,7 +107,7 @@
 				[{:type "punc" :value nextval}  nextstate])
 			(is_op_char nextchar) (let [[nextval nextstate] (read_while is_op_char skip_whitespace_state)]
 				[{:type "op" :value nextval}  nextstate])
-
+			:else (inputstream_croak (str "Can't handle character: " nextchar) skip_whitespace_state)
 )))
 
 
