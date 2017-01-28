@@ -109,6 +109,7 @@
     (is (= [{:value "then" :type "kw"} {:pos 4 :input "then" :line 0 :col 4}] (read_ident {:pos 0 :input "then" :line 0 :col 0})))
     (is (= [{} {:pos 0 :input " " :line 0 :col 0}] (read_ident {:pos 0 :input " " :line 0 :col 0}))))
    (testing "test read_escaped"
-    (is (= ["before" {:pos 6 :input "before'after" :line 0 :col 6}] (read_escaped {:pos 0 :input "before'after" :line 0 :col 0} \')))))
+    (is (= ["before" {:pos 7 :input "before'after" :line 0 :col 7}] (read_escaped {:pos 0 :input "before'after" :line 0 :col 0} \')))
+    (is (= ["" {:pos 1 :input "'after" :line 0 :col 1}] (read_escaped {:pos 0 :input "'after" :line 0 :col 0} \')))))
  
 

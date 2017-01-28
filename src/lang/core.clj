@@ -76,5 +76,13 @@
 	[ret_val id_state]))
 
 (defn read_escaped [inputstream_state end]
-["before" {:pos 6 :input "before'after" :line 0 :col 6}])
+	(loop [resultstr "" state inputstream_state ch nil]
+		(if (= end ch)
+			[resultstr state]
+			(let [[newresult_val newresult_state]
+				(let [[ch_val ch_state :as ch_result] (inputstream_next state)]
+					ch_result)
+				]
+				(recur (str resultstr (if (= end newresult_val) "" newresult_val)) newresult_state newresult_val)))))
+
 
