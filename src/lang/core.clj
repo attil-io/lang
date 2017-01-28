@@ -67,3 +67,5 @@
 	     [{:value number_numeric :type "num"}
 	       final_state])) 
 
+(defn read_ident [inputstream_state] [{:value "myvar" :type "var"} {:pos 5 :input "myvar" :line 0 :col 5}])
+

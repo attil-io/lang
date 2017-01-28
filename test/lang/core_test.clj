@@ -100,5 +100,7 @@
    (testing "test read_number"
     (is (= [{:value 2 :type "num"} {:pos 1 :input "2" :line 0 :col 1}] (read_number {:pos 0 :input "2" :line 0 :col 0})))
     (is (= [{:value 3 :type "num"} {:pos 1 :input "3" :line 0 :col 1}] (read_number {:pos 0 :input "3" :line 0 :col 0})))
-    (is (= [{:value 3.1 :type "num"} {:pos 3 :input "3.1" :line 0 :col 3}] (read_number {:pos 0 :input "3.1" :line 0 :col 0})))))
- 
+    (is (= [{:value 3.1 :type "num"} {:pos 3 :input "3.1" :line 0 :col 3}] (read_number {:pos 0 :input "3.1" :line 0 :col 0}))))
+   (testing "test read_number"
+    (is (= [{:value "myvar" :type "var"} {:pos 5 :input "myvar" :line 0 :col 5}] (read_ident {:pos 0 :input "myvar" :line 0 :col 0})))))
+
