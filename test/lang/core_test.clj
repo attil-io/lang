@@ -128,6 +128,7 @@
     (is (= [{:type "num" :value 23} {:pos 2 :input "23" :line 0 :col 2}] (read_next {:pos 0 :input "23" :line 0 :col 0})))
     (is (= [{:type "var" :value "alma"} {:pos 4 :input "alma" :line 0 :col 4}] (read_next {:pos 0 :input "alma" :line 0 :col 0})))
     (is (= [{:type "kw" :value "if"} {:pos 2 :input "if" :line 0 :col 2}] (read_next {:pos 0 :input "if" :line 0 :col 0})))
-    (is (= [{:type "punc" :value \,} {:pos 1 :input "," :line 0 :col 1}] (read_next {:pos 0 :input "," :line 0 :col 0})))))
+    (is (= [{:type "punc" :value \,} {:pos 1 :input "," :line 0 :col 1}] (read_next {:pos 0 :input "," :line 0 :col 0})))
+    (is (= [{:type "op" :value "+"} {:pos 1 :input "+" :line 0 :col 1}] (read_next {:pos 0 :input "+" :line 0 :col 0})))))
 
 
