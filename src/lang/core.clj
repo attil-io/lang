@@ -88,5 +88,6 @@
 
 
 (defn read_string [inputstream_state]
-["before" {:pos 7 :input "before\"after" :line 0 :col 7}])
+      (let [[read_val read_state] (read_escaped inputstream_state \")]
+        [{:type "str" :value read_val} read_state]))
 
