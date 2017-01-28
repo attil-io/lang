@@ -6,6 +6,9 @@
   [& args]
   (println "Hello, World!"))
 
+(def resultpart first)
+(def statepart second)
+
 (declare inputstream_peek)
 (declare inputstream_eof)
 
@@ -53,9 +56,14 @@
 		      (recur (str res nextch) nextstate)))))
 
 (defn read_number [inputstream_state] 
-	(let [[number number_state] (read_while #(and (not= \. %) (is_digit %)) inputstream_state)
-	      number_numeric (. Integer parseInt number)
+	(let [[intpart intpart_state] (read_while #(and (not= \. %) (is_digit %)) inputstream_state)
+		maybedot_ch (inputstream_peek intpart_state)
+		dot_skip_state (if (= \. maybedot_ch) (statepart (inputstream_next intpart_state)) intpart_state)
+		[decpart decpart_state] (if (= \. maybedot_ch) (read_while #(and (not= \. %) (is_digit %)) dot_skip_state) nil)
+		final_state (if (nil? decpart_state) intpart_state decpart_state)
+		num_str (str intpart (if (nil? decpart) "" (str "." decpart)))
+		number_numeric (if (nil? decpart_state) (. Integer parseInt num_str) (. Double parseDouble num_str))
 	     ]
 	     [{:value number_numeric :type "num"}
-	       number_state])) 
+	       final_state])) 
 
