@@ -75,4 +75,6 @@
 		]
 	[ret_val id_state]))
 
+(defn read_escaped [inputstream_state end]
+["before" {:pos 6 :input "before'after" :line 0 :col 6}])
 
