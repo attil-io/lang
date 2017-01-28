@@ -103,6 +103,9 @@
 			(= \" nextchar) (read_string (statepart (inputstream_next skip_whitespace_state)))
 			(is_digit nextchar) (read_number skip_whitespace_state)
 			(is_id_start nextchar) (read_ident skip_whitespace_state)
+			(is_punc nextchar)  (let [[nextval nextstate] (inputstream_next skip_whitespace_state)]
+				[{:type "punc" :value nextval}  nextstate])
+
 
 )))
 
