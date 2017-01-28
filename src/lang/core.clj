@@ -101,6 +101,7 @@
 		(cond (nil? nextchar) nil
 			(= \# nextchar) (read_next (skip_comment skip_whitespace_state))
 			(= \" nextchar) (read_string (statepart (inputstream_next skip_whitespace_state)))
+			(is_digit nextchar) (read_number skip_whitespace_state)
 
 )))
 

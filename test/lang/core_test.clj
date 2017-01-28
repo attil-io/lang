@@ -124,7 +124,8 @@
   (testing "test read_next"
     (is (= nil (read_next {:pos 0 :input "" :line 0 :col 0})))
     (is (= nil (read_next {:pos 0 :input "# abc\n" :line 0 :col 0})))
-    (is (= [{:type "str" :value "something"} {:pos 11 :input "\"something\"" :line 0 :col 11}] (read_next {:pos 0 :input "\"something\"" :line 0 :col 0})))))
+    (is (= [{:type "str" :value "something"} {:pos 11 :input "\"something\"" :line 0 :col 11}] (read_next {:pos 0 :input "\"something\"" :line 0 :col 0})))
+    (is (= [{:type "num" :value 23} {:pos 2 :input "23" :line 0 :col 2}] (read_next {:pos 0 :input "23" :line 0 :col 0})))))
 
  
 
