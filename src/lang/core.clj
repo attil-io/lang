@@ -45,5 +45,6 @@
 
 (defn is_whitespace [ch] (and (not (nil? ch)) (>= (.indexOf " \t\n" (str ch)) 0)))
 
+(defn read_while [predicate inputstream_state] ["abcd" {:pos 4 :input "abcd" :line 0 :col 4}])
 
 
