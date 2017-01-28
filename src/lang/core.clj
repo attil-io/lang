@@ -76,13 +76,15 @@
 	[ret_val id_state]))
 
 (defn read_escaped [inputstream_state end]
-	(loop [resultstr "" state inputstream_state ch nil]
-		(if (or (inputstream_eof state) (= end ch))
+	(loop [resultstr "" state inputstream_state finished false]
+		(if (or (inputstream_eof state) finished)
 			[resultstr state]
-			(let [[newresult_val newresult_state]
+			(let [[[newresult_val newresult_state] escaped]
 				(let [[ch_val ch_state :as ch_result] (inputstream_next state)]
-					ch_result)
+					(if (= ch_val \\) [(inputstream_next ch_state) true] [ch_result false]))
+				finished (and (not escaped) (= end newresult_val))
 				]
-				(recur (str resultstr (if (= end newresult_val) "" newresult_val)) newresult_state newresult_val)))))
+				(recur (str resultstr (if finished "" newresult_val)) newresult_state finished)))))
+
 
 
