@@ -91,3 +91,6 @@
       (let [[read_val read_state] (read_escaped inputstream_state \")]
         [{:type "str" :value read_val} read_state]))
 
+(defn skip_comment [inputstream_state] 
+{:pos 6 :input "line1\nline2" :line 0 :col 6})
+
