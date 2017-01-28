@@ -94,3 +94,6 @@
 (defn skip_comment [inputstream_state] 
 	(inputstream_next (statepart (read_while #(not= % \newline) inputstream_state))))
 
+(defn read_next [inputstream_state]
+[nil {:pos 0 :input "" :line 0 :col 0}])
+

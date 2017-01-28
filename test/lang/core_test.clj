@@ -119,8 +119,11 @@
     (is (= [{:type "str" :value "something"} {:pos 9 :input "something" :line 0 :col 9}] (read_string {:pos 0 :input "something" :line 0 :col 0}))))
    (testing "test skip_comment"
     (is (= [\newline {:pos 6 :input "line1\nline2" :line 1 :col 0}] (skip_comment {:pos 0 :input "line1\nline2" :line 0 :col 0})))
-    (is (= [nil {:pos 5 :input "line1" :line 0 :col 5}] (skip_comment {:pos 0 :input "line1" :line 0 :col 0})))))
+    (is (= [nil {:pos 5 :input "line1" :line 0 :col 5}] (skip_comment {:pos 0 :input "line1" :line 0 :col 0}))))
+  (testing "test read_next"
+    (is (= [nil {:pos 0 :input "" :line 0 :col 0}] (read_next {:pos 0 :input "" :line 0 :col 0})))))
 
+ 
 
  
 
