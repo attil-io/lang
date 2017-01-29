@@ -133,6 +133,7 @@
     (is (thrown-with-msg? Exception #"Can't handle character: \^ at position 0 \(0:0\)" (read_next {:pos 0 :input "^" :line 0 :col 0}))))
   (testing "test peek"
     (is (= nil (tokenizer_peek [{:pos 0 :input "" :line 0 :col 0}])))
-    (is (= [{:type "punc" :value \(} {:pos 1 :input "(+ 1 2)" :line 0 :col 1}] (tokenizer_peek [{:pos 0 :input "(+ 1 2)" :line 0 :col 0}])))))
+    (is (= [{:type "punc" :value \(} {:pos 1 :input "(+ 1 2)" :line 0 :col 1}] (tokenizer_peek [{:pos 0 :input "(+ 1 2)" :line 0 :col 0}])))
+    (is (= [{:type "punc" :value \(} {:pos 1 :input "(+ 1 2)" :line 0 :col 1}] (tokenizer_peek [{:type "punc" :value \(} {:pos 1 :input "(+ 1 2)" :line 0 :col 1}])))))
 
  
