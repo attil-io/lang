@@ -110,5 +110,7 @@
 			:else (inputstream_croak (str "Can't handle character: " nextchar) skip_whitespace_state)
 )))
 
-(defn tokenizer_peek [tokenizer_state] nil)
+(defn tokenizer_peek [tokenizer_state]
+	(let [[current_token current_state] (if (< (count tokenizer_state) 2) (vec (cons nil tokenizer_state))tokenizer_state)]
+		 (if (nil? current_token) (read_next current_state)  [current_token current_state])))
 
