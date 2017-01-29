@@ -121,5 +121,5 @@
 
 (defn parse_is_punc[ch tokenstream_state] 
 	(let [[tok next_state] (tokenstream_peek tokenstream_state)]
-		tok))
+		(and tok (= "punc" (:type tok)) tok)))
 
