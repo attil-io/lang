@@ -152,5 +152,6 @@
     (is (= false (parse_is_punc \( [{:type "punc" :value \.} {:pos 1 :input "." :line 0 :col 1}])))
     (is (= {:type "punc" :value \.} (parse_is_punc nil [{:type "punc" :value \.} {:pos 1 :input "." :line 0 :col 1}]))))
    (testing "test parse_is_kw"
-    (is (= nil (parse_is_kw nil nil)))))
+    (is (= nil (parse_is_kw nil nil)))
+    (is (= {:type "kw" :value "if"} (parse_is_kw \( [{:type "kw" :value "if"} {:pos 2 :input "if" :line 0 :col 2}])))))
  
