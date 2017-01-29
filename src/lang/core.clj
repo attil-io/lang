@@ -129,5 +129,5 @@
 
 (defn parse_is_op [ch tokenstream_state] 
 	(let [[tok next_state] (tokenstream_peek tokenstream_state)]
-		tok))
+		(and tok (= "op" (:type tok)) tok)))
 
