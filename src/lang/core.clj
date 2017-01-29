@@ -116,5 +116,5 @@
 
 (def tokenstream_next tokenstream_peek)
 
-(defn tokenstream_eof [tokenstream_state] true)
+(defn tokenstream_eof [tokenstream_state] (nil? (tokenstream_peek tokenstream_state)))
 
