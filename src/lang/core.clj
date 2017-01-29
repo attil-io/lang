@@ -34,32 +34,32 @@
 	(let [{:keys [pos line col]} inputstream_state]
 		(throw (Exception. (str msg " at position " pos " (" line ":" col ")")))))
 
-(defn is_keyword [x] (contains? #{"if" "then" "else" "lambda" "λ" "true" "false"} x))
+(defn tokenstream_is_keyword [x] (contains? #{"if" "then" "else" "lambda" "λ" "true" "false"} x))
 
-(defn is_digit [ch] (and (not (nil? ch)) (not (nil? (re-matches #"[0-9]" (str ch))))))
+(defn tokenstream_is_digit [ch] (and (not (nil? ch)) (not (nil? (re-matches #"[0-9]" (str ch))))))
 
-(defn is_id_start [ch] (and (not (nil? ch)) (not (nil? (re-matches #"(?i)[a-zλ_]" (str ch))))))
+(defn tokenstream_is_id_start [ch] (and (not (nil? ch)) (not (nil? (re-matches #"(?i)[a-zλ_]" (str ch))))))
 
-(defn is_id [ch] (or (is_id_start ch) (and (not (nil? ch)) (>= (.indexOf "?!-<>=0123456789" (str ch)) 0))))
+(defn tokenstream_is_id [ch] (or (tokenstream_is_id_start ch) (and (not (nil? ch)) (>= (.indexOf "?!-<>=0123456789" (str ch)) 0))))
 
-(defn is_op_char [ch] (and (not (nil? ch)) (>= (.indexOf "+-*/%=&|<>!" (str ch)) 0)))
+(defn tokenstream_is_op_char [ch] (and (not (nil? ch)) (>= (.indexOf "+-*/%=&|<>!" (str ch)) 0)))
 
-(defn is_punc [ch] (and (not (nil? ch)) (>= (.indexOf ",;(){}[]" (str ch)) 0)))
+(defn tokenstream_is_punc [ch] (and (not (nil? ch)) (>= (.indexOf ",;(){}[]" (str ch)) 0)))
 
-(defn is_whitespace [ch] (and (not (nil? ch)) (>= (.indexOf " \t\n" (str ch)) 0)))
+(defn tokenstream_is_whitespace [ch] (and (not (nil? ch)) (>= (.indexOf " \t\n" (str ch)) 0)))
 
-(defn read_while [predicate inputstream_state]
+(defn tokenstream_read_while [predicate inputstream_state]
       (loop [res "" state inputstream_state]
 	    (if (not (and (not (inputstream_eof state)) (predicate (inputstream_peek state))))
 		[res state]
 		(let [[nextch nextstate] (inputstream_next state)]
 		      (recur (str res nextch) nextstate)))))
 
-(defn read_number [inputstream_state] 
-	(let [[intpart intpart_state] (read_while #(and (not= \. %) (is_digit %)) inputstream_state)
+(defn tokenstream_read_number [inputstream_state] 
+	(let [[intpart intpart_state] (tokenstream_read_while #(and (not= \. %) (tokenstream_is_digit %)) inputstream_state)
 		maybedot_ch (inputstream_peek intpart_state)
 		dot_skip_state (if (= \. maybedot_ch) (statepart (inputstream_next intpart_state)) intpart_state)
-		[decpart decpart_state] (if (= \. maybedot_ch) (read_while #(and (not= \. %) (is_digit %)) dot_skip_state) nil)
+		[decpart decpart_state] (if (= \. maybedot_ch) (tokenstream_read_while #(and (not= \. %) (tokenstream_is_digit %)) dot_skip_state) nil)
 		final_state (if (nil? decpart_state) intpart_state decpart_state)
 		num_str (str intpart (if (nil? decpart) "" (str "." decpart)))
 		number_numeric (if (nil? decpart_state) (. Integer parseInt num_str) (. Double parseDouble num_str))
@@ -67,15 +67,15 @@
 	     [{:value number_numeric :type "num"}
 	       final_state])) 
 
-(defn read_ident [inputstream_state] 
-	(let [[id_val id_state] (read_while is_id inputstream_state)
+(defn tokenstream_read_ident [inputstream_state] 
+	(let [[id_val id_state] (tokenstream_read_while tokenstream_is_id inputstream_state)
 		found_id (< 0 (count id_val))
-		id_type (and found_id (if (is_keyword id_val) "kw" "var"))
+		id_type (and found_id (if (tokenstream_is_keyword id_val) "kw" "var"))
 		ret_val (if found_id {:value id_val :type id_type} {})	
 		]
 	[ret_val id_state]))
 
-(defn read_escaped [inputstream_state end]
+(defn tokenstream_read_escaped [inputstream_state end]
 	(loop [resultstr "" state inputstream_state finished false]
 		(if (or (inputstream_eof state) finished)
 			[resultstr state]
@@ -87,32 +87,32 @@
 				(recur (str resultstr (if finished "" newresult_val)) newresult_state finished)))))
 
 
-(defn read_string [inputstream_state]
-      (let [[read_val read_state] (read_escaped inputstream_state \")]
+(defn tokenstream_read_string [inputstream_state]
+      (let [[read_val read_state] (tokenstream_read_escaped inputstream_state \")]
         [{:type "str" :value read_val} read_state]))
 
-(defn skip_comment [inputstream_state] 
-	(inputstream_next (statepart (read_while #(not= % \newline) inputstream_state))))
+(defn tokenstream_skip_comment [inputstream_state] 
+	(inputstream_next (statepart (tokenstream_read_while #(not= % \newline) inputstream_state))))
 
-(defn read_next [inputstream_state]
-	(let [skip_whitespace_state (statepart (read_while is_whitespace inputstream_state))
+(defn tokenstream_read_next [inputstream_state]
+	(let [skip_whitespace_state (statepart (tokenstream_read_while tokenstream_is_whitespace inputstream_state))
 		nextchar (if (inputstream_eof skip_whitespace_state) nil (inputstream_peek skip_whitespace_state))
 		]
 		(cond (nil? nextchar) nil
-			(= \# nextchar) (read_next (skip_comment skip_whitespace_state))
-			(= \" nextchar) (read_string (statepart (inputstream_next skip_whitespace_state)))
-			(is_digit nextchar) (read_number skip_whitespace_state)
-			(is_id_start nextchar) (read_ident skip_whitespace_state)
-			(is_punc nextchar)  (let [[nextval nextstate] (inputstream_next skip_whitespace_state)]
+			(= \# nextchar) (tokenstream_read_next (tokenstream_skip_comment skip_whitespace_state))
+			(= \" nextchar) (tokenstream_read_string (statepart (inputstream_next skip_whitespace_state)))
+			(tokenstream_is_digit nextchar) (tokenstream_read_number skip_whitespace_state)
+			(tokenstream_is_id_start nextchar) (tokenstream_read_ident skip_whitespace_state)
+			(tokenstream_is_punc nextchar)  (let [[nextval nextstate] (inputstream_next skip_whitespace_state)]
 				[{:type "punc" :value nextval}  nextstate])
-			(is_op_char nextchar) (let [[nextval nextstate] (read_while is_op_char skip_whitespace_state)]
+			(tokenstream_is_op_char nextchar) (let [[nextval nextstate] (tokenstream_read_while tokenstream_is_op_char skip_whitespace_state)]
 				[{:type "op" :value nextval}  nextstate])
 			:else (inputstream_croak (str "Can't handle character: " nextchar) skip_whitespace_state)
 )))
 
 (defn tokenstream_peek [tokenstream_state]
 	(let [[current_token current_state] (if (< (count tokenstream_state) 2) (vec (cons nil tokenstream_state))tokenstream_state)]
-		 (if (nil? current_token) (read_next current_state)  [current_token current_state])))
+		 (if (nil? current_token) (tokenstream_read_next current_state)  [current_token current_state])))
 
 (def tokenstream_next tokenstream_peek)
 
