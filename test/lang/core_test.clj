@@ -138,6 +138,8 @@
   (testing "test tokenstream_peek"
     (is (= nil (tokenstream_next [{:pos 0 :input "" :line 0 :col 0}])))
     (is (= [{:type "punc" :value \(} {:pos 1 :input "(+ 1 2)" :line 0 :col 1}] (tokenstream_next [{:pos 0 :input "(+ 1 2)" :line 0 :col 0}])))
-    (is (= [{:type "punc" :value \(} {:pos 1 :input "(+ 1 2)" :line 0 :col 1}] (tokenstream_next [{:type "punc" :value \(} {:pos 1 :input "(+ 1 2)" :line 0 :col 1}])))))
+    (is (= [{:type "punc" :value \(} {:pos 1 :input "(+ 1 2)" :line 0 :col 1}] (tokenstream_next [{:type "punc" :value \(} {:pos 1 :input "(+ 1 2)" :line 0 :col 1}]))))
+   (testing "test tokenstream_eof"
+    (is (= true (tokenstream_eof [{:pos 0 :input "" :line 0 :col 0}])))))
  
  

@@ -116,3 +116,5 @@
 
 (def tokenstream_next tokenstream_peek)
 
+(defn tokenstream_eof [tokenstream_state] true)
+
