@@ -118,3 +118,6 @@
 
 (defn tokenstream_eof [tokenstream_state] (nil? (tokenstream_peek tokenstream_state)))
 
+
+(defn parse_is_punc[ch tokenstream_state] false)
+

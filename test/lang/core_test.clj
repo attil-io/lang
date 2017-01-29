@@ -144,4 +144,7 @@
     (is (= false (tokenstream_eof [{:pos 0 :input "(+ 1 2)" :line 0 :col 0}])))
     (is (= false (tokenstream_eof [{:type "punc" :value \(} {:pos 1 :input "(+ 1 2)" :line 0 :col 1}])))))
  
+ (deftest parse-test
+  (testing "test parse_is_punc"
+    (is (= false (parse_is_punc nil nil)))))
  
