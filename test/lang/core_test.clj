@@ -161,5 +161,6 @@
     (is (= nil (parse_is_op nil nil)))
     (is (= {:type "op" :value "+="} (parse_is_op "+=" [{:type "op" :value "+="} {:pos 2 :input "+=" :line 0 :col 2}])))
     (is (= false (parse_is_op "+=" [{:type "kw" :value "if"} {:pos 2 :input "if" :line 0 :col 2}])))
-    (is (= false (parse_is_op "+=" [{:type "op" :value "*"} {:pos 1 :input "*" :line 0 :col 1}])))))
+    (is (= false (parse_is_op "+=" [{:type "op" :value "*"} {:pos 1 :input "*" :line 0 :col 1}])))
+    (is (= {:type "op" :value "+="} (parse_is_op nil [{:type "op" :value "+="} {:pos 2 :input "+=" :line 0 :col 2}])))))
  
