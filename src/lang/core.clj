@@ -119,11 +119,13 @@
 (defn tokenstream_eof [tokenstream_state] (nil? (tokenstream_peek tokenstream_state)))
 
 
-(defn parse_is_punc[ch tokenstream_state] 
+(defn parse_is_punc [ch tokenstream_state] 
 	(let [[tok next_state] (tokenstream_peek tokenstream_state)]
 		(and tok (= "punc" (:type tok)) (or (nil? ch) (= ch (:value tok))) tok)))
 
-(defn parse_is_kw[ch tokenstream_state] 
+(defn parse_is_kw [ch tokenstream_state] 
 	(let [[tok next_state] (tokenstream_peek tokenstream_state)]
 		(and tok (= "kw" (:type tok)) (or (nil? ch) (= ch (:value tok))) tok)))
+
+(defn parse_is_op [ch tokenstream_state] nil)
 
