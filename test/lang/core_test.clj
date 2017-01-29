@@ -158,5 +158,6 @@
     (is (= false (parse_is_kw "if" [{:type "kw" :value "then"} {:pos 4 :input "then" :line 0 :col 4}])))
     (is (= {:type "kw" :value "if"} (parse_is_kw nil [{:type "kw" :value "if"} {:pos 2 :input "if" :line 0 :col 2}]))))
   (testing "test parse_is_op"
-    (is (= nil (parse_is_op nil nil)))))
+    (is (= nil (parse_is_op nil nil)))
+    (is (= {:type "op" :value "+="} (parse_is_op "+=" [{:type "op" :value "+="} {:pos 2 :input "+=" :line 0 :col 2}])))))
  
