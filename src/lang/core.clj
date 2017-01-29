@@ -125,5 +125,5 @@
 
 (defn parse_is_kw[ch tokenstream_state] 
 	(let [[tok next_state] (tokenstream_peek tokenstream_state)]
-		(and tok (= "kw" (:type tok)) (= ch (:value tok)) tok)))
+		(and tok (= "kw" (:type tok)) (or (nil? ch) (= ch (:value tok))) tok)))
 
