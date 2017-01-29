@@ -114,3 +114,5 @@
 	(let [[current_token current_state] (if (< (count tokenstream_state) 2) (vec (cons nil tokenstream_state))tokenstream_state)]
 		 (if (nil? current_token) (read_next current_state)  [current_token current_state])))
 
+(defn tokenstream_next [tokenstream_state] nil)
+
