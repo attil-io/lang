@@ -146,5 +146,6 @@
  
  (deftest parse-test
   (testing "test parse_is_punc"
-    (is (= false (parse_is_punc nil nil)))))
+    (is (= nil (parse_is_punc nil nil)))
+    (is (= {:type "punc" :value \(} (parse_is_punc \( [{:type "punc" :value \(} {:pos 1 :input "(+ 1 2)" :line 0 :col 1}])))))
  
