@@ -172,5 +172,6 @@
     (is (= [{:type "num" :value 5} {:pos 6 :input "else 5" :line 0 :col 6}] (parse_skip_kw "else" [{:pos 5 :input "else 5" :line 0 :col 5}])))
     (is (thrown-with-msg? Exception #"Expecting keyword: \"hello\"" (parse_skip_kw "hello", [{:pos 5 :input "hello world" :line 0 :col 5}]))))
   (testing "test parse_skip_op"
-    (is (= nil (parse_skip_op nil nil)))))
+    (is (= nil (parse_skip_op nil nil)))
+    (is (= [{:type "num" :value 5} {:pos 3 :input "+ 5" :line 0 :col 3}] (parse_skip_op "+" [{:pos 1 :input "+ 5" :line 0 :col 1}])))))
 

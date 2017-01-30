@@ -143,4 +143,5 @@
 		(inputstream_croak (str "Expecting keyword: \"" kw "\"") (parser_tokenizer_state_part tokenstream_state))))
 
 (defn parse_skip_op [op tokenstream_state]
-	nil)
+	(tokenstream_next tokenstream_state))
+
