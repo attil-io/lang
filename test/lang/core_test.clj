@@ -165,5 +165,6 @@
     (is (= {:type "op" :value "+="} (parse_is_op nil [{:type "op" :value "+="} {:pos 2 :input "+=" :line 0 :col 2}]))))
   (testing "test parse_skip_punc"
     (is (= nil (parse_skip_punc nil nil)))
-    (is (= [{:type "num" :value 5} {:pos 2 :input ",5" :line 0 :col 2}] (parse_skip_punc \, [{:pos 1 :input ",5" :line 0 :col 1}])))))
- 
+    (is (= [{:type "num" :value 5} {:pos 2 :input ",5" :line 0 :col 2}] (parse_skip_punc \, [{:pos 1 :input ",5" :line 0 :col 1}])))
+    (is (thrown-with-msg? Exception #"Expecting punctuation: \"q\"" (parse_skip_punc \q, [{:pos 1 :input "q + 1" :line 0 :col 1}])))))
+
