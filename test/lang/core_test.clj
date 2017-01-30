@@ -166,7 +166,7 @@
   (testing "test parse_skip_punc"
     (is (= nil (parse_skip_punc nil nil)))
     (is (= [{:type "punc" :value \,} {:pos 1 :input "," :line 0 :col 1}] (parse_skip_punc \, [{:pos 0 :input "," :line 0 :col 0}])))
-    (is (thrown-with-msg? Exception #"Expecting punctuation: \"q\"" (parse_skip_punc \q, [{:pos 1 :input "q + 1" :line 0 :col 1}]))))
+    (is (thrown-with-msg? Exception #"Expecting punctuation: \"q\"" (parse_skip_punc \q, [{:pos 0 :input "q + 1" :line 0 :col 0}]))))
   (testing "test parse_skip_kw"
     (is (= nil (parse_skip_kw nil nil)))
     (is (= [{:type "kw" :value "else"} {:pos 4 :input "else" :line 0 :col 4}] (parse_skip_kw "else" [{:pos 0 :input "else" :line 0 :col 0}])))
@@ -174,5 +174,5 @@
   (testing "test parse_skip_op"
     (is (= nil (parse_skip_op nil nil)))
     (is (= [{:type "op" :value "+"} {:pos 1 :input "+ 5" :line 0 :col 1}] (parse_skip_op "+" [{:pos 0 :input "+ 5" :line 0 :col 0}])))
-    (is (thrown-with-msg? Exception #"Expecting operator: \"hello\"" (parse_skip_op "hello", [{:pos 5 :input "hello world" :line 0 :col 5}])))))
+    (is (thrown-with-msg? Exception #"Expecting operator: \"hello\"" (parse_skip_op "hello", [{:pos 0 :input "hello world" :line 0 :col 0}])))))
 
