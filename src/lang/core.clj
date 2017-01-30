@@ -138,7 +138,7 @@
 		(inputstream_croak (str "Expecting punctuation: \"" ch "\"") (parser_tokenizer_state_part tokenstream_state))))
 
 (defn parse_skip_kw [kw tokenstream_state]
-	(if (or (nil? kw) (tokenstream_is_keyword kw))
+	(if (or (nil? kw) (parse_is_kw kw tokenstream_state))
 		(tokenstream_next tokenstream_state)
 		(inputstream_croak (str "Expecting keyword: \"" kw "\"") (parser_tokenizer_state_part tokenstream_state))))
 
