@@ -133,7 +133,7 @@
 		(and tok (= "op" (:type tok)) (or (nil? ch) (= ch (:value tok))) tok)))
 
 (defn parse_skip_punc [ch tokenstream_state] 
-	(if (or (nil? ch) (tokenstream_is_punc ch))
+	(if (or (nil? ch) (parse_is_punc ch tokenstream_state))
 		(tokenstream_next tokenstream_state)
 		(inputstream_croak (str "Expecting punctuation: \"" ch "\"") (parser_tokenizer_state_part tokenstream_state))))
 
