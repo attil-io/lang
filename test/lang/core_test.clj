@@ -164,5 +164,6 @@
     (is (= false (parse_is_op "+=" [{:type "op" :value "*"} {:pos 1 :input "*" :line 0 :col 1}])))
     (is (= {:type "op" :value "+="} (parse_is_op nil [{:type "op" :value "+="} {:pos 2 :input "+=" :line 0 :col 2}]))))
   (testing "test parse_skip_punc"
-    (is (= nil (parse_skip_punc nil nil)))))
+    (is (= nil (parse_skip_punc nil nil)))
+    (is (= [{:type "num" :value 5} {:pos 2 :input ",5" :line 0 :col 2}] (parse_skip_punc \, [{:pos 1 :input ",5" :line 0 :col 1}])))))
  

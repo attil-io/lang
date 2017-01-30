@@ -131,5 +131,5 @@
 	(let [[tok next_state] (tokenstream_peek tokenstream_state)]
 		(and tok (= "op" (:type tok)) (or (nil? ch) (= ch (:value tok))) tok)))
 
-(defn parse_skip_punc [ch tokenstream_state] nil)
+(defn parse_skip_punc [ch tokenstream_state] (tokenstream_next tokenstream_state))
 
