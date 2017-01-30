@@ -168,5 +168,6 @@
     (is (= [{:type "num" :value 5} {:pos 2 :input ",5" :line 0 :col 2}] (parse_skip_punc \, [{:pos 1 :input ",5" :line 0 :col 1}])))
     (is (thrown-with-msg? Exception #"Expecting punctuation: \"q\"" (parse_skip_punc \q, [{:pos 1 :input "q + 1" :line 0 :col 1}]))))
   (testing "test parse_skip_kw"
-    (is (= nil (parse_skip_kw nil nil)))))
- 
+    (is (= nil (parse_skip_kw nil nil)))
+    (is (= [{:type "num" :value 5} {:pos 6 :input "else 5" :line 0 :col 6}] (parse_skip_kw "else" [{:pos 5 :input "else 5" :line 0 :col 5}])))))
+
