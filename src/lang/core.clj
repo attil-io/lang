@@ -6,8 +6,8 @@
   [& args]
   (println "Hello, World!"))
 
-(def resultpart first)
-(def statepart second)
+(def inputstream_result_part first)
+(def inputstream_state_part second)
 (def parser_tokenizer_state_part last)
 
 (declare inputstream_peek)
@@ -59,7 +59,7 @@
 (defn tokenstream_read_number [inputstream_state] 
 	(let [[intpart intpart_state] (tokenstream_read_while #(and (not= \. %) (tokenstream_is_digit %)) inputstream_state)
 		maybedot_ch (inputstream_peek intpart_state)
-		dot_skip_state (if (= \. maybedot_ch) (statepart (inputstream_next intpart_state)) intpart_state)
+		dot_skip_state (if (= \. maybedot_ch) (inputstream_state_part (inputstream_next intpart_state)) intpart_state)
 		[decpart decpart_state] (if (= \. maybedot_ch) (tokenstream_read_while #(and (not= \. %) (tokenstream_is_digit %)) dot_skip_state) nil)
 		final_state (if (nil? decpart_state) intpart_state decpart_state)
 		num_str (str intpart (if (nil? decpart) "" (str "." decpart)))
@@ -93,15 +93,15 @@
         [{:type "str" :value read_val} read_state]))
 
 (defn tokenstream_skip_comment [inputstream_state] 
-	(inputstream_next (statepart (tokenstream_read_while #(not= % \newline) inputstream_state))))
+	(inputstream_next (inputstream_state_part (tokenstream_read_while #(not= % \newline) inputstream_state))))
 
 (defn tokenstream_read_next [inputstream_state]
-	(let [skip_whitespace_state (statepart (tokenstream_read_while tokenstream_is_whitespace inputstream_state))
+	(let [skip_whitespace_state (inputstream_state_part (tokenstream_read_while tokenstream_is_whitespace inputstream_state))
 		nextchar (if (inputstream_eof skip_whitespace_state) nil (inputstream_peek skip_whitespace_state))
 		]
 		(cond (nil? nextchar) nil
 			(= \# nextchar) (tokenstream_read_next (tokenstream_skip_comment skip_whitespace_state))
-			(= \" nextchar) (tokenstream_read_string (statepart (inputstream_next skip_whitespace_state)))
+			(= \" nextchar) (tokenstream_read_string (inputstream_state_part (inputstream_next skip_whitespace_state)))
 			(tokenstream_is_digit nextchar) (tokenstream_read_number skip_whitespace_state)
 			(tokenstream_is_id_start nextchar) (tokenstream_read_ident skip_whitespace_state)
 			(tokenstream_is_punc nextchar)  (let [[nextval nextstate] (inputstream_next skip_whitespace_state)]
