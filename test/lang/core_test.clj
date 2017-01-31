@@ -174,5 +174,7 @@
   (testing "test parse_skip_op"
     (is (= nil (parse_skip_op nil nil)))
     (is (= [{:type "op" :value "+"} {:pos 1 :input "+ 5" :line 0 :col 1}] (parse_skip_op "+" [{:pos 0 :input "+ 5" :line 0 :col 0}])))
-    (is (thrown-with-msg? Exception #"Expecting operator: \"hello\"" (parse_skip_op "hello", [{:pos 0 :input "hello world" :line 0 :col 0}])))))
+  (testing "test parse_unexpected"
+    (is (thrown-with-msg? Exception #"Unexpected token: \"hello\"" (parse_unexpected [{:pos 0 :input "hello world" :line 0 :col 0}]))))))
 
+ 

@@ -8,6 +8,7 @@
 
 (def inputstream_result_part first)
 (def inputstream_state_part second)
+(def parser_tokenizer_token_part first)
 (def parser_tokenizer_state_part last)
 
 (declare inputstream_peek)
@@ -146,4 +147,7 @@
 	(if (or (nil? op) (parse_is_op op tokenstream_state))
 		(tokenstream_next tokenstream_state)
 		(inputstream_croak (str "Expecting operator: \"" op "\"") (parser_tokenizer_state_part tokenstream_state))))
+
+(defn parse_unexpected [tokenstream_state]
+	(inputstream_croak (str "Unexpected token: \"" ((parser_tokenizer_token_part (tokenstream_peek tokenstream_state)) :value) "\"") (parser_tokenizer_state_part tokenstream_state)))
 
