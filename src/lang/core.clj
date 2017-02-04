@@ -201,4 +201,5 @@
 		[left tokenstream_state]))
 	[left tokenstream_state]))
 
+(defn parse_delimited [start stop separator parser token_stream_state]  [nil token_stream_state])
 
