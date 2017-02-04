@@ -177,5 +177,6 @@
   (testing "test parse_unexpected"
     (is (thrown-with-msg? Exception #"Unexpected token: \"hello\"" (parse_unexpected [{:pos 0 :input "hello world" :line 0 :col 0}]))))
   (testing "test maybe_binary"
-    (is (= nil (parse_maybe_binary nil 0 [:pos 0 :input "" :line 0 :col 0])))))
+    (is (= [nil {:pos 0 :input "" :line 0 :col 0}] (parse_maybe_binary nil 0 [{:pos 0 :input "" :line 0 :col 0}])))
+    (is (= [{:type "num" :value 1} {:pos 0 :input "1" :line 0 :col 0}] (parse_maybe_binary {:type "num" :value 1} 0 [{:pos 0 :input "1" :line 0 :col 0}])))))
 
