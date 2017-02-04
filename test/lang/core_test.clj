@@ -173,8 +173,9 @@
     (is (thrown-with-msg? Exception #"Expecting keyword: \"hello\"" (parse_skip_kw "hello", [{:pos 0 :input "hello world" :line 0 :col 0}]))))
   (testing "test parse_skip_op"
     (is (= nil (parse_skip_op nil nil)))
-    (is (= [{:type "op" :value "+"} {:pos 1 :input "+ 5" :line 0 :col 1}] (parse_skip_op "+" [{:pos 0 :input "+ 5" :line 0 :col 0}])))
+    (is (= [{:type "op" :value "+"} {:pos 1 :input "+ 5" :line 0 :col 1}] (parse_skip_op "+" [{:pos 0 :input "+ 5" :line 0 :col 0}]))))
   (testing "test parse_unexpected"
-    (is (thrown-with-msg? Exception #"Unexpected token: \"hello\"" (parse_unexpected [{:pos 0 :input "hello world" :line 0 :col 0}]))))))
+    (is (thrown-with-msg? Exception #"Unexpected token: \"hello\"" (parse_unexpected [{:pos 0 :input "hello world" :line 0 :col 0}]))))
+  (testing "test maybe_binary"
+    (is (= nil (parse_maybe_binary nil 0 [:pos 0 :input "" :line 0 :col 0])))))
 
- 
