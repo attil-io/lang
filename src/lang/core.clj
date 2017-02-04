@@ -165,16 +165,40 @@
 (defn parse_unexpected [tokenstream_state]
 	(inputstream_croak (str "Unexpected token: \"" ((parser_tokenizer_token_part (tokenstream_peek tokenstream_state)) :value) "\"") (parser_tokenizer_state_part tokenstream_state)))
 
+(def PRECEDENCE {
+        "="      1
+        "||"     2
+        "&&"     3
+        "<"      7
+        ">"      7
+        "<="     7
+        ">="     7
+        "=="     7
+        "!="     7
+        "+"     10
+        "-"     10
+        "*"     20
+        "/"     20
+        "%"     20
+})
+
 (defn parse_maybe_binary [left my_prec tokenstream_state] 
 	(if-let [tok (parse_is_op nil tokenstream_state)]
+	(let [his_prec (PRECEDENCE (:value tok))]
+		(if (> his_prec my_prec)
 		(let [[next_token next_state] (tokenstream_next tokenstream_state)
-			[next_next_token next_next_state] (tokenstream_next [next_state])] [
-		{
-			:type "binary"
-			:operator (:value next_token)
-			:left left
-			:right next_next_token
-		} [next_next_state]])
+			[next_next_token next_next_state] (tokenstream_next [next_state]) 
+			[next_right_token next_right_state] (parse_maybe_binary next_next_token his_prec [next_next_state])]
+			(parse_maybe_binary
+				{
+					:type "binary"
+					:operator (:value next_token)
+					:left left
+					:right next_right_token
+				} 
+				his_prec
+				next_right_state))
 		[left tokenstream_state]))
+	[left tokenstream_state]))
 
 
