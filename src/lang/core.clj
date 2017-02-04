@@ -163,5 +163,15 @@
 	(inputstream_croak (str "Unexpected token: \"" ((parser_tokenizer_token_part (tokenstream_peek tokenstream_state)) :value) "\"") (parser_tokenizer_state_part tokenstream_state)))
 
 (defn parse_maybe_binary [left my_prec tokenstream_state] 
-	[left (parser_tokenizer_state_part tokenstream_state)])
+	(if-let [tok (parse_is_op nil tokenstream_state)]
+		(let [[next_token next_state] (tokenstream_next tokenstream_state)
+			[next_next_token next_next_state] (tokenstream_next [next_state])] [
+		{
+			:type "binary"
+			:operator (:value next_token)
+			:left left
+			:right next_next_token
+		} [next_next_state]])
+		[left tokenstream_state]))
+
 
