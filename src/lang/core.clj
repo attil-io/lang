@@ -6,6 +6,17 @@
   [& args]
   (println "Hello, World!"))
 
+
+(defn logfun [fun]
+       (fn [& args]
+           (do
+               (print (str "(" fun " " args ")"))
+               (let [result (apply fun args)]
+                    (do 
+                         (println (str " >>> " result))
+                         result)))))
+
+
 (def inputstream_result_part first)
 (def inputstream_state_part second)
 (def parser_tokenizer_token_part first)
