@@ -7,15 +7,18 @@
   (println "Hello, World!"))
 
 
+(def depth (atom 0))
+
 (defn logfun [fun]
        (fn [& args]
            (do
-               (print (str "(" fun " " args ")"))
+               (swap! depth inc)
+               (println (str (apply str (repeat @depth " ")) ">>> (" fun " " args ")"))
                (let [result (apply fun args)]
                     (do 
-                         (println (str " >>> " result))
+                         (swap! depth dec)
+                         (println (str (apply str (repeat @depth " ")) " <<< " result))
                          result)))))
-
 
 (def inputstream_result_part first)
 (def inputstream_state_part second)
