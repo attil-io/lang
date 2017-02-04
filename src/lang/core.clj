@@ -196,7 +196,7 @@
 					:left left
 					:right next_right_token
 				} 
-				his_prec
+				my_prec
 				next_right_state))
 		[left tokenstream_state]))
 	[left tokenstream_state]))
