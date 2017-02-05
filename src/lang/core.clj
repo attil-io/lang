@@ -224,5 +224,9 @@
 			[(:value next_token) next_state])))
 
 (defn parse_parse_vardef [token_stream_state]
-	[{:name "a" :def {:type "num" :value 5}} {:pos 5 :input "a = 5" :line 0 :col 5}])
+	(let [[name_val name_state] (parse_parse_varname token_stream_state)
+		[def_val def_state] (if (parse_is_op "=" name_state)
+					(tokenstream_read_next (tokenstream_next name_state))   ; FIXME: parse_expression instead of tokenstream_read_next
+					[nil name_state])]
+		[{:name name_val :def def_val} def_state]))
 
