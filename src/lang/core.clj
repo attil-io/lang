@@ -288,5 +288,6 @@
 	} nextstate]))
 
 (defn parse_maybe_call [expr token_stream_state] 
-[{:type "call" :func {:type "var" :value "hello"} :args [:type "num" :value 5]} {:pos 8 :input "hello(5)" :line 0 :col 8}])
+	(let [expr (expr)]
+		(parse_parse_call expr token_stream_state)))
 
