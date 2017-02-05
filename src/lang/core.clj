@@ -188,7 +188,7 @@
 		(if (> his_prec my_prec)
 		(let [[next_token next_state] (tokenstream_read_next tokenstream_state)
 			[next_next_token next_next_state] (tokenstream_read_next next_state) 
-			[next_right_token next_right_state] (parse_maybe_binary next_next_token his_prec next_next_state)]
+			[next_right_token next_right_state] (parse_maybe_binary next_next_token his_prec next_next_state)]	; FIXME: parse_atom instead of next_next_token
 			(parse_maybe_binary
 				{
 					:type "binary"
@@ -210,5 +210,10 @@
 				(recur parser_state (conj accum parser_res) false)))))
 
 (defn parse_parse_call [func token_stream_state] 
-	[{:type "call" :func {:type "var" :value "hoo"} :args []} {:pos 2 :input "()" :line 0 :col 2}])
+	(let [[argsval argsstate] (parse_delimited \( \) \, tokenstream_read_next token_stream_state)] ; FIXME: parse_expression instead of tokenstream_read_next
+	[{
+		:type "call"
+		:func func
+		:args argsval
+	} argsstate]))
 
