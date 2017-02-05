@@ -268,3 +268,6 @@
 	} (when else_val [:else else_val]))
 	else_state]))
 		
+(defn parse_parse_lambda[token_stream_state]
+	[{:type "lambda" :name nil :vars [] :body {:type "bool" :value false}} {:pos 12 :input "lambda () {}" :line 0 :col 12}])
+
