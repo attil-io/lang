@@ -163,12 +163,12 @@
     (is (= {:type "op" :value "+="} (parse_is_op "+=" {:pos 0 :input "+=" :line 0 :col 0})))
     (is (= false (parse_is_op "+=" {:pos 0 :input "if" :line 0 :col 0})))
     (is (= false (parse_is_op "+=" {:pos 0 :input "*" :line 0 :col 0})))
-    (is (= {:type "op" :value "+="} (parse_is_op nil {:pos 0 :input "+=" :line 0 :col 0})))))
-(comment 
+    (is (= {:type "op" :value "+="} (parse_is_op nil {:pos 0 :input "+=" :line 0 :col 0}))))
   (testing "test parse_skip_punc"
     (is (= nil (parse_skip_punc nil nil)))
-    (is (= [{:type "punc" :value \,} {:pos 1 :input "," :line 0 :col 1}] (parse_skip_punc \, [{:pos 0 :input "," :line 0 :col 0}])))
-    (is (thrown-with-msg? Exception #"Expecting punctuation: \"q\"" (parse_skip_punc \q, [{:pos 0 :input "q + 1" :line 0 :col 0}]))))
+    (is (= {:pos 1 :input "," :line 0 :col 1} (parse_skip_punc \, {:pos 0 :input "," :line 0 :col 0})))
+    (is (thrown-with-msg? Exception #"Expecting punctuation: \"q\"" (parse_skip_punc \q, {:pos 0 :input "q + 1" :line 0 :col 0})))))
+(comment 
   (testing "test parse_skip_kw"
     (is (= nil (parse_skip_kw nil nil)))
     (is (= [{:type "kw" :value "else"} {:pos 4 :input "else" :line 0 :col 4}] (parse_skip_kw "else" [{:pos 0 :input "else" :line 0 :col 0}])))
