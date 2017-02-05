@@ -223,3 +223,6 @@
 			(inputstream_croak "Expecting variable name" token_stream_state)
 			[(:value next_token) next_state])))
 
+(defn parse_parse_vardef [token_stream_state]
+	[{:name "a" :def {:type "num" :value 5}} {:pos 5 :input "a = 5" :line 0 :col 5}])
+
