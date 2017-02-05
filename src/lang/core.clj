@@ -269,5 +269,14 @@
 	else_state]))
 		
 (defn parse_parse_lambda[token_stream_state]
-	[{:type "lambda" :name nil :vars [] :body {:type "bool" :value false}} {:pos 12 :input "lambda () {}" :line 0 :col 12}])
+	(let [[nameval namestate] (if (= "var" (:type (tokenstream_peek token_stream_state)))
+					(tokenstream_read_next token_stream_state) [nil token_stream_state])
+		__ (tokenstream_next (tokenstream_next namestate))
+		[bodyval bodystate] [FALSE (tokenstream_next (tokenstream_next __))]]
+	[{
+		:type "lambda"
+		:name (:value nameval)
+		:vars []
+		:body bodyval
+	} bodystate]))
 
