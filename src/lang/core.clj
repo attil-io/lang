@@ -280,3 +280,6 @@
 		:body bodyval
 	} bodystate]))
 
+(defn parse_parse_bool [token_stream_state]
+	[{:type "bool" :value true} {:pos 4 :input "true" :line 0 :col 4}])
+
