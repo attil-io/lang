@@ -50,7 +50,7 @@
 	(let [{:keys [pos line col]} inputstream_state]
 		(throw (Exception. (str msg " at position " pos " (" line ":" col ")")))))
 
-(defn tokenstream_is_keyword [x] (contains? #{"if" "then" "else" "lambda" "λ" "true" "false"} x))
+(defn tokenstream_is_keyword [x] (contains? #{"let" "if" "then" "else" "lambda" "λ" "true" "false"} x))
 
 (defn tokenstream_is_digit [ch] (and (not (nil? ch)) (not (nil? (re-matches #"[0-9]" (str ch))))))
 
@@ -150,17 +150,17 @@
 (defn parse_skip_punc [ch tokenstream_state] 
 	(if (or (nil? ch) (parse_is_punc ch tokenstream_state))
 		(tokenstream_next tokenstream_state)
-		(inputstream_croak (str "Expecting punctuation: \"" ch "\"") (parser_tokenizer_state_part tokenstream_state))))
+		(inputstream_croak (str "Expecting punctuation: \"" ch "\"") tokenstream_state)))
 
 (defn parse_skip_kw [kw tokenstream_state]
 	(if (or (nil? kw) (parse_is_kw kw tokenstream_state))
 		(tokenstream_next tokenstream_state)
-		(inputstream_croak (str "Expecting keyword: \"" kw "\"") (parser_tokenizer_state_part tokenstream_state))))
+		(inputstream_croak (str "Expecting keyword: \"" kw "\"") tokenstream_state)))
 
 (defn parse_skip_op [op tokenstream_state]
 	(if (or (nil? op) (parse_is_op op tokenstream_state))
 		(tokenstream_next tokenstream_state)
-		(inputstream_croak (str "Expecting operator: \"" op "\"") (parser_tokenizer_state_part tokenstream_state))))
+		(inputstream_croak (str "Expecting operator: \"" op "\"") tokenstream_state)))
 
 (defn parse_unexpected [tokenstream_state]
 	(inputstream_croak (str "Unexpected token: \"" ((tokenstream_peek tokenstream_state) :value) "\"") (parser_tokenizer_state_part tokenstream_state)))
@@ -230,6 +230,26 @@
 					[nil name_state])]
 		[{:name name_val :def def_val} def_state]))
 
+(def FALSE { :type "bool" :value false })
+
 (defn parse_parse_let [token_stream_state]
-[{:type "let" :vars [{:name "a" :def {:type "num" :value 5}}] :body {:type "var" :value "a"}} {:pos 18 :input "let (a = 5) { a; }" :line 0 :col 18}])
+	(let [state (parse_skip_kw "let" token_stream_state) token (tokenstream_peek state)]
+	(if (= "var" (:type token))
+		(let [[call_name call_state] (tokenstream_read_next state) [defs defsstate] (parse_delimited \( \) \, parse_parse_vardef call_state) bodystate {:pos 20, :input "let a (b = 5) { b; }", :line 0, :col 20}]
+		[{
+			:type "call"
+			:func {
+				:type "lambda"
+				:name (:value call_name)
+				:vars (map #(:name %) defs)
+				:body {:type "var", :value "b"}	; FIXME: use parse_expression
+			}
+			:args (map #(or (:def %) FALSE) defs)
+		} bodystate])
+		(let [[vars vars_state] (parse_delimited \( \) \, parse_parse_vardef state) bodystate {:pos     18 :input "let (a = 5) { a; }" :line 0 :col 18}]
+		[{
+			:type "let"
+			:vars vars
+			:body {:type "var", :value "a"}		; FIXME: use parse_expression
+		} bodystate]))))
 
