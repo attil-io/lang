@@ -209,4 +209,6 @@
 				[parser_res parser_state] (parser skip_state)]
 				(recur parser_state (conj accum parser_res) false)))))
 
+(defn parse_parse_call [func token_stream_state] 
+	[{:type "call" :func {:type "var" :value "hoo"} :args []} {:pos 2 :input "()" :line 0 :col 2}])
 

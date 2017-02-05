@@ -186,5 +186,7 @@
   (testing "test parse_delimited"
     (is (= [[] {:pos 2 :input "()" :line 0 :col 2}] (parse_delimited \( \) \,  tokenstream_read_next  {:pos 0 :input "()" :line 0 :col 0})))
     (is (= [[{:type "num" :value 1} {:type "num" :value 2}] {:pos 6 :input "(1, 2)" :line 0 :col 6}] (parse_delimited \( \) \, tokenstream_read_next  {:pos 0 :input "(1, 2)" :line 0 :col 0})))
-    (is (= [[{:type "num" :value 1}] {:pos 3 :input "(1)" :line 0 :col 3}] (parse_delimited \( \) \, tokenstream_read_next  {:pos 0 :input "(1)" :line 0 :col 0})))))
-
+    (is (= [[{:type "num" :value 1}] {:pos 3 :input "(1)" :line 0 :col 3}] (parse_delimited \( \) \, tokenstream_read_next  {:pos 0 :input "(1)" :line 0 :col 0}))))
+  (testing "test parse_parse_call"
+    (is (= [{:type "call" :func {:type "var" :value "hoo"} :args []} {:pos 2 :input "()" :line 0 :col 2}] (parse_parse_call {:func {:type "var" :value "hoo"}}  {:pos 0 :input "()" :line 0 :col 0})))))
+ 
