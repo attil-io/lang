@@ -281,5 +281,9 @@
 	} bodystate]))
 
 (defn parse_parse_bool [token_stream_state]
-	[{:type "bool" :value true} {:pos 4 :input "true" :line 0 :col 4}])
+	(let [[nextval nextstate] (tokenstream_read_next token_stream_state)]
+	[{
+		:type "bool"
+		:value (= "true" (:value nextval))
+	} nextstate]))
 
