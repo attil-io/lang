@@ -254,5 +254,17 @@
 		} bodystate]))))
 
 (defn parse_parse_if [token_stream_state]
-[{:type "if" :cond {:type "bool" :value true} :then {:type "bool" :value false} } {:pos 11 :input "if true { }" :line 0 :col 11}])
-
+	(let [precond_state (parse_skip_kw "if" token_stream_state)
+		[cond_val cond_state] (tokenstream_read_next precond_state)   ; FIXME use parse_expression
+		then_val FALSE						      ; FIXME use parse_expression
+		then_state (tokenstream_next (tokenstream_next cond_state))   ; FIXME not needed with parse_epresxion
+		[else_val else_state] (if (parse_is_kw "else" then_state)
+					[FALSE (tokenstream_next (tokenstream_next (tokenstream_next then_state)))] ; FIXME use parse_expression
+					[nil then_state])]
+	[(conj {
+		:type "if"
+		:cond cond_val
+		:then then_val
+	} (when else_val [:else else_val]))
+	else_state]))
+		
