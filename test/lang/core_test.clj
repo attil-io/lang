@@ -184,5 +184,6 @@
     (is (= [{:type "binary" :operator "+" :left {:type "num" :value 1} :right {:type "binary" :operator "*" :left {:type "num" :value 2} :right {:type "num" :value 3}}} {:pos 9 :input "1 + 2 * 3" :line 0 :col 9}] (parse_maybe_binary {:type "num" :value 1} 0 {:pos 1 :input "1 + 2 * 3" :line 0 :col 1})))
     (is (= [{:type "binary" :operator "+" :left {:type "binary" :operator "*" :left {:type "num" :value 1} :right {:type "num" :value 2}} :right {:type "num" :value 3 }} {:pos 9 :input "1 * 2 + 3" :line 0 :col 9}] (parse_maybe_binary {:type "num" :value 1} 0 {:pos 1 :input "1 * 2 + 3" :line 0 :col 1}))))
   (testing "test parse_parse_delimited"
-    (is (= [nil {:pos 0 :input "" :line 0 :col 0}] (parse_delimited "(" ")" "," identity  {:pos 0 :input "" :line 0 :col 0})))))
+    (is (= [[] {:pos 2 :input "()" :line 0 :col 2}] (parse_delimited \( \) \,  tokenstream_read_next  {:pos 0 :input "()" :line 0 :col 0})))
+    (is (= [[{:type "num" :value 1} {:type "num" :value 2}] {:pos 6 :input "(1, 2)" :line 0 :col 6}] (parse_delimited \( \) \, tokenstream_read_next  {:pos 0 :input "(1, 2)" :line 0 :col 0})))))
 

@@ -201,5 +201,12 @@
 		[left tokenstream_state]))
 	[left tokenstream_state]))
 
-(defn parse_delimited [start stop separator parser token_stream_state]  [nil token_stream_state])
+(defn parse_delimited [start stop separator parser token_stream_state]  
+	(loop [state (parse_skip_punc start token_stream_state) accum [] isfirst true]
+		(if (or (inputstream_eof state) (parse_is_punc stop state))
+			[accum (parse_skip_punc stop state)]
+			(let [skip_state (if isfirst state (parse_skip_punc separator state))
+				[parser_res parser_state] (parser skip_state)]
+				(recur parser_state (conj accum parser_res) false)))))
+
 
