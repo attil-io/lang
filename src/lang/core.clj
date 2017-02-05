@@ -217,3 +217,6 @@
 		:args argsval
 	} argsstate]))
 
+(defn parse_parse_varname [token_stream_state] 
+	["hello" {:pos 5 :input "hello" :line 0 :col 5}])
+
