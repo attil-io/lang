@@ -151,14 +151,14 @@
     (is (= {:type "punc" :value \(} (parse_is_punc \( {:pos 0 :input "(+ 1 2)" :line 0 :col 0})))
     (is (= false (parse_is_punc \( {:pos 1 :input "a+=5" :line 0 :col 1})))
     (is (= nil (parse_is_punc \( {:pos 1 :input "(" :line 0 :col 1})))
-    (is (= {:type "punc" :value \;} (parse_is_punc nil {:pos 0 :input ";" :line 0 :col 0})))))
-(comment 
+    (is (= {:type "punc" :value \;} (parse_is_punc nil {:pos 0 :input ";" :line 0 :col 0}))))
   (testing "test parse_is_kw"
     (is (= nil (parse_is_kw nil nil)))
-    (is (= {:type "kw" :value "if"} (parse_is_kw "if" [{:type "kw" :value "if"} {:pos 2 :input "if" :line 0 :col 2}])))
-    (is (= false (parse_is_kw "if" [{:type "op" :value "+="} {:pos 3 :input "a+=5" :line 0 :col 3}])))
-    (is (= false (parse_is_kw "if" [{:type "kw" :value "then"} {:pos 4 :input "then" :line 0 :col 4}])))
-    (is (= {:type "kw" :value "if"} (parse_is_kw nil [{:type "kw" :value "if"} {:pos 2 :input "if" :line 0 :col 2}]))))
+    (is (= {:type "kw" :value "if"} (parse_is_kw "if" {:pos 0 :input "if" :line 0 :col 0})))
+    (is (= false (parse_is_kw "if" {:pos 1 :input "a+=5" :line 0 :col 1})))
+    (is (= nil (parse_is_kw "then" {:pos 4 :input "then" :line 0 :col 4})))
+    (is (= {:type "kw" :value "if"} (parse_is_kw nil {:pos 0 :input "if" :line 0 :col 0})))))
+(comment 
   (testing "test parse_is_op"
     (is (= nil (parse_is_op nil nil)))
     (is (= {:type "op" :value "+="} (parse_is_op "+=" [{:type "op" :value "+="} {:pos 2 :input "+=" :line 0 :col 2}])))
