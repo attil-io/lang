@@ -289,5 +289,7 @@
 
 (defn parse_maybe_call [expr token_stream_state] 
 	(let [expr (expr)]
-		(parse_parse_call expr token_stream_state)))
+	(if (parse_is_punc \( token_stream_state)
+		(parse_parse_call expr token_stream_state)
+		[expr token_stream_state])))
 

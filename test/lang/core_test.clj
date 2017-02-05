@@ -214,6 +214,7 @@
     (is (= [{:type "bool" :value false} {:pos 5 :input "false" :line 0 :col 5}] (parse_parse_bool {:pos 0 :input "false" :line 0 :col 0}))))
   (testing "test parse_maybe_call"
     (is (= [{:type "call" :func {:type "var" :value "hello"} :args [{:type "num" :value 5}]} {:pos 8 :input "hello(5)" :line 0 :col 8}] (parse_maybe_call #(do {:type "var" :value "hello"}) {:pos 5 :input "hello(5)" :line 0 :col 5})))
-    (is (= [{:type "call" :func {:type "var" :value "hello"} :args []} {:pos 7 :input "hello()" :line 0 :col 7}] (parse_maybe_call #(do {:type "var" :value "hello"}) {:pos 5 :input "hello()" :line 0 :col 5})))))
+    (is (= [{:type "call" :func {:type "var" :value "hello"} :args []} {:pos 7 :input "hello()" :line 0 :col 7}] (parse_maybe_call #(do {:type "var" :value "hello"}) {:pos 5 :input "hello()" :line 0 :col 5})))
+    (is (= [{:type "var" :value "hello"}  {:pos 5 :input "hello" :line 0 :col 5}] (parse_maybe_call #(do {:type "var" :value "hello"}) {:pos 5 :input "hello" :line 0 :col 5})))))
  
  
