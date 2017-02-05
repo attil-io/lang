@@ -176,14 +176,14 @@
     (is (= nil (parse_skip_op nil nil)))
     (is (= {:pos 1 :input "+ 5" :line 0 :col 1} (parse_skip_op "+" {:pos 0 :input "+ 5" :line 0 :col 0}))))
   (testing "test parse_unexpected"
-    (is (thrown-with-msg? Exception #"Unexpected token: \"hello\"" (parse_unexpected {:pos 0 :input "hello world" :line 0 :col 0})))))
-(comment 
+    (is (thrown-with-msg? Exception #"Unexpected token: \"hello\"" (parse_unexpected {:pos 0 :input "hello world" :line 0 :col 0}))))
   (testing "test parse_maybe_binary"
-    (is (= [nil [{:pos 0 :input "" :line 0 :col 0}]] (parse_maybe_binary nil 0 [{:pos 0 :input "" :line 0 :col 0}])))
-    (is (= [{:type "num" :value 1} [{:pos 0 :input "1" :line 0 :col 0}]] (parse_maybe_binary {:type "num" :value 1} 0 [{:pos 0 :input "1" :line 0 :col 0}])))
-    (is (= [{:type "binary" :operator "+" :left {:type "num" :value 1} :right {:type "num" :value 2}} [{:pos 5 :input "1 + 2" :line 0 :col 5}]] (parse_maybe_binary {:type "num" :value 1} 0 [{:pos 1 :input "1 + 2" :line 0 :col 1}])))
-    (is (= [{:type "binary" :operator "+" :left {:type "num" :value 1} :right {:type "binary" :operator "*" :left {:type "num" :value 2} :right {:type "num" :value 3}}} [{:pos 9 :input "1 + 2 * 3" :line 0 :col 9}]] (parse_maybe_binary {:type "num" :value 1} 0 [{:pos 1 :input "1 + 2 * 3" :line 0 :col 1}])))
-    (is (= [{:type "binary" :operator "+" :left {:type "binary" :operator "*" :left {:type "num" :value 1} :right {:type "num" :value 2}} :right {:type "num" :value 3 }} [{:pos 9 :input "1 * 2 + 3" :line 0 :col 9}]] (parse_maybe_binary {:type "num" :value 1} 0 [{:pos 1 :input "1 * 2 + 3" :line 0 :col 1}]))))
+    (is (= [nil {:pos 0 :input "" :line 0 :col 0}] (parse_maybe_binary nil 0 {:pos 0 :input "" :line 0 :col 0})))
+    (is (= [{:type "num" :value 1} {:pos 0 :input "1" :line 0 :col 0}] (parse_maybe_binary {:type "num" :value 1} 0 {:pos 0 :input "1" :line 0 :col 0})))
+    (is (= [{:type "binary" :operator "+" :left {:type "num" :value 1} :right {:type "num" :value 2}} {:pos 5 :input "1 + 2" :line 0 :col 5}] (parse_maybe_binary {:type "num" :value 1} 0 {:pos 1 :input "1 + 2" :line 0 :col 1})))
+    (is (= [{:type "binary" :operator "+" :left {:type "num" :value 1} :right {:type "binary" :operator "*" :left {:type "num" :value 2} :right {:type "num" :value 3}}} {:pos 9 :input "1 + 2 * 3" :line 0 :col 9}] (parse_maybe_binary {:type "num" :value 1} 0 {:pos 1 :input "1 + 2 * 3" :line 0 :col 1})))
+    (is (= [{:type "binary" :operator "+" :left {:type "binary" :operator "*" :left {:type "num" :value 1} :right {:type "num" :value 2}} :right {:type "num" :value 3 }} {:pos 9 :input "1 * 2 + 3" :line 0 :col 9}] (parse_maybe_binary {:type "num" :value 1} 0 {:pos 1 :input "1 * 2 + 3" :line 0 :col 1})))))
+(comment 
   (testing "test parse_parse_delimited"
     (is (= [nil [{:pos 0 :input "" :line 0 :col 0}]] (parse_delimited "(" ")" "," identity  [{:pos 0 :input "" :line 0 :col 0}])))))
 
