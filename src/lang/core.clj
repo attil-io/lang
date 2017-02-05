@@ -271,12 +271,12 @@
 (defn parse_parse_lambda[token_stream_state]
 	(let [[nameval namestate] (if (= "var" (:type (tokenstream_peek token_stream_state)))
 					(tokenstream_read_next token_stream_state) [nil token_stream_state])
-		__ (tokenstream_next (tokenstream_next namestate))
-		[bodyval bodystate] [FALSE (tokenstream_next (tokenstream_next __))]]
+		[varval varstate] (parse_delimited \( \) \, parse_parse_varname namestate)
+		[bodyval bodystate] [FALSE (tokenstream_next (tokenstream_next varstate))]]
 	[{
 		:type "lambda"
 		:name (:value nameval)
-		:vars []
+		:vars varval
 		:body bodyval
 	} bodystate]))
 
