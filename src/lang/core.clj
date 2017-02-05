@@ -230,3 +230,6 @@
 					[nil name_state])]
 		[{:name name_val :def def_val} def_state]))
 
+(defn parse_parse_let [token_stream_state]
+[{:type "let" :vars [{:name "a" :def {:type "num" :value 5}}] :body {:type "var" :value "a"}} {:pos 18 :input "let (a = 5) { a; }" :line 0 :col 18}])
+
