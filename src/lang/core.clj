@@ -218,5 +218,8 @@
 	} argsstate]))
 
 (defn parse_parse_varname [token_stream_state] 
-	["hello" {:pos 5 :input "hello" :line 0 :col 5}])
+	(let [[next_token next_state] (tokenstream_read_next token_stream_state)]
+		(if (not= "var" (:type next_token))
+			(inputstream_croak "Expecting variable name" token_stream_state)
+			[(:value next_token) next_state])))
 
