@@ -211,6 +211,8 @@
     (is (= [{:type "lambda" :name "foo" :vars ["a"] :body {:type "bool" :value false}} {:pos 17 :input "lambda foo (a) {}" :line 0 :col 17}] (parse_parse_lambda {:pos 6 :input "lambda foo (a) {}" :line 0 :col 6}))))
   (testing "test parse_parse_bool"
     (is (= [{:type "bool" :value true} {:pos 4 :input "true" :line 0 :col 4}] (parse_parse_bool {:pos 0 :input "true" :line 0 :col 0})))
-    (is (= [{:type "bool" :value false} {:pos 5 :input "false" :line 0 :col 5}] (parse_parse_bool {:pos 0 :input "false" :line 0 :col 0})))))
-
+    (is (= [{:type "bool" :value false} {:pos 5 :input "false" :line 0 :col 5}] (parse_parse_bool {:pos 0 :input "false" :line 0 :col 0}))))
+  (testing "test parse_maybe_call"
+    (is (= [{:type "call" :func {:type "var" :value "hello"} :args [:type "num" :value 5]} {:pos 8 :input "hello(5)" :line 0 :col 8}] (parse_maybe_call #({:type "var" :value "hello"}) {:pos 0 :input "hello(5)" :line 0 :col 0})))))
+ 
  
