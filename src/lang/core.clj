@@ -253,3 +253,6 @@
 			:body {:type "var", :value "a"}		; FIXME: use parse_expression
 		} bodystate]))))
 
+(defn parse_parse_if [token_stream_state]
+[{:type "if" :cond {:type "bool" :value true} :then {:type "bool" :value false} } {:pos 11 :input "if true { }" :line 0 :col 11}])
+
