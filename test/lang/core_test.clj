@@ -145,14 +145,14 @@
     (is (= false (tokenstream_eof {:pos 0 :input "(+ 1 2)" :line 0 :col 0})))
     (is (= false (tokenstream_eof {:pos 1 :input "(+ 1 2)" :line 0 :col 1})))))
 
-(comment 
  (deftest parse-test
   (testing "test parse_is_punc"
     (is (= nil (parse_is_punc nil nil)))
-    (is (= {:type "punc" :value \(} (parse_is_punc \( [{:type "punc" :value \(} {:pos 1 :input "(+ 1 2)" :line 0 :col 1}])))
-    (is (= false (parse_is_punc \( [{:type "op" :value "+="} {:pos 3 :input "a+=5" :line 0 :col 3}])))
-    (is (= false (parse_is_punc \( [{:type "punc" :value \.} {:pos 1 :input "." :line 0 :col 1}])))
-    (is (= {:type "punc" :value \.} (parse_is_punc nil [{:type "punc" :value \.} {:pos 1 :input "." :line 0 :col 1}]))))
+    (is (= {:type "punc" :value \(} (parse_is_punc \( {:pos 0 :input "(+ 1 2)" :line 0 :col 0})))
+    (is (= false (parse_is_punc \( {:pos 1 :input "a+=5" :line 0 :col 1})))
+    (is (= nil (parse_is_punc \( {:pos 1 :input "(" :line 0 :col 1})))
+    (is (= {:type "punc" :value \;} (parse_is_punc nil {:pos 0 :input ";" :line 0 :col 0})))))
+(comment 
   (testing "test parse_is_kw"
     (is (= nil (parse_is_kw nil nil)))
     (is (= {:type "kw" :value "if"} (parse_is_kw "if" [{:type "kw" :value "if"} {:pos 2 :input "if" :line 0 :col 2}])))
@@ -187,6 +187,6 @@
   (testing "test parse_parse_delimited"
     (is (= [nil [{:pos 0 :input "" :line 0 :col 0}]] (parse_delimited "(" ")" "," identity  [{:pos 0 :input "" :line 0 :col 0}])))))
 
-)
+
 
  
