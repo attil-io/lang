@@ -294,5 +294,7 @@
 		[expr token_stream_state])))
 
 (defn parse_parse_atom [token_stream_state]
-	(tokenstream_read_next token_stream_state))
+	(if (parse_is_kw "lambda" token_stream_state) 
+		(parse_parse_lambda (tokenstream_next token_stream_state))
+		(tokenstream_read_next token_stream_state)))
 

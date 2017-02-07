@@ -219,7 +219,8 @@
   (testing "test parse_parse_atom"
     (is (= [{:type "num" :value 1} {:pos 1 :input "1" :line 0 :col 1}] (parse_parse_atom {:pos 0 :input "1" :line 0 :col 0})))
     (is (= [{:type "str" :value "hello"} {:pos 7 :input "\"hello\"" :line 0 :col 7}] (parse_parse_atom {:pos 0 :input "\"hello\"" :line 0 :col 0})))
-    (is (= [{:type "var" :value "foo"} {:pos 3 :input "foo" :line 0 :col 3}] (parse_parse_atom {:pos 0 :input "foo" :line 0 :col 0})))))
+    (is (= [{:type "var" :value "foo"} {:pos 3 :input "foo" :line 0 :col 3}] (parse_parse_atom {:pos 0 :input "foo" :line 0 :col 0})))
+    (is (= [{:type "lambda" :name nil :vars [] :body {:type "bool" :value false}} {:pos 12 :input "lambda () {}" :line 0 :col 12}] (parse_parse_atom {:pos 0 :input "lambda () {}" :line 0 :col 0})))))
 
  
  
