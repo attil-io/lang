@@ -295,7 +295,7 @@
 
 (defn parse_parse_atom [token_stream_state]
 	(cond 
-	(parse_is_kw "true" token_stream_state) (parse_parse_bool token_stream_state)
+	(or (parse_is_kw "true" token_stream_state) (parse_is_kw "false" token_stream_state)) (parse_parse_bool token_stream_state)
 	(parse_is_kw "lambda" token_stream_state) (parse_parse_lambda (tokenstream_next token_stream_state))
 	:else (tokenstream_read_next token_stream_state)))
 
