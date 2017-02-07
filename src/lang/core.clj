@@ -294,5 +294,5 @@
 		[expr token_stream_state])))
 
 (defn parse_parse_atom [token_stream_state]
-[{:type "num" :value 1} {:pos 1 :input "1" :line 0 :col 1}])
+	(tokenstream_read_next token_stream_state))
 
