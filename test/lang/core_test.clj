@@ -222,7 +222,7 @@
     (is (= [{:type "var" :value "foo"} {:pos 3 :input "foo" :line 0 :col 3}] (parse_parse_atom {:pos 0 :input "foo" :line 0 :col 0})))
     (is (= [{:type "lambda" :name nil :vars [] :body {:type "bool" :value false}} {:pos 12 :input "lambda () {}" :line 0 :col 12}] (parse_parse_atom {:pos 0 :input "lambda () {}" :line 0 :col 0})))
     (is (= [{:type "bool" :value true} {:pos 4 :input "true" :line 0 :col 4}] (parse_parse_atom {:pos 0 :input "true" :line 0 :col 0})))
-    (is (= [{:type "bool" :value false} {:pos 5 :input "false" :line 0 :col 5}] (parse_parse_atom {:pos 0 :input "false" :line 0 :col 0})))))
+    (is (= [{:type "bool" :value false} {:pos 5 :input "false" :line 0 :col 5}] (parse_parse_atom {:pos 0 :input "false" :line 0 :col 0})))
+    (is (= [{:type "let" :vars [{:name "a" :def {:type "num" :value 5}}] :body {:type "var" :value "a"}} {:pos 18 :input "let (a = 5) { a; }" :line 0 :col 18}] (parse_parse_atom {:pos 0 :input "let (a = 5) { a; }" :line 0 :col 0})))))
 
- 
- 
+
