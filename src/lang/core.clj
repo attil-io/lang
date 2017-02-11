@@ -295,9 +295,15 @@
 
 (defn parse_parse_atom [token_stream_state]
 	(cond 
+	; FIXME (
+	; FIXME {
+	; FIXME !
 	(parse_is_kw "let" token_stream_state) (parse_parse_let token_stream_state)
 	; FIXME: if
 	(or (parse_is_kw "true" token_stream_state) (parse_is_kw "false" token_stream_state)) (parse_parse_bool token_stream_state)
 	(parse_is_kw "lambda" token_stream_state) (parse_parse_lambda (tokenstream_next token_stream_state))
 	:else (tokenstream_read_next token_stream_state)))
+
+(defn parse_parse_expression [token_stream_state] 
+	[{:type "num" :value 1} {:pos 1 :input "1" :line 0 :col 1}])
 
