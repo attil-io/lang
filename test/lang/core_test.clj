@@ -199,7 +199,8 @@
     (is (thrown-with-msg? Exception #"Expecting variable name" (parse_parse_varname {:pos 0 :input "" :line 0 :col 0}))))
   (testing "test parse_parse_vardef"
     (is (= [{:name "a" :def {:type "num" :value 5}} {:pos 5 :input "a = 5" :line 0 :col 5}] (parse_parse_vardef {:pos 0 :input "a = 5" :line 0 :col 0})))
-    (is (= [{:name "a" :def nil} {:pos 1 :input "a" :line 0 :col 1}] (parse_parse_vardef {:pos 0 :input "a" :line 0 :col 0}))))
+    (is (= [{:name "a" :def nil} {:pos 1 :input "a" :line 0 :col 1}] (parse_parse_vardef {:pos 0 :input "a" :line 0 :col 0})))
+    (is (= [{:name "a" :def {:type "binary" :operator "+" :left {:type "num" :value 1} :right {:type "num" :value 2}}} {:pos 9 :input "a = 1 + 2" :line 0 :col 9}] (parse_parse_vardef {:pos 0 :input "a = 1 + 2" :line 0 :col 0}))))
   (testing "test parse_parse_let"
     (is (= [{:type "let" :vars [{:name "a" :def {:type "num" :value 5}}] :body {:type "var" :value "a"}} {:pos 18 :input "let (a = 5) { a; }" :line 0 :col 18}] (parse_parse_let {:pos 0 :input "let (a = 5) { a; }" :line 0 :col 0})))
     (is (= [{:type "call" :func {:type "lambda" :name "a" :vars ["b"] :body {:type "var" :value "b"}} :args [{:type "num" :value 5}]} {:pos 20 :input "let a (b = 5) { b; }" :line 0 :col 20}] (parse_parse_let {:pos 0 :input "let a (b = 5) { b; }" :line 0 :col 0}))))
