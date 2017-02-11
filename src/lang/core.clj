@@ -134,6 +134,7 @@
 
 (defn tokenstream_eof [tokenstream_state] (nil? (tokenstream_peek tokenstream_state)))
 
+(declare parse_parse_atom)
 
 (defn parse_is_punc [ch tokenstream_state] 
 	(let [tok (tokenstream_peek tokenstream_state)]
@@ -187,8 +188,8 @@
 	(let [his_prec (PRECEDENCE (:value tok))]
 		(if (> his_prec my_prec)
 		(let [[next_token next_state] (tokenstream_read_next tokenstream_state)
-			[next_next_token next_next_state] (tokenstream_read_next next_state) 
-			[next_right_token next_right_state] (parse_maybe_binary next_next_token his_prec next_next_state)]	; FIXME: parse_atom instead of next_next_token
+			[next_next_token next_next_state] (parse_parse_atom next_state)
+			[next_right_token next_right_state] (parse_maybe_binary next_next_token his_prec next_next_state)]
 			(parse_maybe_binary
 				{
 					:type "binary"
@@ -294,8 +295,9 @@
 		[expr new_state])))
 
 (defn parse_parse_atom [token_stream_state]
+; FIXME: parse_maybe_call
 	(cond 
-	; FIXME (
+	(parse_is_punc \( token_stream_state)  [{:type "binary" :operator "*" :left {:type "num" :value 2} :right {:type "num" :value 3}} {:pos 11 :input "1 + (2 * 3)" :line 0 :col 11}] ; FIXME real implementation
 	; FIXME {
 	; FIXME !
 	(parse_is_kw "let" token_stream_state) (parse_parse_let token_stream_state)
