@@ -204,12 +204,13 @@
 	[left tokenstream_state]))
 
 (defn parse_delimited [start stop separator parser token_stream_state]  
-	(loop [state (parse_skip_punc start token_stream_state) accum [] isfirst true]
+	; FIXME: check longer lists as well
+	(loop [state (parse_skip_punc start token_stream_state) accum []]
 		(if (or (inputstream_eof state) (parse_is_punc stop state))
 			[accum (parse_skip_punc stop state)]
-			(let [skip_state (if isfirst state (parse_skip_punc separator state))
-				[parser_res parser_state] (parser skip_state)]
-				(recur parser_state (conj accum parser_res) false)))))
+			(let [[parser_res parser_state] (parser state)
+				next_state (if (parse_is_punc separator parser_state) (parse_skip_punc separator parser_state) parser_state)]
+			(recur next_state (conj accum parser_res))))))
 
 (defn parse_parse_call [func token_stream_state] 
 	(let [[argsval argsstate] (parse_delimited \( \) \, parse_parse_expression token_stream_state)]
@@ -237,17 +238,19 @@
 (defn parse_parse_let [token_stream_state]
 	(let [state (parse_skip_kw "let" token_stream_state) token (tokenstream_peek state)]
 	(if (= "var" (:type token))
-		(let [[call_name call_state] (tokenstream_read_next state) [defs defsstate] (parse_delimited \( \) \, parse_parse_vardef call_state) bodystate {:pos 20, :input "let a (b = 5) { b; }", :line 0, :col 20}]
+		(let [[call_name call_state] (tokenstream_read_next state) 
+			[defs defs_state] (parse_delimited \( \) \, parse_parse_vardef call_state)
+			[body_content body_state] (parse_parse_expression defs_state)]
 		[{
 			:type "call"
 			:func {
 				:type "lambda"
 				:name (:value call_name)
 				:vars (map #(:name %) defs)
-				:body {:type "var", :value "b"}	; FIXME: use parse_expression
+				:body body_content
 			}
 			:args (map #(or (:def %) FALSE) defs)
-		} bodystate])
+		} body_state])
 		(let [[vars vars_state] (parse_delimited \( \) \, parse_parse_vardef state) bodystate {:pos     18 :input "let (a = 5) { a; }" :line 0 :col 18}]
 		[{
 			:type "let"
@@ -299,7 +302,7 @@
 ; FIXME: parse_maybe_call
 	(cond 
 	(parse_is_punc \( token_stream_state)  [{:type "binary" :operator "*" :left {:type "num" :value 2} :right {:type "num" :value 3}} {:pos 11 :input "1 + (2 * 3)" :line 0 :col 11}] ; FIXME real implementation
-	; FIXME {
+	(parse_is_punc \{ token_stream_state) (update-in (parse_delimited \{ \} \; parse_parse_expression token_stream_state) [0] #(% 0))   ; FIXME: parse_prog
 	; FIXME !
 	(parse_is_kw "let" token_stream_state) (parse_parse_let token_stream_state)
 	; FIXME: if

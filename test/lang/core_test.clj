@@ -188,7 +188,8 @@
   (testing "test parse_delimited"
     (is (= [[] {:pos 2 :input "()" :line 0 :col 2}] (parse_delimited \( \) \,  tokenstream_read_next  {:pos 0 :input "()" :line 0 :col 0})))
     (is (= [[{:type "num" :value 1} {:type "num" :value 2}] {:pos 6 :input "(1, 2)" :line 0 :col 6}] (parse_delimited \( \) \, tokenstream_read_next  {:pos 0 :input "(1, 2)" :line 0 :col 0})))
-    (is (= [[{:type "num" :value 1}] {:pos 3 :input "(1)" :line 0 :col 3}] (parse_delimited \( \) \, tokenstream_read_next  {:pos 0 :input "(1)" :line 0 :col 0}))))
+    (is (= [[{:type "num" :value 1}] {:pos 3 :input "(1)" :line 0 :col 3}] (parse_delimited \( \) \, tokenstream_read_next  {:pos 0 :input "(1)" :line 0 :col 0})))
+    (is (= [[{:type "num" :value 1}] {:pos 4 :input "(1,)" :line 0 :col 4}] (parse_delimited \( \) \, tokenstream_read_next  {:pos 0 :input "(1,)" :line 0 :col 0}))))
   (testing "test parse_parse_call"
     (is (= [{:type "call" :func {:type "var" :value "hoo"} :args []} {:pos 2 :input "()" :line 0 :col 2}] (parse_parse_call {:type "var" :value "hoo"}  {:pos 0 :input "()" :line 0 :col 0})))
     (is (= [{:type "call" :func {:type "var" :value "hoo"} :args [{:type "num" :value 1}]} {:pos 3 :input "(1)" :line 0 :col 3}] (parse_parse_call {:type "var" :value "hoo"}  {:pos 0 :input "(1)" :line 0 :col 0})))
@@ -203,7 +204,8 @@
     (is (= [{:name "a" :def {:type "binary" :operator "+" :left {:type "num" :value 1} :right {:type "num" :value 2}}} {:pos 9 :input "a = 1 + 2" :line 0 :col 9}] (parse_parse_vardef {:pos 0 :input "a = 1 + 2" :line 0 :col 0}))))
   (testing "test parse_parse_let"
     (is (= [{:type "let" :vars [{:name "a" :def {:type "num" :value 5}}] :body {:type "var" :value "a"}} {:pos 18 :input "let (a = 5) { a; }" :line 0 :col 18}] (parse_parse_let {:pos 0 :input "let (a = 5) { a; }" :line 0 :col 0})))
-    (is (= [{:type "call" :func {:type "lambda" :name "a" :vars ["b"] :body {:type "var" :value "b"}} :args [{:type "num" :value 5}]} {:pos 20 :input "let a (b = 5) { b; }" :line 0 :col 20}] (parse_parse_let {:pos 0 :input "let a (b = 5) { b; }" :line 0 :col 0}))))
+    (is (= [{:type "call" :func {:type "lambda" :name "a" :vars ["b"] :body {:type "var" :value "b"}} :args [{:type "num" :value 5}]} {:pos 20 :input "let a (b = 5) { b; }" :line 0 :col 20}] (parse_parse_let {:pos 0 :input "let a (b = 5) { b; }" :line 0 :col 0})))
+    (is (= [{:type "call" :func {:type "lambda" :name "a" :vars ["c"] :body {:type "var" :value "c"}} :args [{:type "num" :value 6}]} {:pos 20 :input "let a (c = 6) { c; }" :line 0 :col 20}] (parse_parse_let {:pos 0 :input "let a (c = 6) { c; }" :line 0 :col 0}))))
   (testing "test parse_parse_if"
     (is (= [{:type "if" :cond {:type "kw" :value "true"} :then {:type "bool" :value false} } {:pos 11 :input "if true { }" :line 0 :col 11}] (parse_parse_if {:pos 0 :input "if true { }" :line 0 :col 0})))
     (is (= [{:type "if" :cond {:type "kw" :value "true"} :then {:type "bool" :value false} :else {:type "bool" :value false}} {:pos 18 :input "if true {} else {}" :line 0 :col 18}] (parse_parse_if {:pos 0 :input "if true {} else {}" :line 0 :col 0})))
