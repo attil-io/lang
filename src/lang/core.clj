@@ -305,5 +305,6 @@
 	:else (tokenstream_read_next token_stream_state)))
 
 (defn parse_parse_expression [token_stream_state] 
-	(parse_parse_atom token_stream_state))
+	(let [[parse_atom_value parse_atom_state] (parse_parse_atom token_stream_state)]
+	(parse_maybe_binary parse_atom_value 0 parse_atom_state)))
 
