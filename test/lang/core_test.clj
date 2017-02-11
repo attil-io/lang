@@ -213,9 +213,9 @@
     (is (= [{:type "bool" :value true} {:pos 4 :input "true" :line 0 :col 4}] (parse_parse_bool {:pos 0 :input "true" :line 0 :col 0})))
     (is (= [{:type "bool" :value false} {:pos 5 :input "false" :line 0 :col 5}] (parse_parse_bool {:pos 0 :input "false" :line 0 :col 0}))))
   (testing "test parse_maybe_call"
-    (is (= [{:type "call" :func {:type "var" :value "hello"} :args [{:type "num" :value 5}]} {:pos 8 :input "hello(5)" :line 0 :col 8}] (parse_maybe_call #(do {:type "var" :value "hello"}) {:pos 5 :input "hello(5)" :line 0 :col 5})))
-    (is (= [{:type "call" :func {:type "var" :value "hello"} :args []} {:pos 7 :input "hello()" :line 0 :col 7}] (parse_maybe_call #(do {:type "var" :value "hello"}) {:pos 5 :input "hello()" :line 0 :col 5})))
-    (is (= [{:type "var" :value "hello"}  {:pos 5 :input "hello" :line 0 :col 5}] (parse_maybe_call #(do {:type "var" :value "hello"}) {:pos 5 :input "hello" :line 0 :col 5}))))
+    (is (= [{:type "call" :func {:type "var" :value "hello"} :args [{:type "num" :value 5}]} {:pos 8 :input "hello(5)" :line 0 :col 8}] (parse_maybe_call #(do [{:type "var" :value "hello"} %]) {:pos 5 :input "hello(5)" :line 0 :col 5})))
+    (is (= [{:type "call" :func {:type "var" :value "hello"} :args []} {:pos 7 :input "hello()" :line 0 :col 7}] (parse_maybe_call #(do [{:type "var" :value "hello"} %]) {:pos 5 :input "hello()" :line 0 :col 5})))
+    (is (= [{:type "var" :value "hello"}  {:pos 5 :input "hello" :line 0 :col 5}] (parse_maybe_call #(do [{:type "var" :value "hello"} %]) {:pos 5 :input "hello" :line 0 :col 5}))))
   (testing "test parse_parse_atom"
     (is (= [{:type "num" :value 1} {:pos 1 :input "1" :line 0 :col 1}] (parse_parse_atom {:pos 0 :input "1" :line 0 :col 0})))
     (is (= [{:type "str" :value "hello"} {:pos 7 :input "\"hello\"" :line 0 :col 7}] (parse_parse_atom {:pos 0 :input "\"hello\"" :line 0 :col 0})))
@@ -227,5 +227,6 @@
   (testing "test parse_parse_expression"
     (is (= [{:type "num" :value 1} {:pos 1 :input "1" :line 0 :col 1}] (parse_parse_expression {:pos 0 :input "1" :line 0 :col 0})))
     (is (= [{:type "bool" :value true} {:pos 4 :input "true" :line 0 :col 4}] (parse_parse_expression {:pos 0 :input "true" :line 0 :col 0})))
-    (is (= [{:type "binary" :operator "+" :left {:type "num" :value 1} :right {:type "num" :value 1}} {:pos 5 :input "1 + 1" :line 0 :col 5}] (parse_parse_expression {:pos 0 :input "1 + 1" :line 0 :col 0})))))
+    (is (= [{:type "binary" :operator "+" :left {:type "num" :value 1} :right {:type "num" :value 1}} {:pos 5 :input "1 + 1" :line 0 :col 5}] (parse_parse_expression {:pos 0 :input "1 + 1" :line 0 :col 0})))
+    (is (= [{:type "call" :func {:type "var" :value "hello"} :args [{:type "num" :value 55}]} {:pos 9 :input "hello(55)" :line 0 :col 9}] (parse_parse_expression {:pos 0 :input "hello(55)" :line 0 :col 0})))))
  

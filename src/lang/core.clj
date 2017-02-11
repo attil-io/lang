@@ -288,10 +288,10 @@
 	} nextstate]))
 
 (defn parse_maybe_call [expr token_stream_state] 
-	(let [expr (expr)]
-	(if (parse_is_punc \( token_stream_state)
-		(parse_parse_call expr token_stream_state)
-		[expr token_stream_state])))
+	(let [[expr new_state] (expr token_stream_state)]
+	(if (parse_is_punc \( new_state)
+		(parse_parse_call expr new_state)
+		[expr new_state])))
 
 (defn parse_parse_atom [token_stream_state]
 	(cond 
@@ -305,6 +305,7 @@
 	:else (tokenstream_read_next token_stream_state))) ; FIXME: parse_unexpected
 
 (defn parse_parse_expression [token_stream_state] 
-	(let [[parse_atom_value parse_atom_state] (parse_parse_atom token_stream_state)]
-	(parse_maybe_binary parse_atom_value 0 parse_atom_state)))
+	(parse_maybe_call #(
+		let [[parse_atom_value parse_atom_state] (parse_parse_atom %1)]
+		(parse_maybe_binary parse_atom_value 0 parse_atom_state)) token_stream_state))
 
