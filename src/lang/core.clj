@@ -135,6 +135,7 @@
 (defn tokenstream_eof [tokenstream_state] (nil? (tokenstream_peek tokenstream_state)))
 
 (declare parse_parse_atom)
+(declare parse_parse_expression)
 
 (defn parse_is_punc [ch tokenstream_state] 
 	(let [tok (tokenstream_peek tokenstream_state)]
@@ -211,7 +212,7 @@
 				(recur parser_state (conj accum parser_res) false)))))
 
 (defn parse_parse_call [func token_stream_state] 
-	(let [[argsval argsstate] (parse_delimited \( \) \, tokenstream_read_next token_stream_state)] ; FIXME: parse_expression instead of tokenstream_read_next
+	(let [[argsval argsstate] (parse_delimited \( \) \, parse_parse_expression token_stream_state)]
 	[{
 		:type "call"
 		:func func
