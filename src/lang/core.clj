@@ -260,7 +260,7 @@
 
 (defn parse_parse_if [token_stream_state]
 	(let [precond_state (parse_skip_kw "if" token_stream_state)
-		[cond_val cond_state] (tokenstream_read_next precond_state)   ; FIXME use parse_expression
+		[cond_val cond_state] (parse_parse_expression precond_state)
 		then_val FALSE						      ; FIXME use parse_expression
 		then_state (tokenstream_next (tokenstream_next (if (parse_is_punc \{ cond_state) cond_state (parse_skip_kw "then" cond_state))))  ; FIXME not needed with parse_epresxion
 		[else_val else_state] (if (parse_is_kw "else" then_state)
@@ -301,7 +301,11 @@
 (defn parse_parse_atom [token_stream_state]
 ; FIXME: parse_maybe_call
 	(cond 
-	(parse_is_punc \( token_stream_state)  [{:type "binary" :operator "*" :left {:type "num" :value 2} :right {:type "num" :value 3}} {:pos 11 :input "1 + (2 * 3)" :line 0 :col 11}] ; FIXME real implementation
+	(parse_is_punc \( token_stream_state)
+		(let [next_state (tokenstream_next token_stream_state)
+			[exp_val exp_state] (parse_parse_expression next_state)
+			after_punc_state (parse_skip_punc \) exp_state)] 
+		[exp_val after_punc_state]) 
 	(parse_is_punc \{ token_stream_state) (update-in (parse_delimited \{ \} \; parse_parse_expression token_stream_state) [0] #(% 0))   ; FIXME: parse_prog
 	; FIXME !
 	(parse_is_kw "let" token_stream_state) (parse_parse_let token_stream_state)

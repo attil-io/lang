@@ -211,9 +211,10 @@
     (is (= [{:type "call" :func {:type "lambda" :name "a" :vars ["b"] :body {:type "var" :value "b"}} :args [{:type "num" :value 5}]} {:pos 20 :input "let a (b = 5) { b; }" :line 0 :col 20}] (parse_parse_let {:pos 0 :input "let a (b = 5) { b; }" :line 0 :col 0})))
     (is (= [{:type "call" :func {:type "lambda" :name "a" :vars ["c"] :body {:type "var" :value "c"}} :args [{:type "num" :value 6}]} {:pos 20 :input "let a (c = 6) { c; }" :line 0 :col 20}] (parse_parse_let {:pos 0 :input "let a (c = 6) { c; }" :line 0 :col 0}))))
   (testing "test parse_parse_if"
-    (is (= [{:type "if" :cond {:type "kw" :value "true"} :then {:type "bool" :value false} } {:pos 11 :input "if true { }" :line 0 :col 11}] (parse_parse_if {:pos 0 :input "if true { }" :line 0 :col 0})))
-    (is (= [{:type "if" :cond {:type "kw" :value "true"} :then {:type "bool" :value false} :else {:type "bool" :value false}} {:pos 18 :input "if true {} else {}" :line 0 :col 18}] (parse_parse_if {:pos 0 :input "if true {} else {}" :line 0 :col 0})))
-    (is (= [{:type "if" :cond {:type "kw" :value "true"} :then {:type "bool" :value false} :else {:type "bool" :value false}} {:pos 23 :input "if true then {} else {}" :line 0 :col 23}] (parse_parse_if {:pos 0 :input "if true then {} else {}" :line 0 :col 0}))))
+    (is (= [{:type "if" :cond {:type "bool" :value true} :then {:type "bool" :value false} } {:pos 11 :input "if true { }" :line 0 :col 11}] (parse_parse_if {:pos 0 :input "if true { }" :line 0 :col 0})))
+    (is (= [{:type "if" :cond {:type "binary" :operator "=" :left {:type "num" :value 1} :right {:type "num" :value 2}} :then {:type "bool" :value false} } {:pos 14 :input "if (1 = 2) { }" :line 0 :col 14}] (parse_parse_if {:pos 0 :input "if (1 = 2) { }" :line 0 :col 0})))
+    (is (= [{:type "if" :cond {:type "bool" :value true} :then {:type "bool" :value false} :else {:type "bool" :value false}} {:pos 18 :input "if true {} else {}" :line 0 :col 18}] (parse_parse_if {:pos 0 :input "if true {} else {}" :line 0 :col 0})))
+    (is (= [{:type "if" :cond {:type "bool" :value true} :then {:type "bool" :value false} :else {:type "bool" :value false}} {:pos 23 :input "if true then {} else {}" :line 0 :col 23}] (parse_parse_if {:pos 0 :input "if true then {} else {}" :line 0 :col 0}))))
   (testing "test parse_parse_lambda"
     (is (= [{:type "lambda" :name nil :vars [] :body {:type "bool" :value false}} {:pos 12 :input "lambda () {}" :line 0 :col 12}] (parse_parse_lambda {:pos 6 :input "lambda () {}" :line 0 :col 6})))
     (is (= [{:type "lambda" :name "foo" :vars [] :body {:type "bool" :value false}} {:pos 16 :input "lambda foo () {}" :line 0 :col 16}] (parse_parse_lambda {:pos 6 :input "lambda foo () {}" :line 0 :col 6})))
