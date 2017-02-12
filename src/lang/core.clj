@@ -165,7 +165,7 @@
 		(inputstream_croak (str "Expecting operator: \"" op "\"") tokenstream_state)))
 
 (defn parse_unexpected [tokenstream_state]
-	(inputstream_croak (str "Unexpected token: \"" ((tokenstream_peek tokenstream_state) :value) "\"") (parser_tokenizer_state_part tokenstream_state)))
+	(inputstream_croak (str "Unexpected token: \"" ((tokenstream_peek tokenstream_state) :value) "\"") tokenstream_state))
 
 (def PRECEDENCE {
         "="      1
@@ -297,23 +297,26 @@
 		(parse_parse_call expr new_state)
 		[expr new_state])))
 
-(defn parse_parse_atom [token_stream_state]
-; FIXME: parse_maybe_call
-	(cond 
-	(parse_is_punc \( token_stream_state)
-		(let [next_state (tokenstream_next token_stream_state)
-			[exp_val exp_state] (parse_parse_expression next_state)
-			after_punc_state (parse_skip_punc \) exp_state)] 
-		[exp_val after_punc_state]) 
-	(parse_is_punc \{ token_stream_state) (update-in (parse_delimited \{ \} \; parse_parse_expression token_stream_state) [0] #(if (= 0 (count %)) % (% 0)))   ; FIXME: parse_prog
-	(parse_is_op "!" token_stream_state)
-		(let [[expr_result expr_state] (parse_parse_expression (tokenstream_next token_stream_state))]
-			[{:type "not" :body expr_result} expr_state])
-	(parse_is_kw "let" token_stream_state) (parse_parse_let token_stream_state)
-	(parse_is_kw "if" token_stream_state) (parse_parse_if token_stream_state)
-	(or (parse_is_kw "true" token_stream_state) (parse_is_kw "false" token_stream_state)) (parse_parse_bool token_stream_state)
-	(parse_is_kw "lambda" token_stream_state) (parse_parse_lambda (tokenstream_next token_stream_state))
-	:else (tokenstream_read_next token_stream_state))) ; FIXME: parse_unexpected
+(defn parse_parse_atom [tss]
+	(parse_maybe_call (fn [token_stream_state]
+		(cond 
+		(parse_is_punc \( token_stream_state)
+			(let [next_state (tokenstream_next token_stream_state)
+				[exp_val exp_state] (parse_parse_expression next_state)
+				after_punc_state (parse_skip_punc \) exp_state)] 
+			[exp_val after_punc_state]) 
+		(parse_is_punc \{ token_stream_state) (update-in (parse_delimited \{ \} \; parse_parse_expression token_stream_state) [0] #(if (= 0 (count %)) % (% 0)))   ; FIXME: parse_prog
+		(parse_is_op "!" token_stream_state)
+			(let [[expr_result expr_state] (parse_parse_expression (tokenstream_next token_stream_state))]
+				[{:type "not" :body expr_result} expr_state])
+		(parse_is_kw "let" token_stream_state) (parse_parse_let token_stream_state)
+		(parse_is_kw "if" token_stream_state) (parse_parse_if token_stream_state)
+		(or (parse_is_kw "true" token_stream_state) (parse_is_kw "false" token_stream_state)) (parse_parse_bool token_stream_state)
+		(parse_is_kw "lambda" token_stream_state) (parse_parse_lambda (tokenstream_next token_stream_state)) ; FIXME: λ
+		(let [next_tok (tokenstream_peek token_stream_state)] (contains? #{"var" "num" "str"} (:type next_tok)))
+			(tokenstream_read_next token_stream_state)
+		:else (parse_unexpected token_stream_state)))
+	tss))
 
 (defn parse_parse_expression [token_stream_state] 
 	(parse_maybe_call #(
