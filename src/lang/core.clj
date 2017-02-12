@@ -204,7 +204,6 @@
 	[left tokenstream_state]))
 
 (defn parse_delimited [start stop separator parser token_stream_state]  
-	; FIXME: check longer lists as well
 	(loop [state (parse_skip_punc start token_stream_state) accum []]
 		(if (or (inputstream_eof state) (parse_is_punc stop state))
 			[accum (parse_skip_punc stop state)]

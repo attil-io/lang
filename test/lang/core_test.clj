@@ -190,7 +190,9 @@
     (is (= [[{:type "num" :value 1} {:type "num" :value 2}] {:pos 6 :input "(1, 2)" :line 0 :col 6}] (parse_delimited \( \) \, tokenstream_read_next  {:pos 0 :input "(1, 2)" :line 0 :col 0})))
     (is (= [[{:type "num" :value 1}] {:pos 3 :input "(1)" :line 0 :col 3}] (parse_delimited \( \) \, tokenstream_read_next  {:pos 0 :input "(1)" :line 0 :col 0})))
     (is (= [[{:type "num" :value 1}] {:pos 4 :input "(1,)" :line 0 :col 4}] (parse_delimited \( \) \, tokenstream_read_next  {:pos 0 :input "(1,)" :line 0 :col 0})))
-    (is (= [[{:type "num" :value 1}{:type "num" :value 2}] {:pos 5 :input "(1,2)" :line 0 :col 5}] (parse_delimited \( \) \, tokenstream_read_next  {:pos 0 :input "(1,2)" :line 0 :col 0}))))
+    (is (= [[{:type "num" :value 1}{:type "num" :value 2}] {:pos 5 :input "(1,2)" :line 0 :col 5}] (parse_delimited \( \) \, tokenstream_read_next  {:pos 0 :input "(1,2)" :line 0 :col 0})))
+    (is (= [[{:type "num" :value 1}{:type "num" :value 2}] {:pos 5 :input "(1 2)" :line 0 :col 5}] (parse_delimited \( \) \, tokenstream_read_next  {:pos 0 :input "(1 2)" :line 0 :col 0})))
+    (is (= [[{:type "num" :value 1}{:type "num" :value 2}{:type "num" :value 3}] {:pos 7 :input "(1 2,3)" :line 0 :col 7}] (parse_delimited \( \) \, tokenstream_read_next  {:pos 0 :input "(1 2,3)" :line 0 :col 0}))))
   (testing "test parse_parse_call"
     (is (= [{:type "call" :func {:type "var" :value "hoo"} :args []} {:pos 2 :input "()" :line 0 :col 2}] (parse_parse_call {:type "var" :value "hoo"}  {:pos 0 :input "()" :line 0 :col 0})))
     (is (= [{:type "call" :func {:type "var" :value "hoo"} :args [{:type "num" :value 1}]} {:pos 3 :input "(1)" :line 0 :col 3}] (parse_parse_call {:type "var" :value "hoo"}  {:pos 0 :input "(1)" :line 0 :col 0})))
