@@ -250,12 +250,13 @@
 			}
 			:args (map #(or (:def %) FALSE) defs)
 		} body_state])
-		(let [[vars vars_state] (parse_delimited \( \) \, parse_parse_vardef state) bodystate {:pos     18 :input "let (a = 5) { a; }" :line 0 :col 18}]
+		(let [[vars vars_state] (parse_delimited \( \) \, parse_parse_vardef state)
+			[body_content body_state] (parse_parse_expression vars_state)]
 		[{
 			:type "let"
 			:vars vars
-			:body {:type "var", :value "a"}		; FIXME: use parse_expression
-		} bodystate]))))
+			:body body_content
+		} body_state]))))
 
 (defn parse_parse_if [token_stream_state]
 	(let [precond_state (parse_skip_kw "if" token_stream_state)
