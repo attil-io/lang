@@ -263,13 +263,13 @@
 		[cond_val cond_state] (parse_parse_expression precond_state)
 		[then_val then_state] (parse_parse_expression (if (parse_is_punc \{ cond_state) cond_state (parse_skip_kw "then" cond_state)))
 		[else_val else_state] (if (parse_is_kw "else" then_state)
-					[FALSE (tokenstream_next (tokenstream_next (tokenstream_next then_state)))] ; FIXME use parse_expression
+					(parse_parse_expression (parse_skip_kw "else" then_state))
 					[nil then_state])]
 	[(conj {
 		:type "if"
 		:cond cond_val
 		:then (if (= [] then_val) FALSE then_val)
-	} (when else_val [:else else_val]))
+	} (when else_val [:else (if (= [] else_val) FALSE else_val)]))
 	else_state]))
 		
 (defn parse_parse_lambda[token_stream_state]
