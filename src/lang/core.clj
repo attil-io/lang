@@ -312,7 +312,8 @@
 		(parse_is_kw "let" token_stream_state) (parse_parse_let token_stream_state)
 		(parse_is_kw "if" token_stream_state) (parse_parse_if token_stream_state)
 		(or (parse_is_kw "true" token_stream_state) (parse_is_kw "false" token_stream_state)) (parse_parse_bool token_stream_state)
-		(parse_is_kw "lambda" token_stream_state) (parse_parse_lambda (tokenstream_next token_stream_state)) ; FIXME: λ
+		(or (parse_is_kw "lambda" token_stream_state) (parse_is_kw "λ" token_stream_state))
+			(parse_parse_lambda (tokenstream_next token_stream_state))
 		(let [next_tok (tokenstream_peek token_stream_state)] (contains? #{"var" "num" "str"} (:type next_tok)))
 			(tokenstream_read_next token_stream_state)
 		:else (parse_unexpected token_stream_state)))
