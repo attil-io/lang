@@ -213,6 +213,7 @@
   (testing "test parse_parse_if"
     (is (= [{:type "if" :cond {:type "bool" :value true} :then {:type "bool" :value false} } {:pos 11 :input "if true { }" :line 0 :col 11}] (parse_parse_if {:pos 0 :input "if true { }" :line 0 :col 0})))
     (is (= [{:type "if" :cond {:type "binary" :operator "=" :left {:type "num" :value 1} :right {:type "num" :value 2}} :then {:type "bool" :value false} } {:pos 14 :input "if (1 = 2) { }" :line 0 :col 14}] (parse_parse_if {:pos 0 :input "if (1 = 2) { }" :line 0 :col 0})))
+    (is (= [{:type "if" :cond {:type "binary" :operator "=" :left {:type "num" :value 1} :right {:type "num" :value 2}} :then {:type "binary" :operator "+" :left {:type "num" :value 1} :right {:type "num" :value 1}} } {:pos 21 :input "if (1 = 2) { 1 + 1; }" :line 0 :col 21}] (parse_parse_if {:pos 0 :input "if (1 = 2) { 1 + 1; }" :line 0 :col 0}))) 
     (is (= [{:type "if" :cond {:type "bool" :value true} :then {:type "bool" :value false} :else {:type "bool" :value false}} {:pos 18 :input "if true {} else {}" :line 0 :col 18}] (parse_parse_if {:pos 0 :input "if true {} else {}" :line 0 :col 0})))
     (is (= [{:type "if" :cond {:type "bool" :value true} :then {:type "bool" :value false} :else {:type "bool" :value false}} {:pos 23 :input "if true then {} else {}" :line 0 :col 23}] (parse_parse_if {:pos 0 :input "if true then {} else {}" :line 0 :col 0}))))
   (testing "test parse_parse_lambda"

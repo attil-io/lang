@@ -261,15 +261,14 @@
 (defn parse_parse_if [token_stream_state]
 	(let [precond_state (parse_skip_kw "if" token_stream_state)
 		[cond_val cond_state] (parse_parse_expression precond_state)
-		then_val FALSE						      ; FIXME use parse_expression
-		then_state (tokenstream_next (tokenstream_next (if (parse_is_punc \{ cond_state) cond_state (parse_skip_kw "then" cond_state))))  ; FIXME not needed with parse_epresxion
+		[then_val then_state] (parse_parse_expression (if (parse_is_punc \{ cond_state) cond_state (parse_skip_kw "then" cond_state)))
 		[else_val else_state] (if (parse_is_kw "else" then_state)
 					[FALSE (tokenstream_next (tokenstream_next (tokenstream_next then_state)))] ; FIXME use parse_expression
 					[nil then_state])]
 	[(conj {
 		:type "if"
 		:cond cond_val
-		:then then_val
+		:then (if (= [] then_val) FALSE then_val)
 	} (when else_val [:else else_val]))
 	else_state]))
 		
@@ -306,7 +305,7 @@
 			[exp_val exp_state] (parse_parse_expression next_state)
 			after_punc_state (parse_skip_punc \) exp_state)] 
 		[exp_val after_punc_state]) 
-	(parse_is_punc \{ token_stream_state) (update-in (parse_delimited \{ \} \; parse_parse_expression token_stream_state) [0] #(% 0))   ; FIXME: parse_prog
+	(parse_is_punc \{ token_stream_state) (update-in (parse_delimited \{ \} \; parse_parse_expression token_stream_state) [0] #(if (= 0 (count %)) % (% 0)))   ; FIXME: parse_prog
 	; FIXME !
 	(parse_is_kw "let" token_stream_state) (parse_parse_let token_stream_state)
 	; FIXME: if
