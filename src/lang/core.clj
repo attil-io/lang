@@ -308,7 +308,7 @@
 	(parse_is_punc \{ token_stream_state) (update-in (parse_delimited \{ \} \; parse_parse_expression token_stream_state) [0] #(if (= 0 (count %)) % (% 0)))   ; FIXME: parse_prog
 	; FIXME !
 	(parse_is_kw "let" token_stream_state) (parse_parse_let token_stream_state)
-	; FIXME: if
+	(parse_is_kw "if" token_stream_state) (parse_parse_if token_stream_state)
 	(or (parse_is_kw "true" token_stream_state) (parse_is_kw "false" token_stream_state)) (parse_parse_bool token_stream_state)
 	(parse_is_kw "lambda" token_stream_state) (parse_parse_lambda (tokenstream_next token_stream_state))
 	:else (tokenstream_read_next token_stream_state))) ; FIXME: parse_unexpected
