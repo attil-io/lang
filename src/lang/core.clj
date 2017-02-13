@@ -332,3 +332,6 @@
 			:else prog_parsed)]
 	[{:type "prog" :prog prog} prog_state]))
 
+(defn parse_parse_toplevel [input]
+	[{:type "prog" :prog []}])
+
