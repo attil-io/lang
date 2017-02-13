@@ -247,6 +247,6 @@
     (is (= [{:type "call" :func {:type "var" :value "hello"} :args [{:type "num" :value 55}]} {:pos 9 :input "hello(55)" :line 0 :col 9}] (parse_parse_expression {:pos 0 :input "hello(55)" :line 0 :col 0}))))
   (testing "test parse_parse_prog"
     (is (= [{:type "prog" :prog {:type "bool" :value false}} {:pos 2 :input "{}" :line 0 :col 2}] (parse_parse_prog {:pos 0 :input "{}" :line 0 :col 0})))
-    (is (= [{:type "prog" :prog {:type "bool" :value true}} {:pos 6 :input "{true}" :line 0 :col 6}] (parse_parse_prog {:pos 0 :input "{true}" :line 0 :col 0})))))
+    (is (= [{:type "prog" :prog {:type "bool" :value true}} {:pos 6 :input "{true}" :line 0 :col 6}] (parse_parse_prog {:pos 0 :input "{true}" :line 0 :col 0})))
+    (is (= [{:type "prog" :prog [{:type "bool" :value true}{:type "bool" :value false}]} {:pos 12 :input "{true;false}" :line 0 :col 12}] (parse_parse_prog {:pos 0 :input "{true;false}" :line 0 :col 0})))))
 
- 
