@@ -324,3 +324,6 @@
 		let [[parse_atom_value parse_atom_state] (parse_parse_atom %1)]
 		(parse_maybe_binary parse_atom_value 0 parse_atom_state)) token_stream_state))
 
+(defn parse_parse_prog [token_stream_state]
+	[FALSE token_stream_state])
+

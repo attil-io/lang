@@ -244,5 +244,7 @@
     (is (= [{:type "num" :value 1} {:pos 1 :input "1" :line 0 :col 1}] (parse_parse_expression {:pos 0 :input "1" :line 0 :col 0})))
     (is (= [{:type "bool" :value true} {:pos 4 :input "true" :line 0 :col 4}] (parse_parse_expression {:pos 0 :input "true" :line 0 :col 0})))
     (is (= [{:type "binary" :operator "+" :left {:type "num" :value 1} :right {:type "num" :value 1}} {:pos 5 :input "1 + 1" :line 0 :col 5}] (parse_parse_expression {:pos 0 :input "1 + 1" :line 0 :col 0})))
-    (is (= [{:type "call" :func {:type "var" :value "hello"} :args [{:type "num" :value 55}]} {:pos 9 :input "hello(55)" :line 0 :col 9}] (parse_parse_expression {:pos 0 :input "hello(55)" :line 0 :col 0})))))
+    (is (= [{:type "call" :func {:type "var" :value "hello"} :args [{:type "num" :value 55}]} {:pos 9 :input "hello(55)" :line 0 :col 9}] (parse_parse_expression {:pos 0 :input "hello(55)" :line 0 :col 0}))))
+  (testing "test parse_parse_prog"
+    (is (= [{:type "bool" :value false} {:pos 0 :input "" :line 0 :col 0}] (parse_parse_prog {:pos 0 :input "" :line 0 :col 0})))))
  
