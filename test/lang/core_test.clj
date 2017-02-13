@@ -251,6 +251,7 @@
     (is (= [{:type "prog" :prog [{:type "bool" :value true}{:type "bool" :value false}]} {:pos 12 :input "{true;false}" :line 0 :col 12}] (parse_parse_prog {:pos 0 :input "{true;false}" :line 0 :col 0}))))
  (testing "test parse_parse_toplevel"
     (is (= [{:type "prog" :prog []}] (parse_parse_toplevel "")))
-    (is (= [{:type "prog" :prog [{:type "num" :value 1}]}] (parse_parse_toplevel "1")))))
+    (is (= [{:type "prog" :prog [{:type "num" :value 1}]}] (parse_parse_toplevel "1")))
+    (is (= [{:type "prog" :prog [{:type "num" :value 1}{:type "num" :value 2}]}] (parse_parse_toplevel "1;2;")))))
  
 
