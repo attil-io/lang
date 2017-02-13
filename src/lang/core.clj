@@ -333,5 +333,11 @@
 	[{:type "prog" :prog prog} prog_state]))
 
 (defn parse_parse_toplevel [input]
-	[{:type "prog" :prog []}])
+	(let [token_stream_state {:pos 0 :input input :line 0 :col 0}]
+	(if (inputstream_eof token_stream_state)
+		[{:type "prog" :prog []}]
+		(let [[parse_result parse_state] (parse_parse_expression token_stream_state)] 
+			[{:type "prog" :prog [parse_result]}]))))
+
+
 
