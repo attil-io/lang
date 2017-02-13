@@ -325,5 +325,10 @@
 		(parse_maybe_binary parse_atom_value 0 parse_atom_state)) token_stream_state))
 
 (defn parse_parse_prog [token_stream_state]
-	[FALSE token_stream_state])
+	(let [[prog_parsed prog_state] (parse_delimited \{ \} \; parse_parse_expression token_stream_state)
+		prog (cond 
+			(= 0 (count prog_parsed)) FALSE
+			(= 1 (count prog_parsed)) (prog_parsed 0)
+			:else prog_parsed)]
+	[prog prog_state]))
 
