@@ -239,6 +239,7 @@
     (is (= [{:type "let" :vars [{:name "a" :def {:type "num" :value 5}}] :body {:type "var" :value "a"}} {:pos 18 :input "let (a = 5) { a; }" :line 0 :col 18}] (parse_parse_atom {:pos 0 :input "let (a = 5) { a; }" :line 0 :col 0})))
     (is (= [{:type "if" :cond {:type "bool" :value true} :then {:type "bool" :value false}} {:pos 18 :input "if true then false" :line 0 :col 18}] (parse_parse_atom {:pos 0 :input "if true then false" :line 0 :col 0})))
     (is (= [{:type "not" :body {:type "bool" :value true}} {:pos 5 :input "!true" :line 0 :col 5}] (parse_parse_atom {:pos 0 :input "!true" :line 0 :col 0})))
+    (is (= [{:type "prog" :prog [{:type "bool" :value true}{:type "bool" :value false}]} {:pos 14 :input "{true; false;}" :line 0 :col 14}] (parse_parse_atom {:pos 0 :input "{true; false;}" :line 0 :col 0})))
     (is (thrown-with-msg? Exception #"Unexpected token" (parse_parse_atom {:pos 0 :input "}" :line 0 :col 0}))))
   (testing "test parse_parse_expression"
     (is (= [{:type "num" :value 1} {:pos 1 :input "1" :line 0 :col 1}] (parse_parse_expression {:pos 0 :input "1" :line 0 :col 0})))
@@ -246,8 +247,8 @@
     (is (= [{:type "binary" :operator "+" :left {:type "num" :value 1} :right {:type "num" :value 1}} {:pos 5 :input "1 + 1" :line 0 :col 5}] (parse_parse_expression {:pos 0 :input "1 + 1" :line 0 :col 0})))
     (is (= [{:type "call" :func {:type "var" :value "hello"} :args [{:type "num" :value 55}]} {:pos 9 :input "hello(55)" :line 0 :col 9}] (parse_parse_expression {:pos 0 :input "hello(55)" :line 0 :col 0}))))
   (testing "test parse_parse_prog"
-    (is (= [{:type "prog" :prog {:type "bool" :value false}} {:pos 2 :input "{}" :line 0 :col 2}] (parse_parse_prog {:pos 0 :input "{}" :line 0 :col 0})))
-    (is (= [{:type "prog" :prog {:type "bool" :value true}} {:pos 6 :input "{true}" :line 0 :col 6}] (parse_parse_prog {:pos 0 :input "{true}" :line 0 :col 0})))
+    (is (= [{:type "bool" :value false} {:pos 2 :input "{}" :line 0 :col 2}] (parse_parse_prog {:pos 0 :input "{}" :line 0 :col 0})))
+    (is (= [{:type "bool" :value true} {:pos 6 :input "{true}" :line 0 :col 6}] (parse_parse_prog {:pos 0 :input "{true}" :line 0 :col 0})))
     (is (= [{:type "prog" :prog [{:type "bool" :value true}{:type "bool" :value false}]} {:pos 12 :input "{true;false}" :line 0 :col 12}] (parse_parse_prog {:pos 0 :input "{true;false}" :line 0 :col 0}))))
  (testing "test parse_parse_toplevel"
     (is (= [{:type "prog" :prog []}] (parse_parse_toplevel "")))

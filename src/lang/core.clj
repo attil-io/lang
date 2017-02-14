@@ -136,6 +136,7 @@
 
 (declare parse_parse_atom)
 (declare parse_parse_expression)
+(declare parse_parse_prog)
 
 (defn parse_is_punc [ch tokenstream_state] 
 	(let [tok (tokenstream_peek tokenstream_state)]
@@ -305,7 +306,7 @@
 				[exp_val exp_state] (parse_parse_expression next_state)
 				after_punc_state (parse_skip_punc \) exp_state)] 
 			[exp_val after_punc_state]) 
-		(parse_is_punc \{ token_stream_state) (update-in (parse_delimited \{ \} \; parse_parse_expression token_stream_state) [0] #(if (= 0 (count %)) % (% 0)))   ; FIXME: parse_prog
+		(parse_is_punc \{ token_stream_state) (parse_parse_prog token_stream_state)
 		(parse_is_op "!" token_stream_state)
 			(let [[expr_result expr_state] (parse_parse_expression (tokenstream_next token_stream_state))]
 				[{:type "not" :body expr_result} expr_state])
@@ -329,8 +330,8 @@
 		prog (cond 
 			(= 0 (count prog_parsed)) FALSE
 			(= 1 (count prog_parsed)) (prog_parsed 0)
-			:else prog_parsed)]
-	[{:type "prog" :prog prog} prog_state]))
+			:else {:type "prog" :prog prog_parsed})]
+	[prog prog_state]))
 
 (defn parse_parse_toplevel [input]
 	(loop [token_stream_state {:pos 0 :input input :line 0 :col 0}
