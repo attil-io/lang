@@ -194,7 +194,7 @@
 			[next_right_token next_right_state] (parse_maybe_binary next_next_token his_prec next_next_state)]
 			(parse_maybe_binary
 				{
-					:type "binary"
+					:type (if (= "=" (:value next_token)) "assign" "binary")
 					:operator (:value next_token)
 					:left left
 					:right next_right_token
