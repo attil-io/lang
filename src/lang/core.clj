@@ -277,7 +277,7 @@
 	(let [[nameval namestate] (if (= "var" (:type (tokenstream_peek token_stream_state)))
 					(tokenstream_read_next token_stream_state) [nil token_stream_state])
 		[varval varstate] (parse_delimited \( \) \, parse_parse_varname namestate)
-		[bodyval bodystate] [FALSE (tokenstream_next (tokenstream_next varstate))]]
+		[bodyval bodystate] (parse_parse_expression varstate)]
 	[{
 		:type "lambda"
 		:name (:value nameval)

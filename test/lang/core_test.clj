@@ -221,7 +221,8 @@
   (testing "test parse_parse_lambda"
     (is (= [{:type "lambda" :name nil :vars [] :body {:type "bool" :value false}} {:pos 12 :input "lambda () {}" :line 0 :col 12}] (parse_parse_lambda {:pos 6 :input "lambda () {}" :line 0 :col 6})))
     (is (= [{:type "lambda" :name "foo" :vars [] :body {:type "bool" :value false}} {:pos 16 :input "lambda foo () {}" :line 0 :col 16}] (parse_parse_lambda {:pos 6 :input "lambda foo () {}" :line 0 :col 6})))
-    (is (= [{:type "lambda" :name "foo" :vars ["a"] :body {:type "bool" :value false}} {:pos 17 :input "lambda foo (a) {}" :line 0 :col 17}] (parse_parse_lambda {:pos 6 :input "lambda foo (a) {}" :line 0 :col 6}))))
+    (is (= [{:type "lambda" :name "foo" :vars ["a"] :body {:type "bool" :value false}} {:pos 17 :input "lambda foo (a) {}" :line 0 :col 17}] (parse_parse_lambda {:pos 6 :input "lambda foo (a) {}" :line 0 :col 6})))
+    (is (= [{:type "lambda" :name "foo" :vars ["a"] :body {:type "var" :value "a"}} {:pos 21 :input "lambda foo (a) { a; }" :line 0 :col 21}] (parse_parse_lambda {:pos 6 :input "lambda foo (a) { a; }" :line 0 :col 6}))))
   (testing "test parse_parse_bool"
     (is (= [{:type "bool" :value true} {:pos 4 :input "true" :line 0 :col 4}] (parse_parse_bool {:pos 0 :input "true" :line 0 :col 0})))
     (is (= [{:type "bool" :value false} {:pos 5 :input "false" :line 0 :col 5}] (parse_parse_bool {:pos 0 :input "false" :line 0 :col 0}))))
