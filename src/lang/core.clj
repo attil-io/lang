@@ -336,10 +336,10 @@
 (defn parse_parse_toplevel [input]
 	(loop [token_stream_state {:pos 0 :input input :line 0 :col 0}
 		prog []]
-	(if (inputstream_eof token_stream_state) 
+	(if (tokenstream_eof token_stream_state) 
 		[{:type "prog" :prog prog}]
 		(let [[parse_result parse_state] (parse_parse_expression token_stream_state)
-			next_state (if (inputstream_eof parse_state) parse_state (parse_skip_punc \; parse_state))] 
+			next_state (if (tokenstream_eof parse_state) parse_state (parse_skip_punc \; parse_state))] 
 			(recur next_state (conj prog parse_result))))))
 
 

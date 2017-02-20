@@ -255,6 +255,7 @@
  (testing "test parse_parse_toplevel"
     (is (= [{:type "prog" :prog []}] (parse_parse_toplevel "")))
     (is (= [{:type "prog" :prog [{:type "num" :value 1}]}] (parse_parse_toplevel "1")))
-    (is (= [{:type "prog" :prog [{:type "num" :value 1}{:type "num" :value 2}]}] (parse_parse_toplevel "1;2;")))))
+    (is (= [{:type "prog" :prog [{:type "num" :value 1}{:type "num" :value 2}]}] (parse_parse_toplevel "1;2;")))
+    (is (= [{:type "prog" :prog [{:type "if" :cond {:type "binary" :operator "<=" :left {:type "var" :value "a"} :right {:type "var" :value "b"}} :then {:type "bool" :value false} }]}] (parse_parse_toplevel "if a <= b { }   ")))))
  
 
