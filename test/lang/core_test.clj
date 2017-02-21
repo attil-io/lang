@@ -259,3 +259,18 @@
     (is (= [{:type "prog" :prog [{:type "if" :cond {:type "binary" :operator "<=" :left {:type "var" :value "a"} :right {:type "var" :value "b"}} :then {:type "bool" :value false} }]}] (parse_parse_toplevel "if a <= b { }   ")))))
  
 
+(defn long-str [& strings] (clojure.string/join "\n" strings))
+
+(deftest complex-test
+  (testing "test complex"
+       (is (= [{ :type "prog" :prog [ { :type "assign" :operator "=" :left { :type "var" :value "print_range" } :right { :type "lambda" :name nil :vars [ "a" "b" ] :body { :type "if" :cond { :type "binary" :operator "<=" :left { :type "var" :value "a" } :right { :type "var" :value "b" } } :then { :type "prog" :prog [ { :type "call" :func { :type "var" :value "print" } :args [ { :type "var" :value "a" } ] } { :type "if" :cond { :type "binary" :operator "<=" :left { :type "binary" :operator "+" :left { :type "var" :value "a" } :right { :type "num" :value 1 } } :right { :type "var" :value "b" } } :then { :type "prog" :prog [ { :type "call" :func { :type "var" :value "print" } :args [ { :type "str" :value ", " } ] } { :type "call" :func { :type "var" :value "print_range" } :args [ { :type "binary" :operator "+" :left { :type "var" :value "a" } :right { :type "num" :value 1 } } { :type "var" :value "b" } ] } ] } :else { :type "call" :func { :type "var" :value "println" } :args [ { :type "str" :value "" } ] } } ] } } } } { :type "call" :func { :type "var" :value "print_range" } :args [ { :type "num" :value 1 } { :type "num" :value 10 } ] } ] }] (parse_parse_toplevel (long-str
+               "print_range = lambda(a, b) if a <= b {            "
+               "                        print(a);                 "
+               "                        if a + 1 <= b {           "
+               "                          print(\", \");          "
+               "                          print_range(a + 1, b);  "
+               "                        } else println(\"\");     "
+               "                      };                          "
+               "print_range(1, 10);                               "
+))))))
+
