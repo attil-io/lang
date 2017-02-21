@@ -276,4 +276,5 @@
 
  (deftest environment-test
   (testing "test environment_create"
-    (is (= {:vars nil :parent nil} (environment_create nil)))))
+    (is (= {:vars nil :parent nil} (environment_create nil)))
+    (is (= {:vars nil :parent {:vars nil :parent nil}} (environment_create {:vars nil :parent nil})))))
