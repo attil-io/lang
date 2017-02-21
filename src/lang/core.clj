@@ -345,3 +345,6 @@
 (defn environment_create [parent]
 	{:vars {} :parent parent})
 
+(defn environment_lookup [varname parent]
+	nil)
+
