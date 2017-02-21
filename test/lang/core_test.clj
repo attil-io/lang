@@ -274,3 +274,6 @@
                "print_range(1, 10);                               "
 ))))))
 
+ (deftest environment-test
+  (testing "test environment_create"
+    (is (= {:vars nil :parent nil} (environment_create nil)))))

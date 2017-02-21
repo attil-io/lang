@@ -342,4 +342,6 @@
 			next_state (if (tokenstream_eof parse_state) parse_state (parse_skip_punc \; parse_state))] 
 			(recur next_state (conj prog parse_result))))))
 
+(defn environment_create [parent]
+	{:vars nil :parent nil})
 
