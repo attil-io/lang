@@ -281,5 +281,7 @@
     (is (= {:vars {} :parent {:vars {:var1 "val1"} :parent nil}} (environment_create {:vars {:var1 "val1"} :parent nil}))))
   (testing "test environment_lookup"
     (is (= nil (environment_lookup "hello" {:vars {} :parent nil})))
-    (is (= {:vars {:hello 42} :parent nil} (environment_lookup "hello" {:vars {:hello 42} :parent nil})))))
+    (is (= {:vars {:hello 42} :parent nil} (environment_lookup "hello" {:vars {:hello 42} :parent nil})))
+    (is (= {:vars {:hello 42} :parent nil} (environment_lookup "hello" {:vars {} :parent {:vars {:hello 42} :parent nil}})))))
  
+

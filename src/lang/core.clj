@@ -346,5 +346,6 @@
 	{:vars {} :parent parent})
 
 (defn environment_lookup [varname scope]
-	(if (contains? (:vars scope) (keyword varname)) scope nil))
+	(if (nil? scope) nil
+	(if (contains? (:vars scope) (keyword varname)) scope (recur varname (:parent scope)))))
 
