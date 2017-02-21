@@ -343,5 +343,6 @@
 			(recur next_state (conj prog parse_result))))))
 
 (defn environment_create [parent]
-	{:vars nil :parent parent})
+	{:vars (if (nil? parent) nil (:vars parent))
+	:parent parent})
 
