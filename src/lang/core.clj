@@ -393,7 +393,7 @@
 			(if (number? x) x (throw (Exception. (str "Expected number but got " x)))))]
 	(case op
 		"+" (+ (num a) (num b))
-		"-" (- a b)
+		"-" (- (num a) (num b))
 		"*" (* (num a) (num b))
 		"/" (/ a b)
 		"%" (mod a b)
