@@ -309,6 +309,7 @@
     (is (= false (evaluate {:type "if" :cond {:type "bool" :value false} :then {:type "num" :value 42}} {:vars {} :parent nil}))))
   (testing "test evaluate_apply_op"
     (is (= 5 (evaluate_apply_op "+" 2 3)))
+    (is (thrown-with-msg? Exception #"Expected number but got" (evaluate_apply_op "+" "alma" 3)))
     (is (= 6 (evaluate_apply_op "*" 2 3)))
     (is (= -1 (evaluate_apply_op "-" 2 3)))
     (is (= 2/3 (evaluate_apply_op "/" 2 3)))

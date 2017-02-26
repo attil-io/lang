@@ -389,8 +389,10 @@
 			(if (nil? (:else expression)) false (evaluate (:else expression) environment)))))
 
 (defn evaluate_apply_op [op a b]
+	(letfn [(num [x] 
+			(if (number? x) x (throw (Exception. (str "Expected number but got " x)))))]
 	(case op
-		"+" (+ a b)
+		"+" (+ (num a) (num b))
 		"-" (- a b)
 		"*" (* a b)
 		"/" (/ a b)
@@ -403,5 +405,5 @@
 		">=" (>= a b)
 		"==" (== a b)
 		"!=" (not= a b)
-		(throw (Exception. (str "Can't apply operator " op)))))
+		(throw (Exception. (str "Can't apply operator " op))))))
 
