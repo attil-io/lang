@@ -362,7 +362,9 @@
 			(recur varname (:parent scope))))))
 
 (defn environment_set [varname value scope]
-	(let [{_ :scope ancestor_level :level} (environment_lookup_impl varname scope 0)
+	(let [{ancestor_scope :scope ancestor_level :level} (environment_lookup_impl varname scope 0)
 		varname (keyword varname)]
-	(assoc-in scope (concat (repeat ancestor_level :parent) [:vars varname]) value)))
+	(if (nil? ancestor_scope)
+	(throw (Exception. (str "Undefined variable " varname)))
+	(assoc-in scope (concat (repeat ancestor_level :parent) [:vars varname]) value))))
 

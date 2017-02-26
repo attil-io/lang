@@ -289,6 +289,6 @@
     (is (= 42 (environment_get "hello" {:vars {} :parent {:vars {:hello 42} :parent nil}}))))
   (testing "test environment_set"
     (is (= {:vars {:hello 42} :parent nil} (environment_set "hello" 42 {:vars {:hello 5} :parent nil})))
-    (is (= {:vars {} :parent {:vars {:hello 42} :parent nil}} (environment_set "hello" 42 {:vars {} :parent {:vars {:hello 5} :parent nil}})))))
+    (is (= {:vars {} :parent {:vars {:hello 42} :parent nil}} (environment_set "hello" 42 {:vars {} :parent {:vars {:hello 5} :parent nil}})))
+    (is (thrown-with-msg? Exception #"Undefined variable" (environment_set "hello" 42 {:vars {} :parent nil})))))
  
-
