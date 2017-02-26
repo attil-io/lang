@@ -373,5 +373,5 @@
 			(assoc-in scope (concat (repeat ancestor_level :parent) [:vars varname]) value))))
 
 (defn environment_def [varname value scope]
-	{:vars {:hello 42} :parent nil})
+	(assoc-in scope [:vars (keyword varname)] value))
 
