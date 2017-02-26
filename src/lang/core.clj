@@ -350,5 +350,8 @@
 	(if (contains? (:vars scope) (keyword varname)) scope (recur varname (:parent scope)))))
 
 (defn environment_get [varname scope]
-	(throw (Exception. (str "Undefined variable " varname))))
+	(let [vars (:vars scope)
+		varname (keyword varname)]
+	(if (contains? vars varname) (vars varname)
+	(throw (Exception. (str "Undefined variable " varname))))))
 
