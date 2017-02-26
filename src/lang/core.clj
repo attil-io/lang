@@ -394,7 +394,7 @@
 	(case op
 		"+" (+ (num a) (num b))
 		"-" (- a b)
-		"*" (* a b)
+		"*" (* (num a) (num b))
 		"/" (/ a b)
 		"%" (mod a b)
 		"&&" (and a b)
