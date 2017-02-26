@@ -378,5 +378,6 @@
 (defn evaluate [expression environment]
 	(case (:type expression)
 		"num" (:value expression)
-		"str" (:value expression)))
+		"str" (:value expression)
+		"bool" (:value expression)))
 
