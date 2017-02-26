@@ -311,6 +311,7 @@
     (is (= 5 (evaluate_apply_op "+" 2 3)))
     (is (= 6 (evaluate_apply_op "*" 2 3)))
     (is (= -1 (evaluate_apply_op "-" 2 3)))
-    (is (= 2/3 (evaluate_apply_op "/" 2 3)))))
+    (is (= 2/3 (evaluate_apply_op "/" 2 3)))
+    (is (= 2 (evaluate_apply_op "%" 2 3)))))
  
 
