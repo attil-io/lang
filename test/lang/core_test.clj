@@ -315,6 +315,7 @@
     (is (= -1 (evaluate_apply_op "-" 2 3)))
     (is (thrown-with-msg? Exception #"Expected number but got" (evaluate_apply_op "-" "alma" 3)))
     (is (= 2/3 (evaluate_apply_op "/" 2 3)))
+    (is (thrown-with-msg? Exception #"Expected number but got" (evaluate_apply_op "/" "alma" 3)))
     (is (= 2 (evaluate_apply_op "%" 2 3)))
     (is (= false (evaluate_apply_op "&&" true false)))
     (is (= true (evaluate_apply_op "||" false true )))

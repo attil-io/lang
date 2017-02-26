@@ -395,7 +395,7 @@
 		"+" (+ (num a) (num b))
 		"-" (- (num a) (num b))
 		"*" (* (num a) (num b))
-		"/" (/ a b)
+		"/" (/ (num a) b)
 		"%" (mod a b)
 		"&&" (and a b)
 		"||" (or a b)
