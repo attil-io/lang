@@ -402,5 +402,6 @@
 		"<=" (<= a b)
 		">=" (>= a b)
 		"==" (== a b)
-		"!=" (not= a b)))
+		"!=" (not= a b)
+		(throw (Exception. (str "Can't apply operator " op)))))
 
