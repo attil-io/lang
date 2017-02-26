@@ -403,7 +403,7 @@
 		"||" (or a b)
 		"<" (< (isnum a) (isnum b))
 		">" (> (isnum a) (isnum b))
-		"<=" (<= a b)
+		"<=" (<= (isnum a) (isnum b))
 		">=" (>= a b)
 		"==" (== a b)
 		"!=" (not= a b)

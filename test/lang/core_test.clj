@@ -327,6 +327,7 @@
     (is (= false (evaluate_apply_op ">" 1 2)))
     (is (thrown-with-msg? Exception #"Expected number but got" (evaluate_apply_op ">" "alma" 3)))
     (is (= true (evaluate_apply_op "<=" 1 2)))
+    (is (thrown-with-msg? Exception #"Expected number but got" (evaluate_apply_op "<=" "alma" 3)))
     (is (= false (evaluate_apply_op ">=" 1 2)))
     (is (= false (evaluate_apply_op "==" 1 2)))
     (is (= true (evaluate_apply_op "!=" 1 2)))
