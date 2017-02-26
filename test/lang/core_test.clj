@@ -318,6 +318,7 @@
     (is (= true (evaluate_apply_op "<" 1 2)))
     (is (= false (evaluate_apply_op ">" 1 2)))
     (is (= true (evaluate_apply_op "<=" 1 2)))
-    (is (= false (evaluate_apply_op ">=" 1 2)))))
+    (is (= false (evaluate_apply_op ">=" 1 2)))
+    (is (= false (evaluate_apply_op "==" 1 2)))))
  
 
