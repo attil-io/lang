@@ -398,7 +398,7 @@
 		"-" (- (isnum a) (isnum b))
 		"*" (* (isnum a) (isnum b))
 		"/" (/ (isnum a) (div b))
-		"%" (mod a b)
+		"%" (mod (isnum a) (div b))
 		"&&" (and a b)
 		"||" (or a b)
 		"<" (< a b)
