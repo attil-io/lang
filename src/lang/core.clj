@@ -391,5 +391,6 @@
 (defn evaluate_apply_op [op a b]
 	(case op
 		"+" (+ a b)
+		"-" (- a b)
 		"*" (* a b)))
 
