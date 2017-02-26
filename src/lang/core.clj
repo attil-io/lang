@@ -386,5 +386,5 @@
 			(throw (Exception. (str "Cannot assign to " (:left expression)))))
 		"if" (if (evaluate (:cond expression) environment)
 			(evaluate (:then expression) environment)
-			(evaluate (:else expression) environment))))
+			(if (nil? (:else expression)) false (evaluate (:else expression) environment)))))
 
