@@ -401,7 +401,7 @@
 		"%" (mod (isnum a) (div b))
 		"&&" (and a b)
 		"||" (or a b)
-		"<" (< a b)
+		"<" (< (isnum a) (isnum b))
 		">" (> a b)
 		"<=" (<= a b)
 		">=" (>= a b)
