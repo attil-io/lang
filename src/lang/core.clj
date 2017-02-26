@@ -384,6 +384,7 @@
 		"assign" (if (= "var" (:type (:left expression))) 
 			(environment_set (:value (:left expression)) (evaluate (:right expression) environment_set) environment)
 			(throw (Exception. (str "Cannot assign to " (:left expression)))))
-		"if" (when (evaluate (:cond expression) environment)
-			(evaluate (:then expression) environment))))
+		"if" (if (evaluate (:cond expression) environment)
+			(evaluate (:then expression) environment)
+			(evaluate (:else expression) environment))))
 

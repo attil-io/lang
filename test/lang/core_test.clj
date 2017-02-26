@@ -304,5 +304,7 @@
     (is (= 42 (evaluate {:type "var" :value "a"} {:vars {:a 42} :parent nil})))
     (is (= {:vars {:a 42} :parent nil} (evaluate {:type "assign" :left {:type "var" :value "a"} :right {:type "num" :value 42}} {:vars {:a 0} :parent nil})))
     (is (thrown-with-msg? Exception #"Cannot assign to" (evaluate {:type "assign" :left {:type "num" :value 6} :right {:type "num" :value 42}} {:vars {:a 0} :parent nil})))
-    (is (= 42 (evaluate {:type "if" :cond {:type "bool" :value true} :then {:type "num" :value 42}} {:vars {} :parent nil})))))
+    (is (= 42 (evaluate {:type "if" :cond {:type "bool" :value true} :then {:type "num" :value 42}} {:vars {} :parent nil})))
+    (is (= 44 (evaluate {:type "if" :cond {:type "bool" :value false} :then {:type "num" :value 42} :else {:type "num" :value 44}} {:vars {} :parent nil})))))
+
 
