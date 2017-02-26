@@ -282,6 +282,8 @@
   (testing "test environment_lookup"
     (is (= nil (environment_lookup "hello" {:vars {} :parent nil})))
     (is (= {:vars {:hello 42} :parent nil} (environment_lookup "hello" {:vars {:hello 42} :parent nil})))
-    (is (= {:vars {:hello 42} :parent nil} (environment_lookup "hello" {:vars {} :parent {:vars {:hello 42} :parent nil}})))))
- 
+    (is (= {:vars {:hello 42} :parent nil} (environment_lookup "hello" {:vars {} :parent {:vars {:hello 42} :parent nil}}))))
+  (testing "test environment_lookup"
+    (is (thrown-with-msg? Exception #"Undefined variable" (environment_get "hello" {:vars {} :parent nil})))))
+
 

@@ -349,3 +349,6 @@
 	(if (nil? scope) nil
 	(if (contains? (:vars scope) (keyword varname)) scope (recur varname (:parent scope)))))
 
+(defn environment_get [varname scope]
+	(throw (Exception. (str "Undefined variable " varname))))
+
