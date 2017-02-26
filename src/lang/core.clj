@@ -379,5 +379,6 @@
 	(case (:type expression)
 		"num" (:value expression)
 		"str" (:value expression)
-		"bool" (:value expression)))
+		"bool" (:value expression)
+		"var" (environment_get (:value expression) environment)))
 
