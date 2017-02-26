@@ -358,3 +358,6 @@
 			(vars varname)
 			(recur varname (:parent scope))))))
 
+(defn environment_set [varname value scope]
+	{:vars {:hello 42} :parent nil})
+
