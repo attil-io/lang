@@ -390,12 +390,14 @@
 
 (defn evaluate_apply_op [op a b]
 	(letfn [(num [x] 
-			(if (number? x) x (throw (Exception. (str "Expected number but got " x)))))]
+			(if (number? x) x (throw (Exception. (str "Expected number but got " x)))))
+		(div [x]
+			(if (not= 0 (num x)) x (throw (Exception. "Divide by zero"))))]
 	(case op
 		"+" (+ (num a) (num b))
 		"-" (- (num a) (num b))
 		"*" (* (num a) (num b))
-		"/" (/ (num a) b)
+		"/" (/ (num a) (div b))
 		"%" (mod a b)
 		"&&" (and a b)
 		"||" (or a b)
