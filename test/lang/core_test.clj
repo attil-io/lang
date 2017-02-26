@@ -301,6 +301,6 @@
     (is (= 5 (evaluate {:type "num" :value 5} {:vars {} :parent nil})))
     (is (= "hello" (evaluate {:type "str" :value "hello"} {:vars {} :parent nil})))
     (is (= true (evaluate {:type "bool" :value true} {:vars {} :parent nil})))
-    (is (= 42 (evaluate {:type "var" :value "a"} {:vars {:a 42} :parent nil})))))
+    (is (= 42 (evaluate {:type "var" :value "a"} {:vars {:a 42} :parent nil})))
+    (is (= {:vars {:a 42} :parent nil} (evaluate {:type "assign" :left {:type "var" :value "a"} :right {:type "num" :value 42}} {:vars {:a 0} :parent nil})))))
  
-

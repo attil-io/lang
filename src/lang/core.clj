@@ -380,5 +380,6 @@
 		"num" (:value expression)
 		"str" (:value expression)
 		"bool" (:value expression)
-		"var" (environment_get (:value expression) environment)))
+		"var" (environment_get (:value expression) environment)
+		"assign" (environment_set (:value (:left expression)) (evaluate (:right expression) environment_set) environment)))
 
