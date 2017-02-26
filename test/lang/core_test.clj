@@ -308,6 +308,6 @@
     (is (= 44 (evaluate {:type "if" :cond {:type "bool" :value false} :then {:type "num" :value 42} :else {:type "num" :value 44}} {:vars {} :parent nil})))
     (is (= false (evaluate {:type "if" :cond {:type "bool" :value false} :then {:type "num" :value 42}} {:vars {} :parent nil}))))
   (testing "test evaluate_apply_op"
-    (is (= 5 (evaluate_apply_op "+" 2 3)))))
+    (is (= 5 (evaluate_apply_op "+" 2 3)))
+    (is (= 6 (evaluate_apply_op "*" 2 3)))))
  
-

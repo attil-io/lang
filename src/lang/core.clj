@@ -389,5 +389,7 @@
 			(if (nil? (:else expression)) false (evaluate (:else expression) environment)))))
 
 (defn evaluate_apply_op [op a b]
-	5)
+	(case op
+		"+" (+ a b)
+		"*" (* a b)))
 
