@@ -375,3 +375,5 @@
 (defn environment_def [varname value scope]
 	(assoc-in scope [:vars (keyword varname)] value))
 
+(defn evaluate [expression environment] 5)
+

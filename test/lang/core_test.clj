@@ -296,3 +296,7 @@
     (is (= {:vars {:hello 42} :parent nil} (environment_def "hello" 42 {:vars {} :parent nil})))
     (is (= {:vars {:hello 5} :parent nil} (environment_def "hello" 5 {:vars {:hello 42} :parent nil})))))
  
+ (deftest evaluate-test
+  (testing "test evaluate"
+    (is (= 5 (evaluate {:type "num" :value 5} {:vars {} :parent nil})))))
+ 
