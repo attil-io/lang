@@ -389,15 +389,15 @@
 			(if (nil? (:else expression)) false (evaluate (:else expression) environment)))))
 
 (defn evaluate_apply_op [op a b]
-	(letfn [(num [x] 
+	(letfn [(isnum [x] 
 			(if (number? x) x (throw (Exception. (str "Expected number but got " x)))))
 		(div [x]
-			(if (not= 0 (num x)) x (throw (Exception. "Divide by zero"))))]
+			(if (not= 0 (isnum x)) x (throw (Exception. "Divide by zero"))))]
 	(case op
-		"+" (+ (num a) (num b))
-		"-" (- (num a) (num b))
-		"*" (* (num a) (num b))
-		"/" (/ (num a) (div b))
+		"+" (+ (isnum a) (isnum b))
+		"-" (- (isnum a) (isnum b))
+		"*" (* (isnum a) (isnum b))
+		"/" (/ (isnum a) (div b))
 		"%" (mod a b)
 		"&&" (and a b)
 		"||" (or a b)
