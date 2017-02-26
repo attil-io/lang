@@ -345,9 +345,12 @@
 (defn environment_create [parent]
 	{:vars {} :parent parent})
 
-(defn environment_lookup [varname scope]
+(defn environment_lookup_impl [varname scope level]
 	(if (nil? scope) nil
-	(if (contains? (:vars scope) (keyword varname)) scope (recur varname (:parent scope)))))
+	(if (contains? (:vars scope) (keyword varname)) {:scope scope :level level} (recur varname (:parent scope) (inc level)))))
+
+(defn environment_lookup [varname scope]
+	(:scope (environment_lookup_impl varname scope 0)))
 
 (defn environment_get [varname scope]
 	(if (nil? scope)
@@ -359,5 +362,7 @@
 			(recur varname (:parent scope))))))
 
 (defn environment_set [varname value scope]
-	{:vars {:hello 42} :parent nil})
+	(let [{_ :scope ancestor_level :level} (environment_lookup_impl varname scope 0)
+		varname (keyword varname)]
+	(assoc-in scope (concat (repeat ancestor_level :parent) [:vars varname]) value)))
 
