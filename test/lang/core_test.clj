@@ -302,5 +302,6 @@
     (is (= "hello" (evaluate {:type "str" :value "hello"} {:vars {} :parent nil})))
     (is (= true (evaluate {:type "bool" :value true} {:vars {} :parent nil})))
     (is (= 42 (evaluate {:type "var" :value "a"} {:vars {:a 42} :parent nil})))
-    (is (= {:vars {:a 42} :parent nil} (evaluate {:type "assign" :left {:type "var" :value "a"} :right {:type "num" :value 42}} {:vars {:a 0} :parent nil})))))
+    (is (= {:vars {:a 42} :parent nil} (evaluate {:type "assign" :left {:type "var" :value "a"} :right {:type "num" :value 42}} {:vars {:a 0} :parent nil})))
+    (is (thrown-with-msg? Exception #"Cannot assign to" (evaluate {:type "assign" :left {:type "num" :value 6} :right {:type "num" :value 42}} {:vars {:a 0} :parent nil})))))
  
