@@ -391,7 +391,8 @@
 		"lambda" (evaluate_make_lambda environment expression)
 		"if" (if (evaluate (:cond expression) environment)
 			(evaluate (:then expression) environment)
-			(if (nil? (:else expression)) false (evaluate (:else expression) environment)))))
+			(if (nil? (:else expression)) false (evaluate (:else expression) environment)))
+		"prog" false))
 
 (defn evaluate_apply_op [op a b]
 	(letfn [(isnum [x] 
