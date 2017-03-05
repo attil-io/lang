@@ -376,6 +376,7 @@
 	(assoc-in scope [:vars (keyword varname)] value))
 
 (declare evaluate_apply_op)
+(declare evaluate_make_lambda)
 
 (defn evaluate [expression environment]
 	(case (:type expression)
@@ -387,6 +388,7 @@
 			(environment_set (:value (:left expression)) (evaluate (:right expression) environment_set) environment)
 			(throw (Exception. (str "Cannot assign to " (:left expression)))))
 		"binary" (evaluate_apply_op (:operator expression) (evaluate (:left expression) environment) (evaluate (:right expression) environment))
+		"lambda" (evaluate_make_lambda environment expression)
 		"if" (if (evaluate (:cond expression) environment)
 			(evaluate (:then expression) environment)
 			(if (nil? (:else expression)) false (evaluate (:else expression) environment)))))
