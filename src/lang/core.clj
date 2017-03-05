@@ -412,3 +412,5 @@
 		"!=" (not= a b)
 		(throw (Exception. (str "Can't apply operator " op))))))
 
+(defn evaluate_make_lambda[env exp] (fn [] 5))
+
