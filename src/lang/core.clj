@@ -413,8 +413,13 @@
 		(throw (Exception. (str "Can't apply operator " op))))))
 
 (defn evaluate_make_lambda[env exp] 
-	(fn [] 
+	(fn [& args] 
 		(let [names (:vars exp)
-			scope (environment_create env)]
-		(evaluate (:body exp) scope))))
+			scope (environment_create env)
+			extended_args (concat args (repeat (- (count names) (count args)) false))
+			extended_scope (reduce (fn [current_scope i]
+				(environment_def (names i) (nth extended_args i) current_scope))
+				scope
+				(range (count names)))]
+		(evaluate (:body exp) extended_scope))))
 

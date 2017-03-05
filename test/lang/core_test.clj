@@ -336,6 +336,7 @@
     (is (thrown-with-msg? Exception #"Can't apply operator" (evaluate_apply_op "<>" 1 2))))
   (testing "test evaluate_make_lambda"
     (is (= 5 ((evaluate_make_lambda {:vars {} :parent nil} {:type "lambda" :name "bla" :vars [] :body {:type "num" :value 5}}))))
-    (is (= 42 ((evaluate_make_lambda {:vars {:a 42} :parent nil} {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}))))))
+    (is (= false ((evaluate_make_lambda {:vars {} :parent nil} {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}))))
+    (is (= 42 ((evaluate_make_lambda {:vars {} :parent nil} {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}) 42)))))
  
 
