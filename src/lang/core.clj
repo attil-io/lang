@@ -380,18 +380,23 @@
 
 (defn evaluate [expression environment]
 	(case (:type expression)
-		"num" (:value expression)
-		"str" (:value expression)
-		"bool" (:value expression)
-		"var" (environment_get (:value expression) environment)
+		"num" [(:value expression) environment]
+		"str" [(:value expression) environment]
+		"bool" [(:value expression) environment]
+		"var" [(environment_get (:value expression) environment) environment]
 		"assign" (if (= "var" (:type (:left expression))) 
-			(environment_set (:value (:left expression)) (evaluate (:right expression) environment_set) environment)
+			(let [[eval_result eval_env] (evaluate (:right expression) environment)]
+				[eval_result (environment_set (:value (:left expression)) eval_result eval_env)])
 			(throw (Exception. (str "Cannot assign to " (:left expression)))))
-		"binary" (evaluate_apply_op (:operator expression) (evaluate (:left expression) environment) (evaluate (:right expression) environment))
+		"binary" (let [[eval_left_result eval_left_env] (evaluate (:left expression) environment)
+
+				[eval_right_result eval_right_env] (evaluate (:right expression) eval_left_env)]
+[(evaluate_apply_op (:operator expression) eval_left_result eval_right_result) eval_right_env])
 		"lambda" (evaluate_make_lambda environment expression)
-		"if" (if (evaluate (:cond expression) environment)
-			(evaluate (:then expression) environment)
-			(if (nil? (:else expression)) false (evaluate (:else expression) environment)))
+		"if" (let [[cond_result cond_env] (evaluate (:cond expression) environment)]
+			(if cond_result
+				(evaluate (:then expression) cond_env)
+			(if (nil? (:else expression)) [false cond_env] (evaluate (:else expression) cond_env))))
 		"prog" (evaluate (last (:prog expression)) environment)))
 
 (defn evaluate_apply_op [op a b]
@@ -423,6 +428,7 @@
 			extended_scope (reduce (fn [current_scope i]
 				(environment_def (names i) (nth extended_args i) current_scope))
 				scope
-				(range (count names)))]
-		(evaluate (:body exp) extended_scope))))
+				(range (count names)))
+			[eval_result eval_scope] (evaluate (:body exp) extended_scope)]
+		[eval_result (:parent eval_scope)])))
 

@@ -298,20 +298,19 @@
  
  (deftest evaluate-test
   (testing "test evaluate"
-    (is (= 5 (evaluate {:type "num" :value 5} {:vars {} :parent nil})))
-    (is (= "hello" (evaluate {:type "str" :value "hello"} {:vars {} :parent nil})))
-    (is (= true (evaluate {:type "bool" :value true} {:vars {} :parent nil})))
-    (is (= 42 (evaluate {:type "var" :value "a"} {:vars {:a 42} :parent nil})))
-    (is (= {:vars {:a 42} :parent nil} (evaluate {:type "assign" :left {:type "var" :value "a"} :right {:type "num" :value 42}} {:vars {:a 0} :parent nil})))
+    (is (= [5 {:vars {} :parent nil}] (evaluate {:type "num" :value 5} {:vars {} :parent nil})))
+    (is (= ["hello" {:vars {} :parent nil}] (evaluate {:type "str" :value "hello"} {:vars {} :parent nil})))
+    (is (= [true {:vars {} :parent nil}] (evaluate {:type "bool" :value true} {:vars {} :parent nil})))
+    (is (= [42 {:vars {:a 42} :parent nil}] (evaluate {:type "var" :value "a"} {:vars {:a 42} :parent nil})))
+    (is (= [42 {:vars {:a 42} :parent nil}] (evaluate {:type "assign" :left {:type "var" :value "a"} :right {:type "num" :value 42}} {:vars {:a 0} :parent nil})))
     (is (thrown-with-msg? Exception #"Cannot assign to" (evaluate {:type "assign" :left {:type "num" :value 6} :right {:type "num" :value 42}} {:vars {:a 0} :parent nil})))
-    (is (= 42 (evaluate {:type "if" :cond {:type "bool" :value true} :then {:type "num" :value 42}} {:vars {} :parent nil})))
-    (is (= 44 (evaluate {:type "if" :cond {:type "bool" :value false} :then {:type "num" :value 42} :else {:type "num" :value 44}} {:vars {} :parent nil})))
-    (is (= false (evaluate {:type "if" :cond {:type "bool" :value false} :then {:type "num" :value 42}} {:vars {} :parent nil})))
-    (is (= 47 (evaluate {:type "binary" :operator "+" :left {:type "num" :value 5} :right {:type "num" :value 42}} {:vars {} :parent nil})))
-    (is (= 47 ((evaluate {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}} {:vars {} :parent nil}) 47)))
-    (is (= false (evaluate {:type "prog" :prog [{:type "bool" :value false}]} {:vars {} :parent nil})))
-    (is (= 47 (evaluate {:type "prog" :prog [{:type "num" :value 47}]} {:vars {} :parent nil})))
-    (is (= 48 (evaluate {:type "prog" :prog [{:type "num" :value 47}{:type "num" :value 48}]} {:vars {} :parent nil}))))
+    (is (= [42 {:vars {} :parent nil}] (evaluate {:type "if" :cond {:type "bool" :value true} :then {:type "num" :value 42}} {:vars {} :parent nil})))
+    (is (= [44 {:vars {} :parent nil}] (evaluate {:type "if" :cond {:type "bool" :value false} :then {:type "num" :value 42} :else {:type "num" :value 44}} {:vars {} :parent nil})))
+    (is (= [false {:vars {} :parent nil}] (evaluate {:type "if" :cond {:type "bool" :value false} :then {:type "num" :value 42}} {:vars {} :parent nil})))
+    (is (= [47 {:vars {} :parent nil}] (evaluate {:type "binary" :operator "+" :left {:type "num" :value 5} :right {:type "num" :value 42}} {:vars {} :parent nil})))
+    (is (= [47 {:vars {} :parent nil}] ((evaluate {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}} {:vars {} :parent nil}) 47)))
+    (is (= [false {:vars {} :parent nil}] (evaluate {:type "prog" :prog [{:type "bool" :value false}]} {:vars {} :parent nil})))
+    (is (= [47 {:vars {} :parent nil}] (evaluate {:type "prog" :prog [{:type "num" :value 47}]} {:vars {} :parent nil}))))
   (testing "test evaluate_apply_op"
     (is (= 5 (evaluate_apply_op "+" 2 3)))
     (is (thrown-with-msg? Exception #"Expected number but got" (evaluate_apply_op "+" "alma" 3)))
@@ -339,8 +338,8 @@
     (is (= true (evaluate_apply_op "!=" 1 2)))
     (is (thrown-with-msg? Exception #"Can't apply operator" (evaluate_apply_op "<>" 1 2))))
   (testing "test evaluate_make_lambda"
-    (is (= 5 ((evaluate_make_lambda {:vars {} :parent nil} {:type "lambda" :name "bla" :vars [] :body {:type "num" :value 5}}))))
-    (is (= false ((evaluate_make_lambda {:vars {} :parent nil} {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}))))
-    (is (= 42 ((evaluate_make_lambda {:vars {} :parent nil} {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}) 42)))))
+    (is (= [5 {:vars {} :parent nil}] ((evaluate_make_lambda {:vars {} :parent nil} {:type "lambda" :name "bla" :vars [] :body {:type "num" :value 5}}))))
+    (is (= [false {:vars {} :parent nil}] ((evaluate_make_lambda {:vars {} :parent nil} {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}))))
+    (is (= [42 {:vars {} :parent nil}] ((evaluate_make_lambda {:vars {} :parent nil} {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}) 42)))))
  
 
