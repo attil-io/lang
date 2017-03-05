@@ -19,6 +19,7 @@
                          (swap! depth dec)
                          (println (str (apply str (repeat @depth " ")) " <<< " result))
                          result)))))
+(defn mapwithpartialresults [fun coll] (loop [accum [] remainingcoll coll] (if (= 0 (count remainingcoll)) accum (recur (conj accum (fun (first remainingcoll) accum)) (rest remainingcoll)))))
 
 (def inputstream_result_part first)
 (def inputstream_state_part second)
@@ -399,7 +400,17 @@
 			(if (nil? (:else expression)) [false cond_env] (evaluate (:else expression) cond_env))))
 		"prog" (let [prog (:prog expression)
 				proglen (count prog)]
-			(reduce (fn [[value env] progidx] (evaluate (nth prog progidx) env)) [false environment] (range proglen)))))
+			(reduce (fn [[value env] progidx] (evaluate (nth prog progidx) env)) [false environment] (range proglen)))
+		"call" (let [func_val (evaluate (:func expression) environment)
+				args (:args expression)
+				mapped_args_envs (mapwithpartialresults 
+						(fn [idx prevs] 
+							(let [arg (nth args idx)
+								env (if (< 0 (count prevs)) (last (last prevs)) environment)]
+							(evaluate arg env)))
+						(range (count args)))
+				mapped_args (map first mapped_args_envs)]
+			(apply evaluate (apply func_val args)))))
 
 (defn evaluate_apply_op [op a b]
 	(letfn [(isnum [x] 
