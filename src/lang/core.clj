@@ -412,5 +412,9 @@
 		"!=" (not= a b)
 		(throw (Exception. (str "Can't apply operator " op))))))
 
-(defn evaluate_make_lambda[env exp] (fn [] 5))
+(defn evaluate_make_lambda[env exp] 
+	(fn [] 
+		(let [names (:vars exp)
+			scope (environment_create env)]
+		(evaluate (:body exp) scope))))
 
