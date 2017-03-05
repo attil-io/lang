@@ -392,7 +392,7 @@
 		"if" (if (evaluate (:cond expression) environment)
 			(evaluate (:then expression) environment)
 			(if (nil? (:else expression)) false (evaluate (:else expression) environment)))
-		"prog" false))
+		"prog" (evaluate ((:prog expression) 0) environment)))
 
 (defn evaluate_apply_op [op a b]
 	(letfn [(isnum [x] 

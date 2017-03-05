@@ -309,7 +309,8 @@
     (is (= false (evaluate {:type "if" :cond {:type "bool" :value false} :then {:type "num" :value 42}} {:vars {} :parent nil})))
     (is (= 47 (evaluate {:type "binary" :operator "+" :left {:type "num" :value 5} :right {:type "num" :value 42}} {:vars {} :parent nil})))
     (is (= 47 ((evaluate {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}} {:vars {} :parent nil}) 47)))
-    (is (= false (evaluate {:type "prog" :prog [{:type "bool" :value false}]} {:vars {} :parent nil}))))
+    (is (= false (evaluate {:type "prog" :prog [{:type "bool" :value false}]} {:vars {} :parent nil})))
+    (is (= 47 (evaluate {:type "prog" :prog [{:type "num" :value 47}]} {:vars {} :parent nil}))))
   (testing "test evaluate_apply_op"
     (is (= 5 (evaluate_apply_op "+" 2 3)))
     (is (thrown-with-msg? Exception #"Expected number but got" (evaluate_apply_op "+" "alma" 3)))
