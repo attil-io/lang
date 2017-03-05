@@ -397,7 +397,9 @@
 			(if cond_result
 				(evaluate (:then expression) cond_env)
 			(if (nil? (:else expression)) [false cond_env] (evaluate (:else expression) cond_env))))
-		"prog" (evaluate (last (:prog expression)) environment)))
+		"prog" (let [prog (:prog expression)
+				proglen (count prog)]
+			(reduce (fn [[value env] progidx] (evaluate (nth prog progidx) env)) [false environment] (range proglen)))))
 
 (defn evaluate_apply_op [op a b]
 	(letfn [(isnum [x] 
