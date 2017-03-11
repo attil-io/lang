@@ -349,7 +349,8 @@
     (is (= [false {:vars {} :parent nil}] ((evaluate_make_lambda {:vars {} :parent nil} {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}))))
     (is (= [42 {:vars {} :parent nil}] ((evaluate_make_lambda {:vars {} :parent nil} {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}) 42)))))
  
-; (deftest interpret-test
-;  (testing "test interpret"
-;    (is (= ["hello, world"] (interpret "print('hello, world')") ))))
+ (deftest interpret-test
+  (testing "test interpret"
+    (is (= nil (interpret "print(\"hello, world\")")))
+    (is (= nil (interpret "sum = lambda(x, y) x + y; print(sum(2, 3));")))))
  

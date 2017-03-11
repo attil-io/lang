@@ -446,5 +446,8 @@
 			[eval_result eval_scope] (evaluate (:body exp) extended_scope)]
 		[eval_result (:parent eval_scope)])))
 
-(defn interpret [code] ["5"])
+(defn interpret [code] 
+	(let [parsed (parse_parse_toplevel code)
+		globalenv (environment_def "print" (fn [& args] (print (apply str (cons ": " args)))) {:vars {} :parent nil})]
+	(evaluate (parsed 0) {:vars {} :parent globalenv})))
 
