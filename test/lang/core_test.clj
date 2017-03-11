@@ -313,7 +313,8 @@
     (is (= [47 {:vars {} :parent nil}] (evaluate {:type "prog" :prog [{:type "num" :value 47}]} {:vars {} :parent nil})))
     (is (= [48 {:vars {} :parent nil}] (evaluate {:type "prog" :prog [{:type "num" :value 47}{:type "num" :value 48}]} {:vars {} :parent nil})))
     (is (= [10 {:vars {:a 5 :b 10} :parent nil}] (evaluate {:type "prog" :prog [{:type "assign" :operator "=" :left {:type "var" :value "a"} :right {:type "num" :value 5}}{:type "assign" :operator "=" :left {:type "var" :value "b"} :right {:type "num" :value 10}}]} {:vars {:a 0 :b 0} :parent nil})))
-    (is (= [10 {:vars {} :parent nil}] (evaluate {:type "call" :func {:type "lambda" :name "a" :vars ["c"] :body {:type "var" :value "c"}} :args [{:type "num" :value 10}]} {:vars {} :parent nil}))))
+    (is (= [10 {:vars {} :parent nil}] (evaluate {:type "call" :func {:type "lambda" :name "a" :vars ["c"] :body {:type "var" :value "c"}} :args [{:type "num" :value 10}]} {:vars {} :parent nil})))
+    (is (thrown-with-msg? Exception #"I don't know how to evaluate" (evaluate {:type "unknown"} {:vars {} :parent nil}))))
   (testing "test evaluate_apply_op"
     (is (= 5 (evaluate_apply_op "+" 2 3)))
     (is (thrown-with-msg? Exception #"Expected number but got" (evaluate_apply_op "+" "alma" 3)))

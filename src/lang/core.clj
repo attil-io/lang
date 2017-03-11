@@ -410,7 +410,8 @@
 							(evaluate arg env)))
 						(range (count args)))
 				mapped_args (map first mapped_args_envs)]
-			(apply evaluate (apply func_val args)))))
+			(apply evaluate (apply func_val args)))
+		(throw (Exception. (str "I don't know how to evaluate " (:type expression))))))
 
 (defn evaluate_apply_op [op a b]
 	(letfn [(isnum [x] 
