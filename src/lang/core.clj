@@ -446,8 +446,18 @@
 			[eval_result eval_scope] (evaluate (:body exp) extended_scope)]
 		[eval_result (:parent eval_scope)])))
 
+
+(defn create_print [global_env]
+	(fn [& args]
+		(let [print_accum (environment_get "print_accum" global_env)
+			print_line (apply str args)
+			new_print_accum (conj print_accum print_line)]
+		[print_line (environment_set "print_accum" new_print_accum global_env)])))
+
 (defn interpret [code] 
 	(let [parsed (parse_parse_toplevel code)
-		globalenv (environment_def "print" (fn [& args] (print (apply str (cons ": " args)))) {:vars {} :parent nil})]
-	(evaluate (parsed 0) {:vars {} :parent globalenv})))
+		empty_env (environment_create nil) 
+		global_env1 (environment_def "print_accum" [] empty_env)
+		global_env (environment_def "print" (create_print global_env1) global_env1)]
+	(first (evaluate (parsed 0) {:vars {} :parent global_env}))))
 

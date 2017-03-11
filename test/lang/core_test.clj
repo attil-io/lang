@@ -351,6 +351,6 @@
  
  (deftest interpret-test
   (testing "test interpret"
-    (is (= nil (interpret "print(\"hello, world\")")))
-    (is (= nil (interpret "sum = lambda(x, y) x + y; print(sum(2, 3));")))))
+    (is (= "hello, world" (interpret "print(\"hello, world\")")))
+    (is (= "5" (interpret "sum = lambda(x, y) x + y; print(sum(2, 3));")))))
  
