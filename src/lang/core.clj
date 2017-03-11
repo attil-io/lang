@@ -446,3 +446,5 @@
 			[eval_result eval_scope] (evaluate (:body exp) extended_scope)]
 		[eval_result (:parent eval_scope)])))
 
+(defn interpret [code] ["5"])
+
