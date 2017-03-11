@@ -393,7 +393,7 @@
 
 				[eval_right_result eval_right_env] (evaluate (:right expression) eval_left_env)]
 [(evaluate_apply_op (:operator expression) eval_left_result eval_right_result) eval_right_env])
-		"lambda" (evaluate_make_lambda environment expression)
+		"lambda" [(evaluate_make_lambda environment expression) environment]
 		"if" (let [[cond_result cond_env] (evaluate (:cond expression) environment)]
 			(if cond_result
 				(evaluate (:then expression) cond_env)
@@ -401,7 +401,7 @@
 		"prog" (let [prog (:prog expression)
 				proglen (count prog)]
 			(reduce (fn [[value env] progidx] (evaluate (nth prog progidx) env)) [false environment] (range proglen)))
-		"call" (let [func_val (evaluate (:func expression) environment)
+		"call" (let [[func_val _] (evaluate (:func expression) environment)
 				args (:args expression)
 				mapped_args_envs (mapwithpartialresults 
 						(fn [idx prevs] 
@@ -410,7 +410,7 @@
 							(evaluate arg env)))
 						(range (count args)))
 				mapped_args (map first mapped_args_envs)]
-			(apply evaluate (apply func_val args)))
+			(apply func_val mapped_args))
 		(throw (Exception. (str "I don't know how to evaluate " (:type expression))))))
 
 (defn evaluate_apply_op [op a b]
