@@ -338,7 +338,7 @@
 	(loop [token_stream_state {:pos 0 :input input :line 0 :col 0}
 		prog []]
 	(if (tokenstream_eof token_stream_state) 
-		[{:type "prog" :prog prog}]
+		{:type "prog" :prog prog}
 		(let [[parse_result parse_state] (parse_parse_expression token_stream_state)
 			next_state (if (tokenstream_eof parse_state) parse_state (parse_skip_punc \; parse_state))] 
 			(recur next_state (conj prog parse_result))))))
@@ -393,7 +393,7 @@
 
 				[eval_right_result eval_right_env] (evaluate (:right expression) eval_left_env)]
 [(evaluate_apply_op (:operator expression) eval_left_result eval_right_result) eval_right_env])
-		"lambda" [(evaluate_make_lambda environment expression) environment]
+		"lambda" [(evaluate_make_lambda expression) environment]
 		"if" (let [[cond_result cond_env] (evaluate (:cond expression) environment)]
 			(if cond_result
 				(evaluate (:then expression) cond_env)
@@ -409,8 +409,9 @@
 								env (if (< 0 (count prevs)) (last (last prevs)) environment)]
 							(evaluate arg env)))
 						(range (count args)))
-				mapped_args (map first mapped_args_envs)]
-			(apply func_val mapped_args))
+				mapped_args (map first mapped_args_envs)
+				mapped_env (last (last mapped_args_envs))]
+			(apply func_val (cons mapped_env mapped_args)))
 		(throw (Exception. (str "I don't know how to evaluate " (:type expression))))))
 
 (defn evaluate_apply_op [op a b]
@@ -434,8 +435,8 @@
 		"!=" (not= a b)
 		(throw (Exception. (str "Can't apply operator " op))))))
 
-(defn evaluate_make_lambda[env exp] 
-	(fn [& args] 
+(defn evaluate_make_lambda[exp] 
+	(fn [env & args] 
 		(let [names (:vars exp)
 			scope (environment_create env)
 			extended_args (concat args (repeat (- (count names) (count args)) false))
@@ -447,17 +448,19 @@
 		[eval_result (:parent eval_scope)])))
 
 
-(defn create_print [global_env]
-	(fn [& args]
-		(let [print_accum (environment_get "print_accum" global_env)
-			print_line (apply str args)
-			new_print_accum (conj print_accum print_line)]
-		[print_line (environment_set "print_accum" new_print_accum global_env)])))
+(defn printimpl [env & args]
+	(let [print_accum (environment_get "print_accum" env)
+		print_line (apply str args)
+		new_print_accum (conj print_accum print_line)]
+	[print_line (environment_set "print_accum" new_print_accum env)]))
+
+(defn printlnimpl [env & args]
+	(apply printimpl (cons env (conj args "\n"))))
 
 (defn interpret [code] 
 	(let [parsed (parse_parse_toplevel code)
 		empty_env (environment_create nil) 
-		global_env1 (environment_def "print_accum" [] empty_env)
-		global_env (environment_def "print" (create_print global_env1) global_env1)]
-	(first (evaluate (parsed 0) {:vars {} :parent global_env}))))
+		global_env (environment_def "println" printlnimpl (environment_def "print" printimpl (environment_def "print_accum" [] empty_env)))
+		[eval_result eval_env] (evaluate parsed {:vars {} :parent global_env})]
+	[eval_result (environment_get "print_accum" eval_env)]))
 

@@ -253,17 +253,17 @@
     (is (= [{:type "bool" :value true} {:pos 6 :input "{true}" :line 0 :col 6}] (parse_parse_prog {:pos 0 :input "{true}" :line 0 :col 0})))
     (is (= [{:type "prog" :prog [{:type "bool" :value true}{:type "bool" :value false}]} {:pos 12 :input "{true;false}" :line 0 :col 12}] (parse_parse_prog {:pos 0 :input "{true;false}" :line 0 :col 0}))))
  (testing "test parse_parse_toplevel"
-    (is (= [{:type "prog" :prog []}] (parse_parse_toplevel "")))
-    (is (= [{:type "prog" :prog [{:type "num" :value 1}]}] (parse_parse_toplevel "1")))
-    (is (= [{:type "prog" :prog [{:type "num" :value 1}{:type "num" :value 2}]}] (parse_parse_toplevel "1;2;")))
-    (is (= [{:type "prog" :prog [{:type "if" :cond {:type "binary" :operator "<=" :left {:type "var" :value "a"} :right {:type "var" :value "b"}} :then {:type "bool" :value false} }]}] (parse_parse_toplevel "if a <= b { }   ")))))
+    (is (= {:type "prog" :prog []} (parse_parse_toplevel "")))
+    (is (= {:type "prog" :prog [{:type "num" :value 1}]} (parse_parse_toplevel "1")))
+    (is (= {:type "prog" :prog [{:type "num" :value 1}{:type "num" :value 2}]} (parse_parse_toplevel "1;2;")))
+    (is (= {:type "prog" :prog [{:type "if" :cond {:type "binary" :operator "<=" :left {:type "var" :value "a"} :right {:type "var" :value "b"}} :then {:type "bool" :value false} }]} (parse_parse_toplevel "if a <= b { }   ")))))
  
 
 (defn long-str [& strings] (clojure.string/join "\n" strings))
 
 (deftest complex-test
   (testing "test complex"
-       (is (= [{ :type "prog" :prog [ { :type "assign" :operator "=" :left { :type "var" :value "print_range" } :right { :type "lambda" :name nil :vars [ "a" "b" ] :body { :type "if" :cond { :type "binary" :operator "<=" :left { :type "var" :value "a" } :right { :type "var" :value "b" } } :then { :type "prog" :prog [ { :type "call" :func { :type "var" :value "print" } :args [ { :type "var" :value "a" } ] } { :type "if" :cond { :type "binary" :operator "<=" :left { :type "binary" :operator "+" :left { :type "var" :value "a" } :right { :type "num" :value 1 } } :right { :type "var" :value "b" } } :then { :type "prog" :prog [ { :type "call" :func { :type "var" :value "print" } :args [ { :type "str" :value ", " } ] } { :type "call" :func { :type "var" :value "print_range" } :args [ { :type "binary" :operator "+" :left { :type "var" :value "a" } :right { :type "num" :value 1 } } { :type "var" :value "b" } ] } ] } :else { :type "call" :func { :type "var" :value "println" } :args [ { :type "str" :value "" } ] } } ] } } } } { :type "call" :func { :type "var" :value "print_range" } :args [ { :type "num" :value 1 } { :type "num" :value 10 } ] } ] }] (parse_parse_toplevel (long-str
+       (is (= { :type "prog" :prog [ { :type "assign" :operator "=" :left { :type "var" :value "print_range" } :right { :type "lambda" :name nil :vars [ "a" "b" ] :body { :type "if" :cond { :type "binary" :operator "<=" :left { :type "var" :value "a" } :right { :type "var" :value "b" } } :then { :type "prog" :prog [ { :type "call" :func { :type "var" :value "print" } :args [ { :type "var" :value "a" } ] } { :type "if" :cond { :type "binary" :operator "<=" :left { :type "binary" :operator "+" :left { :type "var" :value "a" } :right { :type "num" :value 1 } } :right { :type "var" :value "b" } } :then { :type "prog" :prog [ { :type "call" :func { :type "var" :value "print" } :args [ { :type "str" :value ", " } ] } { :type "call" :func { :type "var" :value "print_range" } :args [ { :type "binary" :operator "+" :left { :type "var" :value "a" } :right { :type "num" :value 1 } } { :type "var" :value "b" } ] } ] } :else { :type "call" :func { :type "var" :value "println" } :args [ { :type "str" :value "" } ] } } ] } } } } { :type "call" :func { :type "var" :value "print_range" } :args [ { :type "num" :value 1 } { :type "num" :value 10 } ] } ] } (parse_parse_toplevel (long-str
                "print_range = lambda(a, b) if a <= b {            "
                "                        print(a);                 "
                "                        if a + 1 <= b {           "
@@ -310,7 +310,7 @@
     (is (= [44 {:vars {} :parent nil}] (evaluate {:type "if" :cond {:type "bool" :value false} :then {:type "num" :value 42} :else {:type "num" :value 44}} {:vars {} :parent nil})))
     (is (= [false {:vars {} :parent nil}] (evaluate {:type "if" :cond {:type "bool" :value false} :then {:type "num" :value 42}} {:vars {} :parent nil})))
     (is (= [47 {:vars {} :parent nil}] (evaluate {:type "binary" :operator "+" :left {:type "num" :value 5} :right {:type "num" :value 42}} {:vars {} :parent nil})))
-    (is (= [47 {:vars {} :parent nil}] (((evaluate {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}} {:vars {} :parent nil}) 0) 47)))
+    (is (= [47 {:vars {} :parent nil}] (((evaluate {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}} {:vars {} :parent nil}) 0) {:vars {} :parent nil} 47)))
     (is (= [false {:vars {} :parent nil}] (evaluate {:type "prog" :prog [{:type "bool" :value false}]} {:vars {} :parent nil})))
     (is (= [47 {:vars {} :parent nil}] (evaluate {:type "prog" :prog [{:type "num" :value 47}]} {:vars {} :parent nil})))
     (is (= [48 {:vars {} :parent nil}] (evaluate {:type "prog" :prog [{:type "num" :value 47}{:type "num" :value 48}]} {:vars {} :parent nil})))
@@ -345,12 +345,22 @@
     (is (= true (evaluate_apply_op "!=" 1 2)))
     (is (thrown-with-msg? Exception #"Can't apply operator" (evaluate_apply_op "<>" 1 2))))
   (testing "test evaluate_make_lambda"
-    (is (= [5 {:vars {} :parent nil}] ((evaluate_make_lambda {:vars {} :parent nil} {:type "lambda" :name "bla" :vars [] :body {:type "num" :value 5}}))))
-    (is (= [false {:vars {} :parent nil}] ((evaluate_make_lambda {:vars {} :parent nil} {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}))))
-    (is (= [42 {:vars {} :parent nil}] ((evaluate_make_lambda {:vars {} :parent nil} {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}) 42)))))
+    (is (= [5 {:vars {} :parent nil}] ((evaluate_make_lambda {:type "lambda" :name "bla" :vars [] :body {:type "num" :value 5}}) {:vars {} :parent nil})))
+    (is (= [false {:vars {} :parent nil}] ((evaluate_make_lambda  {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}) {:vars {} :parent nil})))
+    (is (= [42 {:vars {} :parent nil}] ((evaluate_make_lambda  {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}) {:vars {} :parent nil} 42)))))
  
  (deftest interpret-test
   (testing "test interpret"
-    (is (= "hello, world" (interpret "print(\"hello, world\")")))
-    (is (= "5" (interpret "sum = lambda(x, y) x + y; print(sum(2, 3));")))))
- 
+    (is (= "hello, world" (first (interpret "print(\"hello, world\")"))))
+    (is (= "5" (first (interpret "sum = lambda(x, y) x + y; print(sum(2, 3));"))))
+    (is (= ["1" ", " "2" ", " "3" ", " "4" ", " "5" ", " "6" ", " "7" ", " "8" ", " "9" ", " "10" "\n"] (second (interpret (long-str 
+               "print_range = lambda(a, b) if a <= b {            "
+               "                        print(a);                 "
+               "                        if a + 1 <= b {           "
+               "                          print(\", \");          "
+               "                          print_range(a + 1, b);  "
+               "                        } else println(\"\");     "
+               "                      };                          "
+               "print_range(1, 10);                               "
+)))))))
+
