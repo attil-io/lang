@@ -3,13 +3,13 @@
 	(:require [lang.parser :refer :all])
 	(:require [lang.evaluate :refer :all]))
 
-(defn printimpl [env & args]
+(defn- printimpl [env & args]
 	(let [print_accum (environment_get "print_accum" env)
 		print_line (apply str args)
 		new_print_accum (conj print_accum print_line)]
 	[print_line (environment_set "print_accum" new_print_accum env)]))
 
-(defn printlnimpl [env & args]
+(defn- printlnimpl [env & args]
 	(apply printimpl (cons env (conj args "\n"))))
 
 (defn interpret [code] 

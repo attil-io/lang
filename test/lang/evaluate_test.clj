@@ -25,6 +25,7 @@
     (is (= ["bla" {:vars {:print myprint} :parent nil}] (evaluate {:type "call", :func {:value "print", :type "var"}, :args [{:type "str", :value "hello, world"}]} {:vars {:print myprint} :parent nil})))
     (is (thrown-with-msg? Exception #"I don't know how to evaluate" (evaluate {:type "unknown"} {:vars {} :parent nil}))))
   (testing "test evaluate_apply_op"
+    (let [evaluate_apply_op #'lang.evaluate/evaluate_apply_op]
     (is (= 5 (evaluate_apply_op "+" 2 3)))
     (is (thrown-with-msg? Exception #"Expected number but got" (evaluate_apply_op "+" "alma" 3)))
     (is (= 6 (evaluate_apply_op "*" 2 3)))
@@ -49,9 +50,10 @@
     (is (thrown-with-msg? Exception #"Expected number but got" (evaluate_apply_op ">=" "alma" 3)))
     (is (= false (evaluate_apply_op "==" 1 2)))
     (is (= true (evaluate_apply_op "!=" 1 2)))
-    (is (thrown-with-msg? Exception #"Can't apply operator" (evaluate_apply_op "<>" 1 2))))
+    (is (thrown-with-msg? Exception #"Can't apply operator" (evaluate_apply_op "<>" 1 2)))))
   (testing "test evaluate_make_lambda"
+    (let [evaluate_make_lambda #'lang.evaluate/evaluate_make_lambda]
     (is (= [5 {:vars {} :parent nil}] ((evaluate_make_lambda {:type "lambda" :name "bla" :vars [] :body {:type "num" :value 5}}) {:vars {} :parent nil})))
     (is (= [false {:vars {} :parent nil}] ((evaluate_make_lambda  {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}) {:vars {} :parent nil})))
-    (is (= [42 {:vars {} :parent nil}] ((evaluate_make_lambda  {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}) {:vars {} :parent nil} 42)))))
+    (is (= [42 {:vars {} :parent nil}] ((evaluate_make_lambda  {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}) {:vars {} :parent nil} 42))))))
 

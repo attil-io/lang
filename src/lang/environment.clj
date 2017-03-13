@@ -3,7 +3,7 @@
 (defn environment_create [parent]
 	{:vars {} :parent parent})
 
-(defn environment_lookup_impl [varname scope level]
+(defn- environment_lookup_impl [varname scope level]
 	(if (nil? scope) nil
 	(if (contains? (:vars scope) (keyword varname)) {:scope scope :level level} (recur varname (:parent scope) (inc level)))))
 

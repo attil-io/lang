@@ -40,7 +40,7 @@
 			(apply func_val (cons mapped_env mapped_args)))
 		(throw (Exception. (str "I don't know how to evaluate " (:type expression))))))
 
-(defn evaluate_apply_op [op a b]
+(defn- evaluate_apply_op [op a b]
 	(letfn [(isnum [x] 
 			(if (number? x) x (throw (Exception. (str "Expected number but got " x)))))
 		(div [x]
@@ -61,7 +61,7 @@
 		"!=" (not= a b)
 		(throw (Exception. (str "Can't apply operator " op))))))
 
-(defn evaluate_make_lambda[exp] 
+(defn- evaluate_make_lambda[exp] 
 	(fn [env & args] 
 		(let [names (:vars exp)
 			scope (environment_create env)

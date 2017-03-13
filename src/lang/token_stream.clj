@@ -1,28 +1,28 @@
 (ns lang.token_stream
 	(:require [lang.input_stream :refer :all]))
 
-(defn tokenstream_is_keyword [x] (contains? #{"let" "if" "then" "else" "lambda" "λ" "true" "false"} x))
+(defn- tokenstream_is_keyword [x] (contains? #{"let" "if" "then" "else" "lambda" "λ" "true" "false"} x))
 
-(defn tokenstream_is_digit [ch] (and (not (nil? ch)) (not (nil? (re-matches #"[0-9]" (str ch))))))
+(defn- tokenstream_is_digit [ch] (and (not (nil? ch)) (not (nil? (re-matches #"[0-9]" (str ch))))))
 
-(defn tokenstream_is_id_start [ch] (and (not (nil? ch)) (not (nil? (re-matches #"(?i)[a-zλ_]" (str ch))))))
+(defn- tokenstream_is_id_start [ch] (and (not (nil? ch)) (not (nil? (re-matches #"(?i)[a-zλ_]" (str ch))))))
 
-(defn tokenstream_is_id [ch] (or (tokenstream_is_id_start ch) (and (not (nil? ch)) (>= (.indexOf "?!-<>=0123456789" (str ch)) 0))))
+(defn- tokenstream_is_id [ch] (or (tokenstream_is_id_start ch) (and (not (nil? ch)) (>= (.indexOf "?!-<>=0123456789" (str ch)) 0))))
 
-(defn tokenstream_is_op_char [ch] (and (not (nil? ch)) (>= (.indexOf "+-*/%=&|<>!" (str ch)) 0)))
+(defn- tokenstream_is_op_char [ch] (and (not (nil? ch)) (>= (.indexOf "+-*/%=&|<>!" (str ch)) 0)))
 
-(defn tokenstream_is_punc [ch] (and (not (nil? ch)) (>= (.indexOf ",;(){}[]" (str ch)) 0)))
+(defn- tokenstream_is_punc [ch] (and (not (nil? ch)) (>= (.indexOf ",;(){}[]" (str ch)) 0)))
 
-(defn tokenstream_is_whitespace [ch] (and (not (nil? ch)) (>= (.indexOf " \t\n" (str ch)) 0)))
+(defn- tokenstream_is_whitespace [ch] (and (not (nil? ch)) (>= (.indexOf " \t\n" (str ch)) 0)))
 
-(defn tokenstream_read_while [predicate inputstream_state]
+(defn- tokenstream_read_while [predicate inputstream_state]
       (loop [res "" state inputstream_state]
 	    (if (not (and (not (inputstream_eof state)) (predicate (inputstream_peek state))))
 		[res state]
 		(let [[nextch nextstate] (inputstream_next state)]
 		      (recur (str res nextch) nextstate)))))
 
-(defn tokenstream_read_number [inputstream_state] 
+(defn- tokenstream_read_number [inputstream_state] 
 	(let [[intpart intpart_state] (tokenstream_read_while #(and (not= \. %) (tokenstream_is_digit %)) inputstream_state)
 		maybedot_ch (inputstream_peek intpart_state)
 		dot_skip_state (if (= \. maybedot_ch) (inputstream_state_part (inputstream_next intpart_state)) intpart_state)
@@ -34,7 +34,7 @@
 	     [{:value number_numeric :type "num"}
 	       final_state])) 
 
-(defn tokenstream_read_ident [inputstream_state] 
+(defn- tokenstream_read_ident [inputstream_state] 
 	(let [[id_val id_state] (tokenstream_read_while tokenstream_is_id inputstream_state)
 		found_id (< 0 (count id_val))
 		id_type (and found_id (if (tokenstream_is_keyword id_val) "kw" "var"))
@@ -42,7 +42,7 @@
 		]
 	[ret_val id_state]))
 
-(defn tokenstream_read_escaped [inputstream_state end]
+(defn- tokenstream_read_escaped [inputstream_state end]
 	(loop [resultstr "" state inputstream_state finished false]
 		(if (or (inputstream_eof state) finished)
 			[resultstr state]
@@ -54,11 +54,11 @@
 				(recur (str resultstr (if finished "" newresult_val)) newresult_state finished)))))
 
 
-(defn tokenstream_read_string [inputstream_state]
+(defn- tokenstream_read_string [inputstream_state]
       (let [[read_val read_state] (tokenstream_read_escaped inputstream_state \")]
         [{:type "str" :value read_val} read_state]))
 
-(defn tokenstream_skip_comment [inputstream_state] 
+(defn- tokenstream_skip_comment [inputstream_state] 
 	(inputstream_next (inputstream_state_part (tokenstream_read_while #(not= % \newline) inputstream_state))))
 
 (defn tokenstream_read_next [inputstream_state]
