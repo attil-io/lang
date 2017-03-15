@@ -4,7 +4,7 @@
   :license {:name "MIT License"
             :url "https://opensource.org/licenses/MIT"}
   :dependencies [[org.clojure/clojure "1.7.0"]]
-;  :main ^:skip-aot lang.core
+  :main ^:skip-aot lang.main
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all} :dev {:plugins [[com.jakemccrary/lein-test-refresh "0.18.1"]]}})
 
