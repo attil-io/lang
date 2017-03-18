@@ -1,7 +1,8 @@
 (ns lang.interpret
 	(:require [lang.environment :refer :all])
 	(:require [lang.parser :refer :all])
-	(:require [lang.evaluate :refer :all]))
+	(:require [lang.evaluate :refer :all])
+	(:require [lang.util :refer :all]))
 
 (defn- printimpl [env & args]
 	(let [print_accum (environment_get "print_accum" env)

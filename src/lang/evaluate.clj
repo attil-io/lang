@@ -27,6 +27,11 @@
 		"prog" (let [prog (:prog expression)
 				proglen (count prog)]
 			(reduce (fn [[value env] progidx] (evaluate (nth prog progidx) env)) [false environment] (range proglen)))
+		"let"  (let [{:keys [vars body]} expression
+				env (environment_create environment)
+				extended_env (reduce (fn [actenv newvar] (let [[eval_val eval_env] (evaluate (:def newvar) actenv)](environment_def (:name newvar) eval_val eval_env))) env vars)
+				[result result_env] (evaluate body extended_env)]
+			[result (:parent result_env)])
 		"call" (let [[func_val _] (evaluate (:func expression) environment)
 				args (:args expression)
 				mapped_args_envs (mapwithpartialresults 

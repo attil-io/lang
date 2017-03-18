@@ -16,6 +16,7 @@
     (is (= [44 {:vars {} :parent nil}] (evaluate {:type "if" :cond {:type "bool" :value false} :then {:type "num" :value 42} :else {:type "num" :value 44}} {:vars {} :parent nil})))
     (is (= [false {:vars {} :parent nil}] (evaluate {:type "if" :cond {:type "bool" :value false} :then {:type "num" :value 42}} {:vars {} :parent nil})))
     (is (= [47 {:vars {} :parent nil}] (evaluate {:type "binary" :operator "+" :left {:type "num" :value 5} :right {:type "num" :value 42}} {:vars {} :parent nil})))
+    (is (= [2 {:vars {} :parent nil}] (evaluate {:type "let" :vars [{:name "x", :def {:value 2, :type "num"}}] :body {:value "x" :type "var"}} {:vars {} :parent nil})))
     (is (= [47 {:vars {} :parent nil}] (((evaluate {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}} {:vars {} :parent nil}) 0) {:vars {} :parent nil} 47)))
     (is (= [false {:vars {} :parent nil}] (evaluate {:type "prog" :prog [{:type "bool" :value false}]} {:vars {} :parent nil})))
     (is (= [47 {:vars {} :parent nil}] (evaluate {:type "prog" :prog [{:type "num" :value 47}]} {:vars {} :parent nil})))
