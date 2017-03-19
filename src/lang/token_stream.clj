@@ -66,7 +66,7 @@
 		nextchar (if (inputstream_eof skip_whitespace_state) nil (inputstream_peek skip_whitespace_state))
 		]
 		(cond (nil? nextchar) nil
-			(= \# nextchar) (tokenstream_read_next (tokenstream_skip_comment skip_whitespace_state))
+			(= \# nextchar) (tokenstream_read_next (inputstream_state_part (tokenstream_skip_comment skip_whitespace_state)))
 			(= \" nextchar) (tokenstream_read_string (inputstream_state_part (inputstream_next skip_whitespace_state)))
 			(tokenstream_is_digit nextchar) (tokenstream_read_number skip_whitespace_state)
 			(tokenstream_is_id_start nextchar) (tokenstream_read_ident skip_whitespace_state)

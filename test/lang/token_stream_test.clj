@@ -129,6 +129,7 @@
     (is (= [{:type "kw" :value "if"} {:pos 2 :input "if" :line 0 :col 2}] (tokenstream_read_next {:pos 0 :input "if" :line 0 :col 0})))
     (is (= [{:type "punc" :value \,} {:pos 1 :input "," :line 0 :col 1}] (tokenstream_read_next {:pos 0 :input "," :line 0 :col 0})))
     (is (= [{:type "op" :value "+"} {:pos 1 :input "+" :line 0 :col 1}] (tokenstream_read_next {:pos 0 :input "+" :line 0 :col 0})))
+    (is (= [{:type "num" :value 2} {:pos 10, :input "\n1 ; # 1\n2 ;", :line 2, :col 1}] (tokenstream_read_next {:pos 5, :input "\n1 ; # 1\n2 ;", :line 1, :col 4})))
     (is (thrown-with-msg? Exception #"Can't handle character: \^ at position 0 \(0:0\)" (tokenstream_read_next {:pos 0 :input "^" :line 0 :col 0}))))
   (testing "test tokenstream_peek"
     (is (= nil (tokenstream_peek {:pos 0 :input "" :line 0 :col 0})))
