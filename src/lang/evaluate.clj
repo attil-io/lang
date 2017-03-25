@@ -41,7 +41,7 @@
 							(evaluate arg env)))
 						(range (count args)))
 				mapped_args (map first mapped_args_envs)
-				mapped_env (last (last mapped_args_envs))]
+				mapped_env (or (last (last mapped_args_envs)) environment)]
 			(apply func_val (cons mapped_env mapped_args)))
 		(throw (Exception. (str "I don't know how to evaluate " (:type expression))))))
 
