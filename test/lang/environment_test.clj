@@ -15,11 +15,17 @@
     (is (thrown-with-msg? Exception #"Undefined variable" (environment_get "hello" {:vars {} :parent nil})))
     (is (= 42 (environment_get "hello" {:vars {:hello 42} :parent nil})))
     (is (= 42 (environment_get "hello" {:vars {} :parent {:vars {:hello 42} :parent nil}}))))
+  (testing "test environment_get_global"
+    (is (= 45 (environment_get_global "hello" {:vars {} :parent {:vars {:hello 45} :parent nil}})))
+    (is (= 42 (environment_get_global "hello" {:vars {:hello 5} :parent {:vars {:hello 42} :parent nil}}))))
   (testing "test environment_set"
     (is (= {:vars {:hello 42} :parent nil} (environment_set "hello" 42 {:vars {:hello 5} :parent nil})))
     (is (= {:vars {} :parent {:vars {:hello 42} :parent nil}} (environment_set "hello" 42 {:vars {} :parent {:vars {:hello 5} :parent nil}})))
     (is (thrown-with-msg? Exception #"Undefined variable" (environment_set "hello" 42 {:vars {} :parent nil})))
     (is (= {:vars {:hello 42} :parent {:vars {} :parent nil}} (environment_set "hello" 42 {:vars {} :parent {:vars {} :parent nil}}))))
+   (testing "test environment_set_global"
+    (is (= {:vars {:hello 42} :parent nil} (environment_set_global "hello" 42 {:vars {:hello 5} :parent nil})))
+    (is (= {:vars {} :parent {:vars {:hello 42} :parent nil}} (environment_set_global "hello" 42 {:vars {} :parent {:vars {:hello 5} :parent nil}}))))
   (testing "test environment_def"
     (is (= {:vars {:hello 42} :parent nil} (environment_def "hello" 42 {:vars {} :parent nil})))
     (is (= {:vars {:hello 5} :parent nil} (environment_def "hello" 5 {:vars {:hello 42} :parent nil})))))

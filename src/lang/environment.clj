@@ -19,6 +19,10 @@
 			(vars varname)
 			(recur varname (:parent scope))))))
 
+(defn environment_get_global [varname scope] 
+	(if (nil? (:parent scope)) (environment_get varname scope)
+	(environment_get_global varname (:parent scope))))
+
 (defn environment_set [varname value scope]
 	(let [{ancestor_scope :scope ancestor_level :level} (environment_lookup_impl varname scope 0)
 		varname (keyword varname)]
@@ -29,6 +33,12 @@
 			(assoc-in scope [:vars varname] value)
 		:else
 			(assoc-in scope (concat (repeat ancestor_level :parent) [:vars varname]) value))))
+
+(defn- scope_depth [scope level]
+	(if (nil? (:parent scope)) level (scope_depth (:parent scope) (inc level))))
+
+(defn environment_set_global [varname value scope] 
+	(assoc-in scope (concat (repeat (scope_depth scope 0) :parent) [:vars (keyword varname)]) value))
 
 (defn environment_def [varname value scope]
 	(assoc-in scope [:vars (keyword varname)] value))
