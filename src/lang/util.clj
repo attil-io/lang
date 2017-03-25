@@ -16,3 +16,5 @@
 
 (defn long-str [& strings] (clojure.string/join "\n" strings))
 
+(defn dumpmap [m]
+	(map str (interleave (map name (keys m)) (repeat (count m) " = ") (vals m) (repeat (count m) "\n"))))
