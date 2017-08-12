@@ -39,8 +39,11 @@
 		(when (not= NO_RESULT [result output]) (renderresult result output))
 		(recur (prompt) newlines))))))
 
-(defn -main [& args]
-	(do 
+(defn- script [path]
+	(let [lines (slurp path)]
+	(apply renderresult (safeinterpret lines))))
+
+(defn -main [& [args]]
 	(println "lang REPL, arguments: " args)
-	(interactive)))
+	(if (nil? args) (interactive) (script args)))
 
