@@ -62,7 +62,7 @@
 		">" (> (isnum a) (isnum b))
 		"<=" (<= (isnum a) (isnum b))
 		">=" (>= (isnum a) (isnum b))
-		"==" (== a b)
+		"==" (= a b)
 		"!=" (not= a b)
 		(throw (Exception. (str "Can't apply operator " op))))))
 
