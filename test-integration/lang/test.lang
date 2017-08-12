@@ -1,11 +1,36 @@
-# infra
+# +---------------------------------+
+# |             infra               |
+# +---------------------------------+
 assert = lambda(condition, description)
 	if (condition != true) then { println (description) ; } ;
 
 
-# tests 
+# +---------------------------------+
+# |             tests               |
+# +---------------------------------+
+
+# simple
 assert ((3 == 1 + 2), "1 + 2 = 3 failed");
 
-# notification
+# complex test case: when storing reference to a lambda function
+# and retrieving it later, we should get the same result
+
+lambdastore = lambda () {
+	cons = λ(a, b) λ(f) f(a, b);
+	car = λ(cell) cell(λ(a, b) a);
+	cdr = λ(cell) cell(λ(a, b) b);
+	NIL = λ(f) f(NIL, NIL);
+
+	x = cons(1, NIL);
+	assert(NIL == car(cdr(x)), "retrieved lambda does not match stored lambda");
+};
+lambdastore();
+
+
+
+# +---------------------------------+
+# |        notification             |
+# +---------------------------------+
+
 println ("tests executed");
 
