@@ -1,2 +1,11 @@
-1 + 2;
+# infra
+assert = lambda(condition, description)
+	if (condition != true) then { println (description) ; } ;
+
+
+# tests 
+assert ((3 == 1 + 2), "1 + 2 = 3 failed");
+
+# notification
+println ("tests executed");
 
