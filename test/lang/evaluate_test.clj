@@ -17,12 +17,12 @@
     (is (= [false {:vars {} :parent nil}] (evaluate {:type "if" :cond {:type "bool" :value false} :then {:type "num" :value 42}} {:vars {} :parent nil})))
     (is (= [47 {:vars {} :parent nil}] (evaluate {:type "binary" :operator "+" :left {:type "num" :value 5} :right {:type "num" :value 42}} {:vars {} :parent nil})))
     (is (= [2 {:vars {} :parent nil}] (evaluate {:type "let" :vars [{:name "x", :def {:value 2, :type "num"}}] :body {:value "x" :type "var"}} {:vars {} :parent nil})))
-    (is (= [47 {:vars {} :parent nil}] (((evaluate {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}} {:vars {} :parent nil}) 0) {:vars {} :parent nil} 47)))
+    (is (= [47 {:vars {} :parent nil :closure {:a 47}}] (((evaluate {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}} {:vars {} :parent nil}) 0) {:vars {} :parent nil} 47)))
     (is (= [false {:vars {} :parent nil}] (evaluate {:type "prog" :prog [{:type "bool" :value false}]} {:vars {} :parent nil})))
     (is (= [47 {:vars {} :parent nil}] (evaluate {:type "prog" :prog [{:type "num" :value 47}]} {:vars {} :parent nil})))
     (is (= [48 {:vars {} :parent nil}] (evaluate {:type "prog" :prog [{:type "num" :value 47}{:type "num" :value 48}]} {:vars {} :parent nil})))
     (is (= [10 {:vars {:a 5 :b 10} :parent nil}] (evaluate {:type "prog" :prog [{:type "assign" :operator "=" :left {:type "var" :value "a"} :right {:type "num" :value 5}}{:type "assign" :operator "=" :left {:type "var" :value "b"} :right {:type "num" :value 10}}]} {:vars {:a 0 :b 0} :parent nil})))
-    (is (= [10 {:vars {} :parent nil}] (evaluate {:type "call" :func {:type "lambda" :name "a" :vars ["c"] :body {:type "var" :value "c"}} :args [{:type "num" :value 10}]} {:vars {} :parent nil})))
+    (is (= [10 {:vars {} :parent nil :closure {:c 10}}] (evaluate {:type "call" :func {:type "lambda" :name "a" :vars ["c"] :body {:type "var" :value "c"}} :args [{:type "num" :value 10}]} {:vars {} :parent nil})))
     (is (= ["bla" {:vars {:print myprint} :parent nil}] (evaluate {:type "call", :func {:value "print", :type "var"}, :args [{:type "str", :value "hello, world"}]} {:vars {:print myprint} :parent nil})))
     (is (thrown-with-msg? Exception #"I don't know how to evaluate" (evaluate {:type "unknown"} {:vars {} :parent nil}))))
   (testing "test evaluate_apply_op"
@@ -56,5 +56,5 @@
     (let [evaluate_make_lambda #'lang.evaluate/evaluate_make_lambda]
     (is (= [5 {:vars {} :parent nil}] ((evaluate_make_lambda {:type "lambda" :name "bla" :vars [] :body {:type "num" :value 5}}) {:vars {} :parent nil})))
     (is (= [false {:vars {} :parent nil}] ((evaluate_make_lambda  {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}) {:vars {} :parent nil})))
-    (is (= [42 {:vars {} :parent nil}] ((evaluate_make_lambda  {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}) {:vars {} :parent nil} 42))))))
+    (is (= [42 {:vars {} :parent nil :closure {:a 42}}] ((evaluate_make_lambda  {:type "lambda" :name "bla" :vars ["a"] :body {:type "var" :value "a"}}) {:vars {} :parent nil} 42))))))
 

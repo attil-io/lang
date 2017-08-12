@@ -66,11 +66,6 @@
 		"!=" (not= a b)
 		(throw (Exception. (str "Can't apply operator " op))))))
 
-(defn- create_closure [obj names args]
-	(if (instance? clojure.lang.IFn obj)
-	(fn [env & funcargs] (apply obj (cons (reduce (fn [accum idx] (environment_def (nth names idx) (nth args idx) accum)) env (range (count names))) funcargs)))
-	obj))
-
 (defn- evaluate_make_lambda[exp] 
 	(fn [env & args] 
 		(let [names (:vars exp)
@@ -81,6 +76,6 @@
 				scope
 				(range (count names)))
 			[eval_result eval_scope] (evaluate (:body exp) extended_scope)]
-		[(create_closure eval_result names args) (:parent eval_scope)])))
+		[eval_result (environment_def_closure_more names args (:parent eval_scope))])))
 
 
