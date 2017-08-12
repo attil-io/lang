@@ -31,13 +31,16 @@
 (defn- renderresult [result output]
 	(println (str (clojure.string/join "\n" output) "\n\n -> " result)))
 
-(defn -main [& args]
-	(do 
-	(println "lang REPL, arguments: " args)
+(defn- interactive [] 
 	(loop [line (prompt) lines ""]
 	(let [[result output newlines :as process_result] (processline line lines)]
 	(when (not= EXIT process_result)
 	(do
 		(when (not= NO_RESULT [result output]) (renderresult result output))
-		(recur (prompt) newlines)))))))
+		(recur (prompt) newlines))))))
+
+(defn -main [& args]
+	(do 
+	(println "lang REPL, arguments: " args)
+	(interactive)))
 
