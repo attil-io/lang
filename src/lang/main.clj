@@ -28,8 +28,11 @@
 	(isgo line) (conj (safeinterpret lines) "")
 	:else [nil nil (str lines "\n" line)])) 
 
+(defn- prettyprint-output [output]
+	(clojure.string/join "\n" output))
+
 (defn- renderresult [result output]
-	(println (str (clojure.string/join "\n" output) "\n\n -> " result)))
+	(println (str (prettyprint-output output) "\n\n -> " result)))
 
 (defn- interactive [] 
 	(loop [line (prompt) lines ""]
@@ -41,7 +44,7 @@
 
 (defn- script [path]
 	(let [lines (slurp path)]
-	(apply renderresult (safeinterpret lines))))
+	(println (prettyprint-output (last (safeinterpret lines))))))
 
 (defn -main [& [args]]
 	(println "lang REPL, arguments: " args)
