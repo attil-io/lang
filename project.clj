@@ -3,7 +3,7 @@
   :url "https://github.com/attil-io/lang"
   :license {:name "MIT License"
             :url "https://opensource.org/licenses/MIT"}
-  :dependencies [[org.clojure/clojure "1.7.0"]]
+  :dependencies [[org.clojure/clojure "1.8.0"]]
   :main ^:skip-aot lang.main
   :target-path "target/%s"
   :aliases {"test-integration" ["run" test-integration/lang/test.lang]}
