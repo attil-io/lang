@@ -1,0 +1,65 @@
+>>> calling  CONS_FN  with env =  
+	{:vars 
+		{:cons CONS_FN, 
+		:car CAR_FN, 
+		:cdr CDR_FN, :NIL NIL_FN}, 
+	:parent 
+		{
+			:vars 
+				{:print_accum [], 
+				:print PRINT_FN, 
+				:println PRINTLN_FN, 
+				:printenv PRINTENV_FN}, 
+			:parent nil, 
+			:closure {}
+		}
+	}  args =  (1 NIL_FN)
+<<< result:  [CONS1_RET_FN 
+	{:vars 
+		{:cons CONS_FN, 
+		:car CAR_FN, 
+		:cdr CDR_FN, 
+		:NIL NIL_FN}, 
+	:parent 
+		{
+			:vars 
+				{:print_accum [], 
+				:print PRINT_FN, 
+				:println PRINTLN_FN, 
+				:printenv PRINTENV_FN}, 
+			:parent nil, 
+			:closure {}
+		}, 
+	:closure {:a 1, :b NIL_FN}}]
+
+
+>>> calling  CONS_FN  with env =  
+	{:vars 
+		{:cons CONS_FN, 
+		:car CAR_FN, 
+		:cdr CDR_FN, :NIL NIL_FN}, 
+	:parent 
+		{:vars 
+			{:print_accum [], 
+			:print PRINT_FN, 
+			:println PRINTLN_FN, 
+			:printenv PRINTENV_FN}, 
+		:parent nil,
+		:closure {}}, 
+	:closure {:a 1, :b NIL_FN}}
+	args =  (2 CONS1_RET_FN)
+<<< result:  [CONS2_RET_FN 
+	{:vars 
+		{:cons CONS_FN,
+		:car CAR_FN,
+		:cdr CDR_FN,
+		:NIL NIL_FN},
+	:parent 
+		{:vars 
+			{:print_accum [], 
+			:print PRINT_FN, 
+			:println PRINTLN_FN, 
+			:printenv PRINTENV_FN},
+		:parent nil,
+		:closure {}},
+	:closure {:a 2, :b CONS1_RET_FN}}]

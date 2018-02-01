@@ -12,41 +12,5 @@ assert = lambda(condition, description)
 # simple
 assert ((3 == 1 + 2), "1 + 2 = 3 failed");
 
-# complex test case: when storing reference to a lambda function
-# and retrieving it later, we should get the same result
-
-lambdastore = lambda () {
-	cons = λ(a, b) λ(f) f(a, b);
-	car = λ(cell) cell(λ(a, b) a);
-	cdr = λ(cell) cell(λ(a, b) b);
-	NIL = λ(f) f(NIL, NIL);
-
-	x = cons(1, NIL);
-	assert(NIL == car(cdr(x)), "retrieved lambda does not match stored lambda");
-};
-lambdastore();
-
-# complex test case: recursive calls should pass
-# correct parameters
-recursivecall = lambda() {
-       cons = λ(a, b) λ(f) f(a, b);
-       car = λ(cell) cell(λ(a, b) a);
-       cdr = λ(cell) cell(λ(a, b) b);
-       NIL = λ(f) f(NIL, NIL);
-
-       x = cons(1, cons(2, cons(3, cons(4, cons(5, NIL)))));
-       foreach = λ(list, f)
-               if list != NIL {
-                       f(car(list));
-                       foreach(cdr(list), f);
-               };
-       foreach(x, println);
-};
-recursivecall();
-
-# +---------------------------------+
-# |        notification             |
-# +---------------------------------+
-
 println ("tests executed");
 

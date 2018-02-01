@@ -19,7 +19,8 @@
 
 				[eval_right_result eval_right_env] (evaluate (:right expression) eval_left_env)]
 [(evaluate_apply_op (:operator expression) eval_left_result eval_right_result) eval_right_env])
-		"lambda" [(evaluate_make_lambda expression) environment]
+		"lambda" (let [result [(evaluate_make_lambda expression environment) environment]]
+			result)
 		"if" (let [[cond_result cond_env] (evaluate (:cond expression) environment)]
 			(if cond_result
 				(evaluate (:then expression) cond_env)
@@ -41,8 +42,11 @@
 							(evaluate arg env)))
 						(range (count args)))
 				mapped_args (map first mapped_args_envs)
-				mapped_env (or (last (last mapped_args_envs)) environment)]
-			(apply func_val (cons mapped_env mapped_args)))
+				mapped_env (or (last (last mapped_args_envs)) environment)
+				func_ptr (func_val 0)
+				func_args [mapped_env (func_val 1) mapped_args] 
+				result (apply func_ptr func_args)]
+			result)
 		(throw (Exception. (str "I don't know how to evaluate " (:type expression))))))
 
 (defn- evaluate_apply_op [op a b]
@@ -66,8 +70,11 @@
 		"!=" (not= a b)
 		(throw (Exception. (str "Can't apply operator " op))))))
 
-(defn- evaluate_make_lambda[exp] 
-	(fn [env & args] 
+(defn- evaluate_make_lambda[exp closure_env] 
+	[(fn [env closure & args] 
+		(println "invoked function with env="env)
+		(println "invoked function with closure="closure)
+		(println "invoked function with args="args "of type '" (type args) "'")
 		(let [names (:vars exp)
 			scope (environment_create env)
 			extended_args (concat args (repeat (- (count names) (count args)) false))
@@ -76,6 +83,6 @@
 				scope
 				(range (count names)))
 			[eval_result eval_scope] (evaluate (:body exp) extended_scope)]
-		[eval_result (environment_def_closure_more names args (:parent eval_scope))])))
+		[eval_result (environment_def_closure_more names args (:parent eval_scope))])) closure_env])
 
 
