@@ -4,5 +4,7 @@
 
  (deftest dump-tree-test
   (testing "test dump-tree"
-    (is (nil? (dump-tree nil)))))
+    (is (nil? (dump-tree nil)))
+    (is (= "{}" (dump-tree {:type "prog" :prog nil})))
+    (is (= "{}" (dump-tree {:type "prog" :prog {}})))))
 

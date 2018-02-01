@@ -2,5 +2,8 @@
 	(:require [lang.token_stream :refer :all])
 	(:require [lang.input_stream :refer :all]))
 
-(defn dump-tree [ast] (println ast))
+(defn dump-tree [ast] (let [ast_type (:type ast)]
+        (case ast_type 
+              nil nil
+              "prog" "{}")))
 
