@@ -13,6 +13,7 @@
     (is (= "false" (dump-tree {:type "bool" :value false})))
     (is (= "foo" (dump-tree {:type "var" :value "foo"})))
     (is (= "42+66" (dump-tree {:type "binary" :operator "+" :left {:type "num" :value 42} :right {:type "num" :value 66}})))
+    (is (= "a=2" (dump-tree {:type "assign" :operator "=" :left {:type "var" :value "a"} :right {:type "num" :value 2}})))
     
     ))
 
