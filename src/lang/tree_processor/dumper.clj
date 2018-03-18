@@ -5,5 +5,9 @@
 (defn dump-tree [ast] (let [ast_type (:type ast)]
         (case ast_type 
               nil nil
-              "prog" "{}")))
+              "prog" "{}"
+              "num" (str (:value ast))
+              "str" (str (:value ast))
+              "bool" (str (:value ast))
+              )))
 
