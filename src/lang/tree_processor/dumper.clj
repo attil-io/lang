@@ -3,6 +3,7 @@
 	(:require [lang.input_stream :refer :all]))
 
 (declare dump-var)
+(declare dump-binary)
 
 (defn dump-tree [ast] (let [ast_type (:type ast)]
         (case ast_type 
@@ -12,7 +13,9 @@
               "str" (str (:value ast))
               "bool" (str (:value ast))
               "var" (dump-var (:value ast))
+              "binary" (dump-binary ast)
               )))
 
 (defn- dump-var [value] value)
+(defn- dump-binary [ast] (str (dump-tree (:left ast)) (:operator ast) (dump-tree (:right ast))))
 
