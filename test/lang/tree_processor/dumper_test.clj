@@ -11,7 +11,7 @@
     (is (= "blah" (dump-tree {:type "str" :value "blah"})))
     (is (= "true" (dump-tree {:type "bool" :value true})))
     (is (= "false" (dump-tree {:type "bool" :value false})))
-    (is (= "false" (dump-tree {:type "bool" :value false})))
+    (is (= "foo" (dump-tree {:type "var" :value "foo"})))
     
     ))
 
