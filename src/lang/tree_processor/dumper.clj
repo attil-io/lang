@@ -3,6 +3,7 @@
         (:require [lang.input_stream :refer :all])
         (:require [clojure.string :as s :only (join)]))
 
+(declare dump-prog)
 (declare dump-var)
 (declare dump-binary)
 (declare dump-assign)
@@ -15,7 +16,7 @@
 (defn dump-tree [ast] (let [ast_type (:type ast)]
         (case ast_type 
               nil nil
-              "prog" "{}"
+              "prog" (dump-prog ast)
               "num" (str (:value ast))
               "str" (str (:value ast))
               "bool" (str (:value ast))
@@ -34,4 +35,5 @@
 (defn- dump-let-var [v] (str (dump-var (:name v)) "=" (dump-tree (:def v))))
 (defn- dump-let [ast] (str "let (" (s/join "," (map dump-let-var (:vars ast))) "){" (dump-tree (:body ast)) "}"))
 (defn- dump-if [ast] (str "if (" (dump-tree (:cond ast)) "){" (dump-tree (:then ast)) "}{" (dump-tree (or (:else ast) FALSE) ) "}"))
+(defn- dump-prog [ast] (str "{" (dump-tree (:prog ast)) "}"))
 

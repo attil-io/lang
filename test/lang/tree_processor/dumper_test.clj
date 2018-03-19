@@ -7,6 +7,7 @@
     (is (nil? (dump-tree nil)))
     (is (= "{}" (dump-tree {:type "prog" :prog nil})))
     (is (= "{}" (dump-tree {:type "prog" :prog {}})))
+    (is (= "{x=false}" (dump-tree {:type "prog" :prog {:type "assign" :operator "=" :left {:type "var" :value "x"} :right {:type "bool" :value false}}})))
     (is (= "42" (dump-tree {:type "num" :value 42})))
     (is (= "blah" (dump-tree {:type "str" :value "blah"})))
     (is (= "true" (dump-tree {:type "bool" :value true})))
