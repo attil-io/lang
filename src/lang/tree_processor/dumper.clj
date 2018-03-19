@@ -8,6 +8,9 @@
 (declare dump-assign)
 (declare dump-lambda)
 (declare dump-let)
+(declare dump-if)
+
+(def ^{:private true} FALSE { :type "bool" :value false })
 
 (defn dump-tree [ast] (let [ast_type (:type ast)]
         (case ast_type 
@@ -21,6 +24,7 @@
               "assign" (dump-assign ast)
               "lambda" (dump-lambda ast)
               "let" (dump-let ast)
+              "if" (dump-if ast)
               )))
 
 (defn- dump-var [value] (str value))
@@ -29,4 +33,5 @@
 (defn- dump-lambda [ast] (str "function " (:name ast) "(" (s/join "," (map dump-var (:vars ast))) "){return " (dump-tree (:body ast)) "}"))
 (defn- dump-let-var [v] (str (dump-var (:name v)) "=" (dump-tree (:def v))))
 (defn- dump-let [ast] (str "let (" (s/join "," (map dump-let-var (:vars ast))) "){" (dump-tree (:body ast)) "}"))
+(defn- dump-if [ast] (str "if (" (dump-tree (:cond ast)) "){" (dump-tree (:then ast)) "}{" (dump-tree (or (:else ast) FALSE) ) "}"))
 
