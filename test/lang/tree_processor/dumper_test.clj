@@ -23,6 +23,7 @@
     (is (= "let (x=42,y=666){x}" (dump-tree {:type "let" :vars [{:name "x" :def {:type "num" :value 42}} {:name "y" :def {:type "num" :value 666}}] :body {:type "var" :value "x"}})))
     (is (= "if (x==42){x}{true}" (dump-tree {:type "if" :cond {:type "binary" :operator "==" :left {:type "var" :value "x"} :right {:type "num" :value 42}} :then {:type "var" :value "x"} :else {:type "bool" :value true}})))
     (is (= "if (x==42){x}{false}" (dump-tree {:type "if" :cond {:type "binary" :operator "==" :left {:type "var" :value "x"} :right {:type "num" :value 42}} :then {:type "var" :value "x"}})))
+    (is (= "foo(10)" (dump-tree {:type "call" :func {:type "var" :value "foo"} :args [{:type "num" :value 10}]})))
  
     ))
 

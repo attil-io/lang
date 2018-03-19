@@ -1,6 +1,5 @@
 (ns lang.tree-processor.dumper
-        (:require [lang.token_stream :refer :all])
-        (:require [lang.input_stream :refer :all])
+        (:require [lang.parser :refer :all])
         (:require [clojure.string :as s :only (join)]))
 
 (declare dump-prog)
@@ -10,8 +9,12 @@
 (declare dump-lambda)
 (declare dump-let)
 (declare dump-if)
+(declare dump-call)
+(declare dump-tree)
 
 (def ^{:private true} FALSE { :type "bool" :value false })
+
+(defn dump [code] (dump-tree (parse_parse_toplevel code)))
 
 (defn dump-tree [ast] (let [ast_type (:type ast)]
         (case ast_type 
@@ -26,6 +29,7 @@
               "lambda" (dump-lambda ast)
               "let" (dump-let ast)
               "if" (dump-if ast)
+              "call" (dump-call ast)
               )))
 
 (defn- dump-var [value] (str value))
@@ -35,5 +39,6 @@
 (defn- dump-let-var [v] (str (dump-var (:name v)) "=" (dump-tree (:def v))))
 (defn- dump-let [ast] (str "let (" (s/join "," (map dump-let-var (:vars ast))) "){" (dump-tree (:body ast)) "}"))
 (defn- dump-if [ast] (str "if (" (dump-tree (:cond ast)) "){" (dump-tree (:then ast)) "}{" (dump-tree (or (:else ast) FALSE) ) "}"))
+(defn- dump-call [ast] (str (dump-tree (:func ast)) "(" (s/join "," (map dump-tree (:args ast))) ")"  ))
 (defn- dump-prog [ast] (str "{" (dump-tree (:prog ast)) "}"))
 
