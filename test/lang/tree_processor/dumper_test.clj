@@ -14,6 +14,9 @@
     (is (= "foo" (dump-tree {:type "var" :value "foo"})))
     (is (= "42+66" (dump-tree {:type "binary" :operator "+" :left {:type "num" :value 42} :right {:type "num" :value 66}})))
     (is (= "a=2" (dump-tree {:type "assign" :operator "=" :left {:type "var" :value "a"} :right {:type "num" :value 2}})))
+    (is (= "function foo(x){return 42}" (dump-tree {:type "lambda" :name "foo" :vars ["x"] :body {:type "num" :value 42}})))
+    (is (= "function foo(){return 42}" (dump-tree {:type "lambda" :name "foo" :vars [] :body {:type "num" :value 42}})))
+    (is (= "function foo(x,y){return 42}" (dump-tree {:type "lambda" :name "foo" :vars ["x" "y"] :body {:type "num" :value 42}})))
     
     ))
 
