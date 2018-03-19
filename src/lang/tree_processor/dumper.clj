@@ -40,5 +40,5 @@
 (defn- dump-let [ast] (str "let (" (s/join "," (map dump-let-var (:vars ast))) "){" (dump-tree (:body ast)) "}"))
 (defn- dump-if [ast] (str "if (" (dump-tree (:cond ast)) "){" (dump-tree (:then ast)) "}{" (dump-tree (or (:else ast) FALSE) ) "}"))
 (defn- dump-call [ast] (str (dump-tree (:func ast)) "(" (s/join "," (map dump-tree (:args ast))) ")"  ))
-(defn- dump-prog [ast] (str "{" (dump-tree (:prog ast)) "}"))
+(defn- dump-prog [ast] (str "{" (s/join \newline (map dump-tree (:prog ast))) "}"))
 
