@@ -17,6 +17,9 @@
     (is (= "function foo(x){return 42}" (dump-tree {:type "lambda" :name "foo" :vars ["x"] :body {:type "num" :value 42}})))
     (is (= "function foo(){return 42}" (dump-tree {:type "lambda" :name "foo" :vars [] :body {:type "num" :value 42}})))
     (is (= "function foo(x,y){return 42}" (dump-tree {:type "lambda" :name "foo" :vars ["x" "y"] :body {:type "num" :value 42}})))
-    
+    (is (= "let (x=42){x}" (dump-tree {:type "let" :vars [{:name "x" :def {:type "num" :value 42}}] :body {:type "var" :value "x"}})))
+    (is (= "let (){42}" (dump-tree {:type "let" :vars [] :body {:type "num" :value 42}})))
+    (is (= "let (x=42,y=666){x}" (dump-tree {:type "let" :vars [{:name "x" :def {:type "num" :value 42}} {:name "y" :def {:type "num" :value 666}}] :body {:type "var" :value "x"}})))
+ 
     ))
 
