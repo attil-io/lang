@@ -28,5 +28,23 @@
  (deftest to-clj-test
   (testing "test to-clj"
     (is (= nil (to-clj nil)))
+    (is (= "" (to-clj {:type "prog" :prog nil})))
+    (is (= "" (to-clj {:type "prog" :prog {}})))
+    (is (= "(= x false)" (to-clj {:type "prog" :prog [{:type "assign" :operator "=" :left {:type "var" :value "x"} :right {:type "bool" :value false}}]})))
+    (is (= "42" (to-clj {:type "num" :value 42})))
+    (is (= "\"blah\"" (to-clj {:type "str" :value "blah"})))
+    (is (= "true" (to-clj {:type "bool" :value true})))
+    (is (= "false" (to-clj {:type "bool" :value false})))
+    (is (= "foo" (to-clj {:type "var" :value "foo"})))
+    (is (= "(+ 42 66)" (to-clj {:type "binary" :operator "+" :left {:type "num" :value 42} :right {:type "num" :value 66}})))
+    (is (= "(= a 2)" (to-clj {:type "assign" :operator "=" :left {:type "var" :value "a"} :right {:type "num" :value 2}})))
+    (is (= "(defn foo [x] 42)" (to-clj {:type "lambda" :name "foo" :vars ["x"] :body {:type "num" :value 42}})))
+    (is (= "(defn foo [] 42)" (to-clj {:type "lambda" :name "foo" :vars [] :body {:type "num" :value 42}})))
+    (is (= "(defn foo [x y] 42)" (to-clj {:type "lambda" :name "foo" :vars ["x" "y"] :body {:type "num" :value 42}})))
+    (is (= "(let [x 42] x)" (to-clj {:type "let" :vars [{:name "x" :def {:type "num" :value 42}}] :body {:type "var" :value "x"}})))
+    (is (= "(let [] 42]" (to-clj {:type "let" :vars [] :body {:type "num" :value 42}})))
+    (is (= "(let [x 42 y 666] x)" (to-clj {:type "let" :vars [{:name "x" :def {:type "num" :value 42}} {:name "y" :def {:type "num" :value 666}}] :body {:type "var" :value "x"}})))
+    (is (= "(if (== x 42) x  true)" (to-clj {:type "if" :cond {:type "binary" :operator "==" :left {:type "var" :value "x"} :right {:type "num" :value 42}} :then {:type "var" :value "x"} :else {:type "bool" :value true}})))
+    (is (= "(if (== x 42) x false)" (to-clj {:type "if" :cond {:type "binary" :operator "==" :left {:type "var" :value "x"} :right {:type "num" :value 42}} :then {:type "var" :value "x"}})))
     (is (= "(foo 10)" (to-clj {:type "call" :func {:type "var" :value "foo"} :args [{:type "num" :value 10}]})))))
  

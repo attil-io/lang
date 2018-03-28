@@ -35,7 +35,7 @@
     (on-call [this ast] (str (walk-tree (:func ast) this) "(" (s/join "," (map #(walk-tree % this) (:args ast))) ")")))
 
 (deftype clojure-callback [] WALKER-CALLBACK
-    (on-prog [this ast] (str "{" (s/join \newline (map #(walk-tree % this) (:prog ast))) "}"))
+    (on-prog [this ast] (s/join \newline (map #(walk-tree % this) (:prog ast))))
     (on-num [this ast] (str (:value ast)))
     (on-str [this ast] (str \" (:value ast) \"))
     (on-bool [this ast] (str (:value ast)))
