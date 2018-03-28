@@ -40,7 +40,7 @@
     (on-str [this ast] (str \" (:value ast) \"))
     (on-bool [this ast] (str (:value ast)))
     (on-var [this ast] (str (:value ast)))
-    (on-binary [this ast] (str \( (:operator ast) (walk-tree (:left ast) this) (walk-tree (:right ast) this) \) ))
+    (on-binary [this ast] (str \( (:operator ast) " " (walk-tree (:left ast) this) " " (walk-tree (:right ast) this) \) ))
     (on-assign [this ast] (on-binary this ast))
     (on-lambda [this ast] (str "(defn " (:name ast) " [" (s/join " " (map str (:vars ast))) "] (" (walk-tree (:body ast) this) ")"))
     (on-let [this ast] (str "(let [" (s/join " " (map #(internal-let-var this %) (:vars ast))) "] (" (walk-tree (:body ast) this) ")"))
