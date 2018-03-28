@@ -36,8 +36,13 @@
 
 (defn- var-or-literal? [ast]
   (contains? #{"var" "num" "str" "bool"} (:type ast)))
-(defn- par-if-needed [ast par]
-  (when-not (var-or-literal? (:body ast)) par))
+(defn- par-if-needed 
+  ([ast cb part]
+  (str (when-not (var-or-literal? (part ast)) "(")
+       (walk-tree (part ast) cb)
+       (when-not (var-or-literal? (part ast)) ")")))
+  ([ast cb]
+   (par-if-needed ast cb :body)))
 
 (deftype clojure-callback [] WALKER-CALLBACK
     (on-prog [this ast] (s/join \newline (map #(walk-tree % this) (:prog ast))))
@@ -47,9 +52,9 @@
     (on-var [this ast] (str (:value ast)))
     (on-binary [this ast] (str \( (:operator ast) " " (walk-tree (:left ast) this) " " (walk-tree (:right ast) this) \) ))
     (on-assign [this ast] (on-binary this ast))
-    (on-lambda [this ast] (str "(defn " (:name ast) " [" (s/join " " (map str (:vars ast))) "] " (par-if-needed ast "(") (walk-tree (:body ast) this) (par-if-needed ast ")") ")"))
-    (on-let [this ast] (str "(let [" (s/join " " (map #(internal-let-var this % " ") (:vars ast))) "] " (par-if-needed ast "(") (walk-tree (:body ast) this) (par-if-needed ast ")") ")"))
-    (on-if [this ast] (str "(if (" (walk-tree (:cond ast) this) ") (" (walk-tree (:then ast) this) ")(" (walk-tree (or (:else ast) FALSE) this) ")"))
+    (on-lambda [this ast] (str "(defn " (:name ast) " [" (s/join " " (map str (:vars ast))) "] " (par-if-needed ast this) ")"))
+    (on-let [this ast] (str "(let [" (s/join " " (map #(internal-let-var this % " ") (:vars ast))) "] " (par-if-needed ast this) ")"))
+    (on-if [this ast] (str "(if " (walk-tree (:cond ast) this) " " (par-if-needed ast this :then) " " (par-if-needed {:else (or (:else ast) FALSE)} this :else) ")"))
     (on-call [this ast] (str "(" (walk-tree (:func ast) this) " " (s/join " " (map #(walk-tree % this) (:args ast))) ")")))
 
 

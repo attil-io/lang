@@ -44,7 +44,7 @@
     (is (= "(let [x 42] x)" (to-clj {:type "let" :vars [{:name "x" :def {:type "num" :value 42}}] :body {:type "var" :value "x"}})))
     (is (= "(let [] 42)" (to-clj {:type "let" :vars [] :body {:type "num" :value 42}})))
     (is (= "(let [x 42 y 666] x)" (to-clj {:type "let" :vars [{:name "x" :def {:type "num" :value 42}} {:name "y" :def {:type "num" :value 666}}] :body {:type "var" :value "x"}})))
-    (is (= "(if (== x 42) x  true)" (to-clj {:type "if" :cond {:type "binary" :operator "==" :left {:type "var" :value "x"} :right {:type "num" :value 42}} :then {:type "var" :value "x"} :else {:type "bool" :value true}})))
+    (is (= "(if (== x 42) x true)" (to-clj {:type "if" :cond {:type "binary" :operator "==" :left {:type "var" :value "x"} :right {:type "num" :value 42}} :then {:type "var" :value "x"} :else {:type "bool" :value true}})))
     (is (= "(if (== x 42) x false)" (to-clj {:type "if" :cond {:type "binary" :operator "==" :left {:type "var" :value "x"} :right {:type "num" :value 42}} :then {:type "var" :value "x"}})))
     (is (= "(foo 10)" (to-clj {:type "call" :func {:type "var" :value "foo"} :args [{:type "num" :value 10}]})))))
  
