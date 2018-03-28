@@ -23,7 +23,10 @@
     (is (= "let (x=42,y=666){x}" (walk-tree {:type "let" :vars [{:name "x" :def {:type "num" :value 42}} {:name "y" :def {:type "num" :value 666}}] :body {:type "var" :value "x"}})))
     (is (= "if (x==42){x}{true}" (walk-tree {:type "if" :cond {:type "binary" :operator "==" :left {:type "var" :value "x"} :right {:type "num" :value 42}} :then {:type "var" :value "x"} :else {:type "bool" :value true}})))
     (is (= "if (x==42){x}{false}" (walk-tree {:type "if" :cond {:type "binary" :operator "==" :left {:type "var" :value "x"} :right {:type "num" :value 42}} :then {:type "var" :value "x"}})))
-    (is (= "foo(10)" (walk-tree {:type "call" :func {:type "var" :value "foo"} :args [{:type "num" :value 10}]})))
- 
-    ))
+    (is (= "foo(10)" (walk-tree {:type "call" :func {:type "var" :value "foo"} :args [{:type "num" :value 10}]})))))
 
+ (deftest to-clj-test
+  (testing "test to-clj"
+    (is (= nil (to-clj nil)))
+    (is (= "(foo 10)" (to-clj {:type "call" :func {:type "var" :value "foo"} :args [{:type "num" :value 10}]})))))
+ 
