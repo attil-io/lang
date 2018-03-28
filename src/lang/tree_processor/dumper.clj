@@ -78,3 +78,5 @@
 
 (defn dump [code] (walk-tree (parse_parse_toplevel code) (dump-callback.)))
 
+(defn clj [code] (to-clj (parse_parse_toplevel code)))
+
